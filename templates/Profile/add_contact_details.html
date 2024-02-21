@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Contact Details</title>
+</head>
+<body>
+    <h1>Edit Contact Details</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="show_on_bni_public_websites">Show on BNI Public Websites:</label>
+        <input type="checkbox" id="show_on_bni_public_websites" name="show_on_bni_public_websites" {% if initial_data.show_on_bni_public_websites %}checked{% endif %}>
+        <br>
+        <label for="billing_address_quick_copy">Billing Address Quick Copy:</label>
+        <textarea id="billing_address_quick_copy" name="billing_address_quick_copy">{{ initial_data.billing_address_quick_copy }}</textarea>
+        <br>
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" value="{{ initial_data.phone }}" required>
+        <br>
+        <label for="direct_number">Direct Number:</label>
+        <input type="text" id="direct_number" name="direct_number" value="{{ initial_data.direct_number }}">
+        <br>
+        <label for="home">Home:</label>
+        <input type="text" id="home" name="home" value="{{ initial_data.home }}">
+        <br>
+        <label for="mobile_number">Mobile Number:</label>
+        <input type="text" id="mobile_number" name="mobile_number" value="{{ initial_data.mobile_number }}">
+        <br>
+        <label for="pager">Pager:</label>
+        <input type="text" id="pager" name="pager" value="{{ initial_data.pager }}">
+        <br>
+        <label for="voice_mail">Voice Mail:</label>
+        <input type="text" id="voice_mail" name="voice_mail" value="{{ initial_data.voice_mail }}">
+        <br>
+        <label for="toll_free">Toll Free:</label>
+        <input type="text" id="toll_free" name="toll_free" value="{{ initial_data.toll_free }}">
+        <br>
+        <label for="fax">Fax:</label>
+        <input type="text" id="fax" name="fax" value="{{ initial_data.fax }}">
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ initial_data.email }}" required>
+        <br>
+        <label for="receive_updates_from_bni">Receive updates from BNI:</label>
+        <input type="checkbox" id="receive_updates_from_bni" name="receive_updates_from_bni" {% if initial_data.receive_updates_from_bni %}checked{% endif %}>
+        <br>
+        <label for="share_revenue_data_with_bni_director">Share revenue data with BNI Director:</label>
+        <input type="checkbox" id="share_revenue_data_with_bni_director" name="share_revenue_data_with_bni_director" {% if initial_data.share_revenue_data_with_bni_director %}checked{% endif %}>
+        <br>
+        <label for="website">Website:</label>
+        <input type="url" id="website" name="website" value="{{ initial_data.website }}">
+        <br>
+        <label for="social_networking_links">Social Networking Links:</label>
+        {% if initial_data.social_networking_links.all %}
+            <select id="social_networking_links" name="social_networking_links" multiple>
+                {% for link in initial_data.social_networking_links.all %}
+                    <option value="{{ link }}" selected>{{ link }}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <select id="social_networking_links" name="social_networking_links" multiple>
+                <option value="Facebook">Facebook</option>
+                <option value="Twitter">Twitter</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Google+">Google+</option>
+                <option value="Skype">Skype</option>
+                <option value="Yahoo!">Yahoo!</option>
+            </select>
+        {% endif %}
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

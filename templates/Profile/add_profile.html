@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Profile</title>
+</head>
+<body>
+    <h1>Add Profile</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="title">Title:</label>
+        <select name="title" id="title">
+            <option value="Mr.">Mr.</option>
+            <option value="Mrs.">Mrs.</option>
+            <option value="Miss">Miss</option>
+            <option value="Ms.">Ms.</option>
+            <option value="Dr.">Dr.</option>
+        </select>
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" id="first_name" value="{{ data.first_name }}" required>
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" id="last_name" value="{{ data.last_name }}" required>
+        <label for="suffix">Suffix:</label>
+        <input type="text" name="suffix" id="suffix">
+        <label for="display_name">Display Name:</label>
+        <input type="text" name="display_name" id="display_name">
+        <label for="gender">Gender:</label>
+        <select name="gender" id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        <label for="company_name">Company Name:</label>
+        <input type="text" name="company_name" id="company_name">
+        <label for="product_service_description">Product/Service Description:</label>
+        <input type="text" name="product_service_description" id="product_service_description">
+        <label for="gst_registered_state">GST Registered State:</label>
+        <input type="text" name="gst_registered_state" id="gst_registered_state">
+        <label for="gst_identification_number_or_pan" value="{{ data.gst_identification_number_or_pan }}">IN (GST Identification Number) or PAN:</label>
+        <input type="text" name="gst_identification_number_or_pan" id="gst_identification_number_or_pan">
+        <label for="industry">Industry:</label>
+        <input type="text" name="industry" id="industry">
+        <label for="classification">Classification:</label>
+        <input type="text" name="classification" id="classification">
+        <label for="requested_speciality">Requested Speciality:</label>
+        <input type="text" name="requested_speciality" id="requested_speciality">
+        <label for="membership_status">Membership Status:</label>
+        <select name="membership_status" id="membership_status">
+            <option value="Active">Active</option>
+            <option value="Not Active">Not Active</option>
+        </select>
+        <label for="renewal_due_date">Renewal Due Date:</label>
+        <input type="text" name="renewal_due_date" id="renewal_due_date">
+        <label for="chapter">Chapter:</label>
+        <input type="text" name="chapter" id="chapter">
+        <label for="my_business">My Business:</label>
+        <textarea name="my_business" id="my_business" rows="4"></textarea>
+        <label for="keywords">Keywords (comma separated):</label>
+        <input type="text" name="keywords" id="keywords">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
