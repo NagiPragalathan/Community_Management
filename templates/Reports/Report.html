@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="mt-8 mb-5  ">
+    <div class="flex justify-center md:justify-around items-center  border-b-2 border-black mx-10">
+        <h1 class="text-xl font-bold px-2  ">My BNI Bussiness</h1>
+        <p class="text-[#7F60F9] hidden md:flex">My personal Participation Report</p>
+        <p class="font-bold hidden md:flex">Renewal Due Date: 01/09/2024</p>
+    </div>
+    <div class=" my-2  md:mx-28 text-xl  flex justify-Start ">
+        <h4 class="text-[#7F60F9] font-semibold px-2">Last 12 months</h4>
+    </div>
+    <div class="mx-4 md:mx-40">
+        <div class="flex justify-between md:justify-between  mt-2">
+            <p class="font-semibold">Revenue Received To My Business</p>
+            <p class="font-semibold">115519</p>
+        </div>
+        <div class="flex justify-between md:justify-between  mt-2">
+            <p class="font-semibold">Referrals Received</p>
+            <p class="font-semibold">72</p>
+        </div>
+        <div class="flex justify-between md:justify-between  mt-2">
+            <p class="font-semibold">TYFCB Given</p>
+            <p class="font-semibold">1841753</p>
+        </div>
+        <div class="flex justify-between md:justify-between  mt-2">
+            <p class="font-semibold"> Visitor</p>
+            <p class="font-semibold">14</p>
+        </div>
+        <div class="flex justify-between md:justify-between">
+            <p class="font-semibold">One-to-Ones:</p>
+            <p class="font-semibold">19</p>
+        </div>
+        <div class="flex justify-between md:justify-between">
+            <p class="font-semibold">CEUs</p>
+            <p class="font-semibold">19</p>
+        </div>
+
+    </div>
+
+    <div class="mt-8 my-2  md:mx-28 text-xl  flex justify-Start md:mt-3 ">
+        <h4 class="text-[#7F60F9] font-semibold px-2">Lifetime</h4>
+    </div>
+    <div class="mx-4 md:mx-40">
+        <div class="flex justify-between md:justify-between  mt-2">
+            <p class="font-semibold">Revenue Received To My Business</p>
+            <p class="font-semibold">115519</p>
+        </div>
+        <div class="flex justify-between md:justify-between  mt-2">
+            <p class="font-semibold">Referrals Received</p>
+            <p class="font-semibold">72</p>
+        </div>
+        <div class="flex justify-between md:justify-between  mt-2">
+            <p class="font-semibold">TYFCB Given</p>
+            <p class="font-semibold">1841753</p>
+        </div>
+        <div class="flex justify-between md:justify-between mt-2">
+            <p class="font-semibold"> Visitor</p>
+            <p class="font-semibold">14</p>
+        </div>
+        <div class="flex justify-between md:justify-between">
+            <p class="font-semibold">One-to-Ones:</p>
+            <p class="font-semibold">19</p>
+        </div>
+        <div class="flex justify-between md:justify-between">
+            <p class="font-semibold">CEUs</p>
+            <p class="font-semibold">19</p>
+        </div>
+
+    </div>
+</div>
+<div class="flex flex-col items-center md:items-start mx-2 my-3 md:mx-20 md:my-2">
+    <a href="" class="text-lg font-semibold text-[#7F60F9]  hover:text-purple-800 ">My network</a>
+    <a href="" class="text-lg font-semibold text-[#7F60F9]  hover:text-purple-800">Chapter shortcuts</a>
+</div>
+<div class=" flex justify-center md:justify-end  md:mr-20">
+    <select name="category" id="category" class=" border-4 rounded-2xl p-2 px-8 border-purple-600 font-semibold mx-2">
+        <option value="category">category</option>
+        <option value="Developer">Developer</option>
+        <option value="Tester">Tester</option>
+        <option value="Designer">Designer</option>
+    </select>
+</div>
+<div class="flex justify-center mt-2 md:mt-0 md:justify-start md:ml-20">
+    <button class="bg-[#6B4EFF] rounded-full py-3 w-[70vw] md:w-[15vw] text-white font-semibold text-xl  hover:bg-[#5643b4]">Configure</button>
+</div>
+
+{% endblock content %}
