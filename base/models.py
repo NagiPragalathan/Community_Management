@@ -80,12 +80,11 @@ class ContactDetails(models.Model):
     receive_updates_from_bni = models.BooleanField(default=False)
     share_revenue_data_with_bni_director = models.BooleanField(default=False)
     website = models.URLField(max_length=200, blank=True, null=True)
-    social_networking_links = models.ManyToManyField('SocialNetworkingLink')
+    social_networking_links = models.CharField(max_length=200, blank=True, null=True)
 
 class Address(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=False)
     ADDRESS_CHOICES = [
         ('Main Address', 'Main Address'),
         ('Billing', 'Billing'),
@@ -93,6 +92,22 @@ class Address(models.Model):
     ]
     should_appear = models.BooleanField(default=False)
     address_type = models.CharField(max_length=20)
+    address_line_1 = models.CharField(max_length=255)
+    address_line_2 = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
+    
+class BillingAddress(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=False)
+    ADDRESS_CHOICES = [
+        ('Main Address', 'Main Address'),
+        ('Billing', 'Billing'),
+        ('None', 'None'),
+    ]
+    should_appear = models.BooleanField(default=False)
     address_line_1 = models.CharField(max_length=255)
     address_line_2 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100)
@@ -111,10 +126,81 @@ class Billing(models.Model):
     billing_state = models.CharField(max_length=100, blank=True, null=True)
     billing_country = models.CharField(max_length=100, blank=True, null=True)
     billing_zip_code = models.CharField(max_length=20, blank=True, null=True)
-
-class SocialNetworkingLink(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    name = models.CharField(max_length=20)
+    
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    language = models.CharField(max_length=100, null=True, blank=True)
+    timezone = models.CharField(max_length=100, null=True, blank=True)
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    company_logo = models.ImageField(upload_to='company_logos/', null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.user.username
+    
+class Bio(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    years_in_business = models.PositiveIntegerField(blank=True, null=True)
+    previous_jobs = models.TextField(blank=True)
+    spouse = models.CharField(max_length=100, blank=True)
+    children = models.CharField(max_length=100, blank=True)
+    pets = models.CharField(max_length=100, blank=True)
+    hobbies_and_interests = models.TextField(blank=True, null=True)
+    city_of_residence = models.CharField(max_length=100, blank=True)
+    years_in_city = models.PositiveIntegerField(blank=True, null=True)
+    burning_desire = models.TextField(blank=True, null=True)
+    something_no_one_knows = models.TextField(blank=True)
+    key_to_success = models.TextField(blank=True)
+
+    def __str__(self):
+        return f'Bio for {self.user.username}'
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+class Connection(models.Model):
+    user = models.ForeignKey(User, related_name='connections', on_delete=models.CASCADE)
+    connection = models.ForeignKey(User, related_name='connected_to', on_delete=models.CASCADE)
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+    ]
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+
+    class Meta:
+        unique_together = ('user', 'connection')
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'From {self.sender} to {self.receiver}: {self.content}'
+
+    def mark_as_seen(self):
+        self.seen = True
+        self.save()
+        
+        
+class Testimonial(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    testimonials = models.TextField()
+    from_user = models.ForeignKey(User, related_name='given_testimonials', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, related_name='received_testimonials', on_delete=models.CASCADE)
+    TESTIMONIAL_CHOICES = [
+        ('give_testimonials', 'Give Testimonials'),
+        ('ask_testimonials', 'Ask Testimonials'),
+    ]
+    type = models.CharField(max_length=20, choices=TESTIMONIAL_CHOICES)
+    updated_date = models.DateTimeField(auto_now=True)
+    STATE_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    ]
+    state_of_request = models.CharField(max_length=20, choices=STATE_CHOICES, default='pending')
+
+    def __str__(self):
+        return f'Testimonial from {self.from_user} to {self.to_user}'

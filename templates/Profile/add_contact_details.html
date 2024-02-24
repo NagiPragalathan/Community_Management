@@ -10,7 +10,8 @@
     <form method="post">
         {% csrf_token %}
         <label for="show_on_bni_public_websites">Show on BNI Public Websites:</label>
-        <input type="checkbox" id="show_on_bni_public_websites" name="show_on_bni_public_websites" {% if initial_data.show_on_bni_public_websites %}checked{% endif %}>
+
+        <input type="checkbox" name="show_on_bni_public_websites" value="on">
         <br>
         <label for="billing_address_quick_copy">Billing Address Quick Copy:</label>
         <textarea id="billing_address_quick_copy" name="billing_address_quick_copy">{{ initial_data.billing_address_quick_copy }}</textarea>
@@ -52,22 +53,7 @@
         <input type="url" id="website" name="website" value="{{ initial_data.website }}">
         <br>
         <label for="social_networking_links">Social Networking Links:</label>
-        {% if initial_data.social_networking_links.all %}
-            <select id="social_networking_links" name="social_networking_links" multiple>
-                {% for link in initial_data.social_networking_links.all %}
-                    <option value="{{ link }}" selected>{{ link }}</option>
-                {% endfor %}
-            </select>
-        {% else %}
-            <select id="social_networking_links" name="social_networking_links" multiple>
-                <option value="Facebook">Facebook</option>
-                <option value="Twitter">Twitter</option>
-                <option value="LinkedIn">LinkedIn</option>
-                <option value="Google+">Google+</option>
-                <option value="Skype">Skype</option>
-                <option value="Yahoo!">Yahoo!</option>
-            </select>
-        {% endif %}
+        <input type="text" value="{{ initial_data.social_networking_links }}"/>
         <br>
         <input type="submit" value="Submit">
     </form>

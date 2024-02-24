@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if user_profile %} Edit {% else %} Add {% endif %} User Profile</title>
+</head>
+<body>
+    <h1>{% if user_profile %} Edit {% else %} Add {% endif %} User Profile</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" {% if user_profile %} value="{{ user_profile.user.username }}" {% endif %} required><br><br>
+        
+        <label for="language">Language:</label>
+        <input type="text" id="language" name="language" {% if user_profile %} value="{{ user_profile.language }}" {% endif %} required><br><br>
+        
+        <label for="timezone">Timezone:</label>
+        <input type="text" id="timezone" name="timezone" {% if user_profile %} value="{{ user_profile.timezone }}" {% endif %} required><br><br>
+        
+        <label for="profile_image">Profile Image:</label>
+        <input type="file" id="profile_image" name="profile_image" accept="image/*"><br><br>
+        
+        <label for="company_logo">Company Logo:</label>
+        <input type="file" id="company_logo" name="company_logo" accept="image/*"><br><br>
+        
+        <button type="submit">{% if user_profile %} Update {% else %} Submit {% endif %}</button>
+    </form>
+</body>
+</html>

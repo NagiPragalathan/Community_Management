@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Give Testimonial</title>
+</head>
+<body>
+    <h1>Give Testimonial</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="testimonial_content">Testimonial:</label><br>
+        <textarea id="testimonial_content" name="testimonial_content" rows="4" cols="50" placeholder="Write your testimonial here..."></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

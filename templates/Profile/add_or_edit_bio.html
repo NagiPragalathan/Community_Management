@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add/Edit Bio</title>
+</head>
+<body>
+    <h1>Add/Edit Bio</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Years In Business -->
+        <label for="years_in_business">Years In Business:</label>
+        <input type="number" name="years_in_business" id="years_in_business" value="{{ bio.years_in_business }}" required>
+        <br>
+        
+        <!-- Previous Types of Jobs -->
+        <label for="previous_jobs">Previous Types of Jobs:</label>
+        <textarea name="previous_jobs" id="previous_jobs" required>{{ bio.previous_jobs }}</textarea>
+        <br>
+        
+        <!-- Spouse -->
+        <label for="spouse">Spouse:</label>
+        <input type="text" name="spouse" id="spouse" value="{{ bio.spouse }}">
+        <br>
+        
+        <!-- Children -->
+        <label for="children">Children:</label>
+        <input type="text" name="children" id="children" value="{{ bio.children }}">
+        <br>
+        
+        <!-- Pets -->
+        <label for="pets">Pets:</label>
+        <input type="text" name="pets" id="pets" value="{{ bio.pets }}">
+        <br>
+        
+        <!-- Hobbies & Interests -->
+        <label for="hobbies_interests">Hobbies & Interests:</label>
+        <textarea name="hobbies_interests" id="hobbies_interests">{{ bio.hobbies_interests }}</textarea>
+        <br>
+        
+        <!-- City of Residence -->
+        <label for="city_residence">City of Residence:</label>
+        <input type="text" name="city_residence" id="city_residence" value="{{ bio.city_residence }}">
+        <br>
+        
+        <!-- Years in that City -->
+        <label for="years_in_city">Years in that City:</label>
+        <input type="number" name="years_in_city" id="years_in_city" value="{{ bio.years_in_city }}">
+        <br>
+        
+        <!-- My Burning Desire -->
+        <label for="burning_desire">My Burning Desire:</label>
+        <textarea name="burning_desire" id="burning_desire">{{ bio.burning_desire }}</textarea>
+        <br>
+        
+        <!-- Something No One Here Knows About Me -->
+        <label for="something_unknown">Something No One Here Knows About Me:</label>
+        <textarea name="something_unknown" id="something_unknown">{{ bio.something_unknown }}</textarea>
+        <br>
+        
+        <!-- My Key to Success -->
+        <label for="key_to_success">My Key to Success:</label>
+        <input type="text" name="key_to_success" id="key_to_success" value="{{ bio.key_to_success }}">
+        <br>
+        
+        <!-- Add/Edit button -->
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
