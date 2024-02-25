@@ -1,0 +1,23 @@
+{% extends "base.html" %}  
+{% load static %}
+
+{% block content %}
+  <!-- Testimonials Section -->
+        <div class="flex flex-col mx-2 mt-5 min-h-[20vh]">
+            <div class="flex justify-between bg-[#7F60F9] p-2">
+                <h3 class="text-2xl font-semibold  px-2">Visitor Registration Portal</h3>
+            </div>
+            
+            <!-- Image and Buttons Section with Rectangle Background -->
+            <div class="">
+                <div class=" flex justify-center p-5 ">
+                    <div class="w-[90%] md:w-[40%] flex flex-col items-center justify-center border-t border-l border shadow-2xl shadow-slate-600">
+                        <img class="" src="{% static 'assets/welcome.png' %}" alt="testimonial-image">
+                        <button class="bg-[#7F60F9] mt-52  md:mt-80 absolute h-12 w-80 text-xl text-white font-semibold border-t-1 ">Add Registration</button>
+                    </div> 
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials Box -->
+{% endblock content %}
