@@ -12,6 +12,7 @@ from base.views.Profile import *
 from base.views.connections import *
 from base.views.chat import *
 from base.views.Testimonials import *
+from base.views.AccountSettings import *
 
 from django.contrib.auth.views import PasswordResetConfirmView
 
@@ -81,6 +82,12 @@ testimonial = [
     path('request_testimonial/<int:receiver_id>', request_testimonial, name='request_testimonial'),
 ]
 
+account_settings = [
+    path('edit_or_add_account_settings', edit_or_add_account_settings, name='edit_or_add_account_settings'),
+]
+
+
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -89,6 +96,7 @@ urlpatterns.extend(profile)
 urlpatterns.extend(file_manager)
 urlpatterns.extend(testimonial)
 urlpatterns.extend(connections)
+urlpatterns.extend(account_settings)
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

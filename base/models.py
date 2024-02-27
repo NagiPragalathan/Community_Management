@@ -204,3 +204,40 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return f'Testimonial from {self.from_user} to {self.to_user}'
+
+
+class AccountSettings(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='account_settings')
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Member to Member  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    BIO_VISIBILITY_CHOICES = [
+        ('all', 'All'),
+        ('connections', 'My Connections'),
+        ('none', 'None'),
+    ]
+    bio_visibility = models.CharField(max_length=12, choices=BIO_VISIBILITY_CHOICES, default='all')
+    connections_visibility = models.CharField(max_length=12, choices=BIO_VISIBILITY_CHOICES, default='all')
+    testimonials_visibility = models.CharField(max_length=12, choices=BIO_VISIBILITY_CHOICES, default='all')
+    gallery_visibility = models.CharField(max_length=12, choices=BIO_VISIBILITY_CHOICES, default='all')
+    email_visibility = models.CharField(max_length=12, choices=BIO_VISIBILITY_CHOICES, default='all')
+    contact_details_visibility = models.CharField(max_length=12, choices=BIO_VISIBILITY_CHOICES, default='all')
+    #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Group Post Email Notifications>>>>>>>>>>>>>
+    POST_NOTIFICATION_CHOICES = [
+        ('every_time', 'Every time a new post is added'),
+        ('daily', 'Once per day (daily digest)'),
+        ('weekly', 'Once per week (weekly digest)'),
+        ('never', 'Do not email me'),
+    ]
+    post_notifications = models.CharField(max_length=10, choices=POST_NOTIFICATION_CHOICES, default='every_time')
+    
+    #>>>>>>>>>>>>>>> Email Forwarding  >>>>>>>>>>>>>>>>>>>>>>>>
+    #----------------------- Alternate notification email address-----------------------
+    alternate_email = models.EmailField(blank=True, null=True)
+    #-----------------------------------------------------------------------------------
+    forward_messages = models.BooleanField(default=False)
+    forward_sent_mail = models.BooleanField(default=False)
+    forward_connection_requests = models.BooleanField(default=False)
+    forward_recommendation_requests = models.BooleanField(default=False)
+    country_settings_for_group_notifications = models.CharField(max_length=50, default='Default')
+
+    def __str__(self):
+        return f'Account Settings for {self.user}'
