@@ -26,14 +26,8 @@ admin_ = [
 auth = [
     path('accounts/', include('django.contrib.auth.urls')),  # Use built-in authentication views
     path('enter_otp', enter_otp, name='enter_otp'),
-<<<<<<< HEAD
     path('signup/<str:mail>', signup, name='signup'),
     path('login/', user_login, name='login'),
-=======
-    # path('signup/<str:mail>', signup, name='signup'),
-    path('signup', signup, name='signup'),
-    path('login', user_login, name='login'),
->>>>>>> cfbbd773a012ad0c766e32659efecd1e4ce91e13
     path('change_password', change_password, name='change_password'),
     path('forgot_password', forgot_password, name='forgot_password'),
     path('logout', logout_view, name='logout'),
