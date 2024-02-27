@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-
 # Custom Modules Work as a tool
 import random
 
@@ -18,6 +17,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout
+from django.contrib import messages
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -108,9 +108,9 @@ def user_login(request):
             login(request, user)
             return redirect('home')  # Redirect to your home page
         else:
-            return HttpResponse("Invalid login credentials")
+            messages.error(request, "Invalid login credentials")
     
-    return render(request, 'auth/login.html')
+    return render(request, 'auth/login.html',)
 
 
 def change_password(request):
