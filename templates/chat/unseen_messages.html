@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unseen Messages</title>
+</head>
+<body>
+    <h1>Unseen Messages</h1>
+    {% for user, messages in unseen_messages_per_user.items %}
+        <h2>Messages from {{ user.username }}</h2>
+        <ul>
+            {% for message in messages %}
+                <li>{{ message.content }}</li> 
+            {% endfor %}
+        </ul>
+        <a href="{% url 'chat' user.id %}">Chat</a>
+    {% endfor %}
+</body>
+</html>

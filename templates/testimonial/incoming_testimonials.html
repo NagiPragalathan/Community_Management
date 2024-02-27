@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incoming Testimonials</title>
+</head>
+<body>
+    <h1>Incoming Testimonials</h1>
+    <ul>
+        {% for testimonial in incoming_testimonials %}
+            <li>
+                <strong>From:</strong> {{ testimonial.from_user.username }}<br>
+                <strong>Testimonial:</strong> {{ testimonial.testimonials }}<br>
+                <strong>Type:</strong> {{ testimonial.type }}<br>
+                <strong>Updated Date:</strong> {{ testimonial.updated_date }}<br>
+                <strong>State of Request:</strong> {{ testimonial.state_of_request }}<br>
+            </li>
+        {% empty %}
+            <li>No incoming testimonials</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

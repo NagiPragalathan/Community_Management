@@ -19,16 +19,13 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout
 from django.contrib import messages
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_decode
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
+
 
 def generate_otp():
     # Generate a 6-digit OTP (you can adjust the length as needed)
@@ -65,7 +62,7 @@ def enter_otp(request):
     return render(request,"auth/otp_verification.html")
 
 
-def signup(request, mail):
+def Vsignup(request, mail):
     if request.method == 'POST':
         otp = request.POST['otp']
         username = request.POST['username']
@@ -96,14 +93,25 @@ def signup(request, mail):
     
     return render(request, 'auth/signup.html',{"mail":mail})
 
+def signup(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        # Create user
+        user = User.objects.create_user(username=username, password=password, email=email)
+        return redirect('login')
+    return render(request, 'auth/signup_new.html')
+
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
+        print(username, password)
         # Authenticate the user
         user = authenticate(request, username=username, password=password)
-
+        print(user)
         if user is not None:
             login(request, user)
             return redirect('home')  # Redirect to your home page
@@ -209,3 +217,15 @@ def custom_password_reset_confirm(request, uidb64, token):
         # Invalid user or token, redirect to a page showing an error message
         messages.error(request, 'Invalid password reset link. Please try again.')
         return redirect('forgot_password')  # Replace 'forgot_password' with your forgot password URL name
+    
+    
+def Create_member(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        # Create user
+        user = User.objects.create_user(username=username, password=password, email=email)
+        return redirect('login')
+    return render(request, 'auth/create_user.html')
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ receiver.username }}</title>
+</head>
+<body>
+    <h1>Chat with {{ receiver.username }}</h1>
+    <div id="messages">
+        {% for message in messages %}
+            <div>{{ message.content }}</div>
+        {% endfor %}
+    </div>
+    <form id="message-form">
+        {% csrf_token %}
+        <textarea id="message-input" name="content" placeholder="Type your message..."></textarea>
+    </form>
+    <button type="submit" id="send-message-btn">Send</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        const receiverId = {{ receiver_id }};
+
+        function fetchMessages() {
+            $.post(`/get_messages/${receiverId}/`, { csrfmiddlewaretoken: '{{ csrf_token }}' }, function(data) {
+                if (data.status === 'success') {
+                    $('#messages').empty(); // Clear previous messages
+                    data.messages.forEach(function(message) {
+                        $('#messages').append(`<div><strong>${message.sender}</strong>: ${message.content}</div>`);
+                    });
+                } else {
+                    console.error('Error fetching messages:', data.message);
+                }
+            });
+        }
+        
+
+        $(document).ready(function() {
+            fetchMessages();
+            setInterval(fetchMessages, 1000);  // Fetch messages every 5 seconds
+    
+            $('#send-message-btn').click(function(e) {
+                e.preventDefault();
+                console.log("working...!")
+                const receiverId = {{ receiver_id }};
+                const content = $('#message-input').val();
+                
+                $.ajax({
+                    type: 'POST',
+                    url: `/update_message/${receiverId}/`,
+                    data: {
+                        content: content,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            // Handle success response
+                            $('#message-input').val('');
+                            console.log('Message sent successfully.');
+                        } else {
+                            // Handle error response
+                            console.error('Error sending message.');
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error('Error:', errorThrown);
+                    }
+                });
+            });
+        });
+        
+    </script>
+</body>
+</html>

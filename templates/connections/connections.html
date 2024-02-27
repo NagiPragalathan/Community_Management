@@ -1,0 +1,19 @@
+
+    <h1>Connections</h1>
+    <ul>
+        {% for connection in connections %}
+            <li>
+                {{ connection.connection.username }}
+                {% if not connection.status == 'accepted' %}
+                    <form action="{% url 'send_connection_request' connection.connection.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Send Connection Request</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'chat' connection.connection.id %}">Send Message</a>
+                    <a href="{% url 'give_testimonial' connection.connection.id %}">Give Testimonial</a>
+                    <a href="{% url 'request_testimonial' connection.connection.id %}">Request Testimonial</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
