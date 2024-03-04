@@ -1,7 +1,33 @@
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Username"><br>
-    <input type="email" name="email" placeholder="Email"><br>
-    <input type="password" name="password" placeholder="Password"><br>
-    <input type="submit" value="Sign Up">
-</form>
+{% extends './a_base.html' %}
+{% load static %}
+{% block title %}Create User{% endblock %}
+{% block content %}
+
+<div class=" bg-[#0F172A] min-h-[100vh] flex flex-col justify-around items-center md:flex-row md:justify-center  ">
+    <div class="flex items-center justify-center md:w-[60vw] max-[w-80%] ">
+      <img src="{% static 'assets/design.png' %}" class=" md:px-0 px-10 mt-10" alt="">
+    </div>
+    <div class="data sm:w-[40vw] flex flex-col items-center my-5 sm:items-start  sm:my-0 ">
+      <h1 class="text-white text-4xl font-bold">Create User 👋</h1>
+      <p class=" text-md w-[80%] text-gray-400 py-2 "> We are experiencing an issue with Cross Chapter Search. At this time, you Cannot give a Referral or TYFCB Slip to a Member Outside of Your Chapter. We are working diligently to remedy this situation. Referrals and TYFCB within Your Chapter Are Working as Usual.</p>
+      <form class="input-box flex flex-col">
+        {% csrf_token %}
+        <label for="username" class="text-[#E4E4E7] mt-3">Username</label>
+        <input type="text" id="username" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2">
+        <label for="email" class="text-[#E4E4E7] mt-3">Email address</label>
+        <input type="email" placeholder="example@gmail.com" id="email" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2">
+        <label for="password" class="text-[#E4E4E7] mt-3">Password</label>
+        <input type="password" id="password" placeholder="********" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white inline-block w-80 mt-2">
+        <label for="confirmpassword" class="text-[#E4E4E7] mt-3">Confirm password</label>
+        <input type="password" id="confirmpassword" placeholder=" ******** " class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white inline-block w-80 mt-2">
+
+        <label for="Referral" class="text-[#E4E4E7] mt-2 ">Referral</label>
+        <input type="text" id="Referral" placeholder="Abcdefg" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white inline-block w-80 mt-2">
+        
+        <button class="bg-blue-600 rounded-full text-xl py-2 text-white w-40 mt-5 hover:bg-blue-800">Create User</button>
+      </form>
+    </div>
+  </div>
+
+
+{% endblock %}

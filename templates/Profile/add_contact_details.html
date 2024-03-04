@@ -1,61 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Contact Details</title>
-</head>
-<body>
-    <h1>Edit Contact Details</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="show_on_bni_public_websites">Show on BNI Public Websites:</label>
+{% extends './pro_base.html' %}
+{% block title %}Edit contact Details{% endblock %}
 
-        <input type="checkbox" name="show_on_bni_public_websites" value="on">
-        <br>
-        <label for="billing_address_quick_copy">Billing Address Quick Copy:</label>
-        <textarea id="billing_address_quick_copy" name="billing_address_quick_copy">{{ initial_data.billing_address_quick_copy }}</textarea>
-        <br>
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" value="{{ initial_data.phone }}" required>
-        <br>
-        <label for="direct_number">Direct Number:</label>
-        <input type="text" id="direct_number" name="direct_number" value="{{ initial_data.direct_number }}">
-        <br>
-        <label for="home">Home:</label>
-        <input type="text" id="home" name="home" value="{{ initial_data.home }}">
-        <br>
-        <label for="mobile_number">Mobile Number:</label>
-        <input type="text" id="mobile_number" name="mobile_number" value="{{ initial_data.mobile_number }}">
-        <br>
-        <label for="pager">Pager:</label>
-        <input type="text" id="pager" name="pager" value="{{ initial_data.pager }}">
-        <br>
-        <label for="voice_mail">Voice Mail:</label>
-        <input type="text" id="voice_mail" name="voice_mail" value="{{ initial_data.voice_mail }}">
-        <br>
-        <label for="toll_free">Toll Free:</label>
-        <input type="text" id="toll_free" name="toll_free" value="{{ initial_data.toll_free }}">
-        <br>
-        <label for="fax">Fax:</label>
-        <input type="text" id="fax" name="fax" value="{{ initial_data.fax }}">
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ initial_data.email }}" required>
-        <br>
-        <label for="receive_updates_from_bni">Receive updates from BNI:</label>
-        <input type="checkbox" id="receive_updates_from_bni" name="receive_updates_from_bni" {% if initial_data.receive_updates_from_bni %}checked{% endif %}>
-        <br>
-        <label for="share_revenue_data_with_bni_director">Share revenue data with BNI Director:</label>
-        <input type="checkbox" id="share_revenue_data_with_bni_director" name="share_revenue_data_with_bni_director" {% if initial_data.share_revenue_data_with_bni_director %}checked{% endif %}>
-        <br>
-        <label for="website">Website:</label>
-        <input type="url" id="website" name="website" value="{{ initial_data.website }}">
-        <br>
-        <label for="social_networking_links">Social Networking Links:</label>
-        <input type="text" value="{{ initial_data.social_networking_links }}"/>
-        <br>
-        <input type="submit" value="Submit">
+{% block content %}
+    
+<div class="h-screen flex flex-col items-center justify-center md:w-auto max-[w-80%] ">
+    <div class=" w-screen data sm:w-[100vw] pb-10 flex flex-row justify-center items-center my-5 sm:items-start  sm:my-0 ">
+        <h2 class="text-white text-center text-4xl font-bold">Add Contact</h2>
+    </div>
+    <form method="post" action="{% url ' ' %}">
+        <div class="input-box flex flex-col">
+            {% csrf_token %}
+            <form method="POST" class="input-box flex flex-col">
+                {% csrf_token %}
+                {% csrf_token %}
+                <label  class="text-[#E4E4E7] mt-3" for="show_on_bni_public_websites">Show on BNI Public Websites:</label>
+        
+                <input type="checkbox" class="bg-[#0F172A] text-[#0F172A] border border-[#94A3B8]" name="show_on_bni_public_websites" value="on">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="billing_address_quick_copy">Billing Address Quick Copy:</label>
+                <textarea class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" id="billing_address_quick_copy" name="billing_address_quick_copy">{{ initial_data.billing_address_quick_copy }}</textarea>
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="phone">Phone:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" id="phone" name="phone" value="{{ initial_data.phone }}" required>
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="direct_number">Direct Number:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" id="direct_number" name="direct_number" value="{{ initial_data.direct_number }}">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="home">Home:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" id="home" name="home" value="{{ initial_data.home }}">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="mobile_number">Mobile Number:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" id="mobile_number" name="mobile_number" value="{{ initial_data.mobile_number }}">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="pager">Pager:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" id="pager" name="pager" value="{{ initial_data.pager }}">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="voice_mail">Voice Mail:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" id="voice_mail" name="voice_mail" value="{{ initial_data.voice_mail }}">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="toll_free">Toll Free:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" id="toll_free" name="toll_free" value="{{ initial_data.toll_free }}">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="fax">Fax:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" id="fax" name="fax" value="{{ initial_data.fax }}">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="email">Email:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="email" id="email" name="email" value="{{ initial_data.email }}" required>
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="receive_updates_from_bni">Receive updates from BNI:</label>
+                <input type="checkbox" id="receive_updates_from_bni" name="receive_updates_from_bni" {% if initial_data.receive_updates_from_bni %}checked{% endif %}>
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="share_revenue_data_with_bni_director">Share revenue data with BNI Director:</label>
+                <input class="bg-[#0F172A] text-[#0F172A] border border-[#94A3B8]" type="checkbox" id="share_revenue_data_with_bni_director" name="share_revenue_data_with_bni_director" {% if initial_data.share_revenue_data_with_bni_director %}checked{% endif %}>
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="website">Website:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="url" id="website" name="website" value="{{ initial_data.website }}">
+                <br>
+                <label  class="text-[#E4E4E7] mt-3" for="social_networking_links">Social Networking Links:</label>
+                <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" value="{{ initial_data.social_networking_links }}"/>
+                <br>
+                <input class="bg-blue-600 rounded-full text-xl py-2 text-white w-44 mt-5 px-1 hover:bg-blue-800" type="submit" value="Submit" />
+        </div>
     </form>
-</body>
-</html>
+</div>
+
+{% endblock %}
+       
