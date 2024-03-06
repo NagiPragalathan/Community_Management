@@ -86,8 +86,6 @@ account_settings = [
     path('edit_or_add_account_settings', edit_or_add_account_settings, name='edit_or_add_account_settings'),
 ]
 
-
-
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)

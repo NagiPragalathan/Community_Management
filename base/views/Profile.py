@@ -290,3 +290,5 @@ def add_or_edit_bio(request):
 
     return render(request, 'Profile/add_or_edit_bio.html', {'bio': bio})
 
+
+

@@ -241,3 +241,32 @@ class AccountSettings(models.Model):
 
     def __str__(self):
         return f'Account Settings for {self.user}'
+
+
+class WeeklyPresentation(models.Model):
+    title = models.CharField(max_length=255)
+    presentation_date = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='weekly_presentations')
+    def __str__(self):
+        return f'{self.title} on {self.presentation_date} by {self.user}'
+        
+class GAINSProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='gains_profile')
+    goals = models.TextField()
+    accomplishments = models.TextField()
+    interests = models.TextField()
+    networks = models.TextField()
+    skills = models.TextField()
+    def __str__(self):
+        return f'GAINS Profile for {self.user}'
+        
+class TopsProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='tops_profile')
+    ideal_referral = models.TextField()
+    top_product = models.TextField()
+    top_problem_solved = models.TextField()
+    favourite_bni_story = models.TextField()
+    ideal_referral_partner = models.TextField()
+    def __str__(self):
+        return f'Tops Profile for {self.user}'
+
