@@ -1,29 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Folder</title>
-</head>
-<body>
+{% extends './f_base.html' %}
+{% load static %}
+{% block title %}Add Data{% endblock %}
+{% block content %}
 
-  <h2>Add Folder</h2>
+<div class=" bg-[#0F172A] min-h-[100vh] flex flex-col justify-around items-center md:flex-row md:justify-center  ">
+    <div class="flex items-center justify-center md:w-[60vw] max-[w-80%] ">
+      <img src="{% static 'assets/design.png' %}" class=" md:px-0 px-10 mt-10" alt="">
+    </div>
+    <div class="data sm:w-[40vw] flex flex-col items-center my-5 sm:items-start  sm:my-0 ">
+      <h1 class="text-white text-4xl font-bold">Add Data</h1>
+      <p class=" text-md w-[80%] text-gray-400 py-2 ">Add Appropriate Data in this page.</p>
+      <form method="POST" class="input-box flex flex-col" action="{% url 'add_folder' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label for="folder_name" class="text-[#E4E4E7] mt-3">Folder Path</label>
+        <input type="text" id="folder_name" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" required>
+        
+        <label for="category" class="text-[#E4E4E7] mt-3">Category</label>
+        <input type="text" id="category" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white inline-block w-80 mt-2" required>
+        
+        <label for="path" class="text-[#E4E4E7] mt-3">Path</label>
+        <input type="text" id="path" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" required>
+                
+        <button class="bg-blue-600 rounded-full text-xl py-2 text-white w-40 mt-5 hover:bg-blue-800">Add Folder</button>
+      </form>
+    </div>
+  </div>
 
-  <form method="post" action="{% url 'add_folder' %}">
-    {% csrf_token %}
-    
-    <!-- Input fields for adding folder -->
-    <label for="folder_name">Folder Name:</label>
-    <input type="text" id="folder_name" name="folder_name" required>
 
-    <label for="category">Category:</label>
-    <input type="text" id="category" name="category" required>
-
-    <label for="path">Path:</label>
-    <input type="text" id="path" name="path" required>
-
-    <button type="submit">Add Folder</button>
-  </form>
-
-</body>
-</html>
+{% endblock %}

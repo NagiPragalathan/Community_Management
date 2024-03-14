@@ -1,29 +1,137 @@
-<!-- incoming_requests.html -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incoming Connection Requests</title>
-</head>
+{% extends 'conn_base.html' %}
+{% block content %}
+    
 <body>
-    <h1>Incoming Connection Requests</h1>
+    <style>
+        @media only screen and (max-width: 750px) {
+            /* CSS rules for screens up to 762px wide */
+            #menu {
+                display: none;
+                width: 0px;
+                height: 100%;
+                position: fixed;
+                left: 0px;
+            }
+        }
+    
+    
+    </style>
 
-    <ul>
-        {% for connection in incoming_requests %}
-        <li>
-            {{ connection.connection.username }} wants to connect
-            <form action="{% url 'accept_connection_request' connection.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Accept</button>
-            </form>
-            <form action="{% url 'reject_connection_request' connection.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Reject</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
+        <div class=" min-[vh-100]: bg-white flex flex-col justify-between">
+            <div class=" py-4 pl-4 bg-[#7F60F9] flex justify-between  ">
+                <div class="flex justify-start">
+                    <h1 class="text-4xl text-white font-sans font-bold ">Victory Connect</h1>
+                </div>
+                <div class="flex justify-evenly ">
+                    <i class="fas fa-envelope text-white text-2xl px-2 hover:underline hidden md:flex"></i>
+                    <i class="fas fa-envelope text-white text-2xl px-2 hover:underline hidden md:flex"></i>
+                    <i class="fa-solid fa-magnifying-glass  text-white text-2xl px-2 hover:underline hidden md:flex"></i>
+                    <i class="fa-solid fa-bars  text-white text-2xl px-2 pr-10 md:hidden" onclick="menu_controller()" ></i>
+                </div>
+            </div>
+            <div class="flex justify-center md:justify-start">
+                <div class=" md:w-[20vw] bg-[#faf8f8] md:border-r min-[h-[100vh]] sidenav w-0" id="menu">
+                    <div class="flex justify-center items-center my-5 ">
+                        <img src="../assets/profile_pic.png" alt="profile_pic" class="mr-5">
+                        <p class="text-2xl font-semibold">John Doe</p>
+                    </div>
+                    <div class="flex flex-col mt-10">
+                        <a href="" class="flex justify-between items-center mx-6 text-xl text-slate-500 hover:text-[#8668ff] my-3 ">
+                            <p class="">Dashboard</p>
+                            <i class="fas fa-home  "></i>
+                        </a>
+                        <a href="./Useraccounts.html" class="flex justify-between items-center mx-6 text-xl text-slate-500 hover:text-[#7f60f9] my-3">
+                            <p class="">User Accounts</p>
+                            <i class="fas fa-user  "></i>
+                        </a>
+                        
+                        <a href="" class="flex justify-between items-center mx-6 text-xl text-slate-500 hover:text-[#7f60f9] my-3">
+                            <p class="">Communities</p>
+                            <i class="fa-solid fa-people-group"></i>
+                        </a>
+                        
+                        <a href="" class="flex justify-between items-center mx-6 text-xl text-slate-500 hover:text-[#7f60f9] my-3">
+                            <p class="">Events</p>
+                            <i class="fas fa-calendar-days  "></i>
+                        </a>
+                        
+                        <a href="" class="flex justify-between items-center mx-6 text-xl text-slate-500 hover:text-[#7f60f9] my-3">
+                            <p class="">Reports</p>
+                            <i class="fas fa-chart-simple  "></i>
+                        </a>
+                        
+                        <a href="" class="flex justify-between items-center mx-6 text-xl text-slate-500 hover:text-[#7f60f9] my-3">
+                            <p class="">Settings</p>
+                            <i class="fas fa-gear  "></i>
+                        </a>
+                        
+                    </div>
+                </div>
+                <!-- group profile card -->
+                <div class="md:w-[75%] w-[80vw] ">
+                    <div class="flex justify-start items-center md:ml-8 my-10 ">
+                        <i class="fas fa-user bg-[#7F60F9] text-white md:text-4xl  p-2 mx-2 rounded-lg"> </i>
+                        <p class="md:text-3xl text-2xl font-semibold">User Accounts</p>
+                    </div>
+                   
+                    <div class="border-2 p-5 md:mx-10 flex justify-between my-2">
+                        <div class="flex flex-col md:flex-row justify-between md:items-center w-[100%]">
+                            <div class="flex flex-row">
+                                <img src="../assets/Rectangle 31.png" alt="group profile">
+                                <div class="p-2 flex flex-col justify-around">
+                                    <ul>
+                                        
+                                        {% for connection in incoming_requests %}
+                                        <li><h4 class="text-purple-800 font-semibold text-xl">{{ connection.connection.username }}</h4></li>
+                                        <form action="{% url 'accept_connection_request' connection.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="bg-[#7F60F9] text-white sm:mb-2  p-2 h-12 w-32 text-lg font-semibold rounded-lg mx-4 hover:text-[#7F60F9] hover:bg-white border-2 border-[#7F60F9]" type="submit">Accept</button>
+                                        </form>
+                                        <form action="{% url 'reject_connection_request' connection.id %}" method="post">
+                                            {% csrf_token %}
+                                            <button class="bg-[#7F60F9] text-white mt-2  p-2 h-12 w-32 text-lg font-semibold rounded-lg hover:text-[#7F60F9] hover:bg-white border-2 border-[#7F60F9]" type="submit">Reject</button>
+                                        </form>
+                                    </li>
+                                    {% endfor %}                                                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            <div class=" mb-5 bg-white text-center  w-[100%]">
+                <div class="copyrights flex flex-col items-center justify-end mt-10 md:mt-8 h-[25vh] md:h-[100%]">
+                    <p class="font-semibold text-lg">Copyright@2024 Appname. All rights Reserved</p>
+                    <div class="flex flex-row justify-around">
+                        <a href=" " class=" text-purple-600 hover:text-purple-800 hover:underline p-2 font-semibold">Terms of use</a>
+                        <p class="text-2xl font-bold flex items-center">|</p>
+                        <a href=" " class="text-purple-600 hover:text-purple-800 hover:underline p-2 font-semibold">Privacy policy</a>
+                        <p class="text-2xl font-bold flex items-center">|</p>
+                        <a href=" " class="text-purple-600 hover:text-purple-800 hover:underline p-2 font-semibold ">Browser policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script>
+        let count=0;
+        function menu_controller(){
+            var myElement = document.getElementById("menu");
+            // Change its CSS properties
+            if(count%2===0){
+                myElement.style.display = "block";
+                myElement.style.width = "70%";
+            }else{
+                myElement.style.display = "none";
+                myElement.style.width = "0px";
+            }
+            count++;
+    
+        }
+    </script>
 </body>
 </html>
+
+{% endblock %}

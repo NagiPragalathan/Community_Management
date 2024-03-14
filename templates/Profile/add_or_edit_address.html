@@ -1,50 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if address %}Edit Address{% else %}Add Address{% endif %}</title>
-</head>
-<body>
+{% extends 'pro_base.html' %}
+
+
+{% block title %} {% if address %}Edit Address{% else %}Add Address{% endif %} {% endblock %}
+
+{% block content %}
+    
+
+<div class="h-screen flex flex-col items-center justify-center md:w-auto max-[w-80%] ">
+    <div class=" w-screen data sm:w-[100vw] pb-10 flex flex-row justify-center items-center my-5 sm:items-start  sm:my-0 ">
+        <h2 class="text-white text-center text-4xl font-bold">{% if user_profile %} Edit {% else %} Add {% endif %} User Profile</h2>
+    </div>
     <h1>{% if address %}Edit Address{% else %}Add Address{% endif %}</h1>
     <form method="post">
         {% csrf_token %}
         {% if address %}
-            <input type="hidden" name="address_id" value="{{ address.id }}">
+        <input type="hidden" name="address_id" value="{{ address.id }}">
         {% endif %}
-        <input type="hidden" name="address_type" id="address_type" value="Address" required><br>
-        <label for="address_line_1">Address Line 1:</label>
-        <input type="text" name="address_line_1" id="address_line_1" value="{% if address %}{{ address.address_line_1 }}{% endif %}" required><br>
-        <label for="address_line_2">Address Line 2:</label>
-        <input type="text" name="address_line_2" id="address_line_2" value="{% if address %}{{ address.address_line_2 }}{% endif %}"><br>
-        <label for="city">City:</label>
-        <input type="text" name="city" id="city" value="{% if address %}{{ address.city }}{% endif %}" required><br>
-        <label for="state">State:</label>
-        <input type="text" name="state" id="state" value="{% if address %}{{ address.state }}{% endif %}" required><br>
-        <label for="country">Country:</label>
-        <input type="text" name="country" id="country" value="{% if address %}{{ address.country }}{% endif %}" required><br>
-        <label for="zip_code">Zip Code:</label>
-        <input type="text" name="zip_code" id="zip_code" value="{% if address %}{{ address.zip_code }}{% endif %}" required><br>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="hidden" name="address_type" id="address_type" value="Address" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="username" for="address_line_1">Address Line 1:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="address_line_1" id="address_line_1" value="{% if address %}{{ address.address_line_1 }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="username" for="address_line_2">Address Line 2:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="address_line_2" id="address_line_2" value="{% if address %}{{ address.address_line_2 }}{% endif %}"><br>
+        <label class="text-[#E4E4E7] mt-3" for="username" for="city">City:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="city" id="city" value="{% if address %}{{ address.city }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="username" for="state">State:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="state" id="state" value="{% if address %}{{ address.state }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="username" for="country">Country:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="country" id="country" value="{% if address %}{{ address.country }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="username" for="zip_code">Zip Code:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="zip_code" id="zip_code" value="{% if address %}{{ address.zip_code }}{% endif %}" required><br>
         <button type="submit">{% if address %}Update{% else %}Add{% endif %} Address</button>
     </form>
     <form method="post">
         {% csrf_token %}
         {% if billing %}
-            <input type="hidden" name="address_id" value="{{ billing.id }}">
+        <input type="hidden" name="address_id" value="{{ billing.id }}">
         {% endif %}
-        <label for="address_line_1">Address Line 1:</label>
-        <input type="text" name="address_line_1" id="address_line_1" value="{% if address %}{{ billing.address_line_1 }}{% endif %}" required><br>
-        <label for="address_line_2">Address Line 2:</label>
-        <input type="text" name="address_line_2" id="address_line_2" value="{% if address %}{{ billing.address_line_2 }}{% endif %}"><br>
-        <label for="city">City:</label>
-        <input type="text" name="city" id="city" value="{% if address %}{{ billing.city }}{% endif %}" required><br>
-        <label for="state">State:</label>
-        <input type="text" name="state" id="state" value="{% if address %}{{ billing.state }}{% endif %}" required><br>
-        <label for="country">Country:</label>
-        <input type="text" name="country" id="country" value="{% if address %}{{ billing.country }}{% endif %}" required><br>
-        <label for="zip_code">Zip Code:</label>
-        <input type="text" name="zip_code" id="zip_code" value="{% if address %}{{ billing.zip_code }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="address_line_1">Address Line 1:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="address_line_1" id="address_line_1" value="{% if address %}{{ billing.address_line_1 }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="address_line_2">Address Line 2:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="address_line_2" id="address_line_2" value="{% if address %}{{ billing.address_line_2 }}{% endif %}"><br>
+        <label class="text-[#E4E4E7] mt-3" for="city">City:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="city" id="city" value="{% if address %}{{ billing.city }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="state">State:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="state" id="state" value="{% if address %}{{ billing.state }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="country">Country:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="country" id="country" value="{% if address %}{{ billing.country }}{% endif %}" required><br>
+        <label class="text-[#E4E4E7] mt-3" for="zip_code">Zip Code:</label>
+        <input class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" type="text" name="zip_code" id="zip_code" value="{% if address %}{{ billing.zip_code }}{% endif %}" required><br>
         <button type="submit">{% if billing %}Update{% else %}Add{% endif %} Address</button>
     </form>
-</body>
-</html>
+    </div>
+{% endblock %}

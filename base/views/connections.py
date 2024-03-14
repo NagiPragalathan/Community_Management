@@ -13,7 +13,7 @@ def accept_connection_request(request, connection_id):
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-@login_required
+# @login_required
 def connection_list(request):
     connections = Connection.objects.filter(user=request.user, status='accepted')
     return render(request, 'connections/connections.html', {'connections': connections})
