@@ -1,0 +1,44 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="images">Upload Images:</label>
+    <input type="file" name="images" id="images" multiple required>
+    <button type="submit">Upload</button>
+</form>
+
+{% if galleries %}
+    <h2>Your Images</h2>
+    <ul>
+        {% for gallery in galleries %}
+            <li>
+                <img src="{{ gallery.image.url }}" alt="Image" width="100">
+                <button class="delete-btn" data-image-id="{{ gallery.id }}">Delete</button>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.delete-btn').click(function() {
+            var imageId = $(this).data('image-id');
+            $.ajax({
+                url: '/delete_image',
+                type: 'POST',
+                data: {
+                    'image_id': imageId,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if(data.success) {
+                        alert('Image deleted successfully');
+                        location.reload();
+                    } else {
+                        alert(data.error);
+                    }
+                }
+            });
+        });
+    });
+</script>

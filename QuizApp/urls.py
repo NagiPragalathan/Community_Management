@@ -53,6 +53,8 @@ profile =[
     path('add_edit_user_profile', add_edit_user_profile, name='add_edit_user_profile'),
     path('add_or_edit_address', add_or_edit_address, name='add_or_edit_address'),
     path('add_or_edit_bio', add_or_edit_bio, name='add_or_edit_bio'),
+    path('delete_image', delete_image, name='delete_image'),
+    path('add_gallery', add_gallery, name='add_gallery'),
 ]
 
 connections = [

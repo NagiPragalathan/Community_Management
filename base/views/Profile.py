@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from base.models import MainProfile, ContactDetails, UserProfile, Address, BillingAddress, Bio
+from base.models import MainProfile, ContactDetails, UserProfile, Address, BillingAddress, Bio, Gallery
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
 
 def add_profile(request):
     if request.method == 'POST':
@@ -290,3 +292,26 @@ def add_or_edit_bio(request):
 
     return render(request, 'Profile/add_or_edit_bio.html', {'bio': bio})
 
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Gallery >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+def add_gallery(request):
+    user = request.user
+    if request.method == 'POST':
+        images = request.FILES.getlist('images')  # Changed to getlist to handle multiple files
+        for image in images:
+            Gallery.objects.create(user=user, image=image)  # Create a new Gallery object for each image
+        return redirect('add_gallery')
+    galleries = Gallery.objects.filter(user=user)  # Fetch all images for the user
+    return render(request, 'Profile/add_gallery.html', {'galleries': galleries})
+
+
+def delete_image(request):
+    if request.method == 'POST':
+        image_id = request.POST.get('image_id')
+        try:
+            image = Gallery.objects.get(id=image_id)
+            image.delete()
+            return JsonResponse({'success': 'Image deleted successfully'})
+        except Gallery.DoesNotExist:
+            return JsonResponse({'error': 'Image not found'})
+    return JsonResponse({'error': 'Invalid request'})
