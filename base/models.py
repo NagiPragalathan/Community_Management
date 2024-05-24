@@ -15,26 +15,6 @@ class OTPVerification(models.Model):
     def __str__(self):
         return f"OTPVerification(id={self.id}, otp_key={self.otp_key}, updated_time={self.updated_time})"
     
-class PathManager(models.Model):
-    id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    path = models.CharField(max_length=400)  # Adjust max_length as needed
-    file = models.FileField(upload_to='Files/')  # Adjust upload_to as needed
-    category = models.CharField(max_length=50)  # Adjust max_length as needed
-    title = models.CharField(max_length=255)  # Adjust max_length as needed
-    updated_date = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f'{self.title} - {self.user_id.username}'
-    
-class FolderManager(models.Model):
-    id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    FolderName = models.CharField(max_length=255)
-    category = models.CharField(max_length=50)
-    path = models.CharField(max_length=400)
-    updated_date = models.DateTimeField(auto_now=True)
-
 
 class MainProfile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
@@ -205,23 +185,6 @@ class Testimonial(models.Model):
     def __str__(self):
         return f'Testimonial from {self.from_user} to {self.to_user}'
 
-<<<<<<< HEAD
-=======
-class Gallery(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='gallery_images/')
-    last_updated_date = models.DateTimeField(auto_now=True)
-
-    def save(self, *args, **kwargs):
-        if Gallery.objects.filter(user=self.user).count() >= 10:
-            return 'You have reached the maximum number of uploads'
-        else:
-            super(Gallery, self).save(*args, **kwargs)
-
-        def __str__(self):
-            return f'Gallery Image - {self.user.username}'
->>>>>>> 1896e576c277b121f4973873ba03ca35171af0de
 
 class AccountSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='account_settings')
@@ -287,7 +250,6 @@ class TopsProfile(models.Model):
     def __str__(self):
         return f'Tops Profile for {self.user}'
 
-<<<<<<< HEAD
 class Gallery(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -302,5 +264,19 @@ class Gallery(models.Model):
 
         def __str__(self):
             return f'Gallery Image - {self.user.username}'
-=======
->>>>>>> 1896e576c277b121f4973873ba03ca35171af0de
+
+class CountryData(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    country_name = models.CharField(max_length=255)
+    last_updated_date = models.DateField()
+
+    def __str__(self):
+        return self.country_name
+
+class CityData(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    city_name = models.CharField(max_length=255)
+    last_updated_date = models.DateField()
+
+    def __str__(self):
+        return self.city_name
