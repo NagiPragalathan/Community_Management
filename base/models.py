@@ -205,6 +205,23 @@ class Testimonial(models.Model):
     def __str__(self):
         return f'Testimonial from {self.from_user} to {self.to_user}'
 
+<<<<<<< HEAD
+=======
+class Gallery(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='gallery_images/')
+    last_updated_date = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if Gallery.objects.filter(user=self.user).count() >= 10:
+            return 'You have reached the maximum number of uploads'
+        else:
+            super(Gallery, self).save(*args, **kwargs)
+
+        def __str__(self):
+            return f'Gallery Image - {self.user.username}'
+>>>>>>> 1896e576c277b121f4973873ba03ca35171af0de
 
 class AccountSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='account_settings')
@@ -270,6 +287,7 @@ class TopsProfile(models.Model):
     def __str__(self):
         return f'Tops Profile for {self.user}'
 
+<<<<<<< HEAD
 class Gallery(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -284,3 +302,5 @@ class Gallery(models.Model):
 
         def __str__(self):
             return f'Gallery Image - {self.user.username}'
+=======
+>>>>>>> 1896e576c277b121f4973873ba03ca35171af0de

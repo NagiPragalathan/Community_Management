@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with {{ receiver.username }}</title>
+    <title>Chat with Receiver</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body>
-    <h1>Chat with {{ receiver.username }}</h1>
-    <div id="messages">
-        {% for message in messages %}
-            <div>{{ message.content }}</div>
-        {% endfor %}
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-semibold mb-4">Chat with Receiver</h1>
+        <div id="messages" class="mb-4">
+            <!-- Messages will be appended here -->
+        </div>
+        <form id="message-form" class="flex">
+            <textarea id="message-input" name="content" class="w-full p-2 rounded border border-gray-300 focus:outline-none focus:border-indigo-500" placeholder="Type your message..."></textarea>
+            <button type="submit" id="send-message-btn" class="ml-2 px-4 py-2 bg-indigo-500 text-white rounded focus:outline-none">Send</button>
+        </form>
     </div>
-    <form id="message-form">
-        {% csrf_token %}
-        <textarea id="message-input" name="content" placeholder="Type your message..."></textarea>
-    </form>
-    <button type="submit" id="send-message-btn">Send</button>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        const receiverId = {{ receiver_id }};
-
+        // Function to fetch messages
         function fetchMessages() {
+            const receiverId = '{{ receiver_id }}'; // Replace with receiver ID from backend
             $.post(`/get_messages/${receiverId}/`, { csrfmiddlewaretoken: '{{ csrf_token }}' }, function(data) {
                 if (data.status === 'success') {
                     $('#messages').empty(); // Clear previous messages
@@ -34,43 +36,47 @@
                 }
             });
         }
-        
 
-        $(document).ready(function() {
-            fetchMessages();
-            setInterval(fetchMessages, 1000);  // Fetch messages every 5 seconds
-    
-            $('#send-message-btn').click(function(e) {
-                e.preventDefault();
-                console.log("working...!")
-                const receiverId = {{ receiver_id }};
-                const content = $('#message-input').val();
-                
-                $.ajax({
-                    type: 'POST',
-                    url: `/update_message/${receiverId}/`,
-                    data: {
-                        content: content,
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            // Handle success response
-                            $('#message-input').val('');
-                            console.log('Message sent successfully.');
-                        } else {
-                            // Handle error response
-                            console.error('Error sending message.');
-                        }
-                    },
-                    error: function(xhr, textStatus, errorThrown) {
-                        console.error('Error:', errorThrown);
+        // Function to send a message
+        function sendMessage() {
+            const receiverId = '{{ receiver_id }}'; // Replace with receiver ID from backend
+            const content = $('#message-input').val();
+            $.ajax({
+                type: 'POST',
+                url: `/update_message/${receiverId}/`,
+                data: {
+                    content: content,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        $('#message-input').val('');
+                        console.log('Message sent successfully.');
+                    } else {
+                        console.error('Error sending message.');
                     }
-                });
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
+                }
+            });
+        }
+
+        // Document ready function
+        $(document).ready(function() {
+            // Fetch messages initially
+            fetchMessages();
+
+            // Fetch messages every 5 seconds
+            setInterval(fetchMessages, 5000);
+
+            // Send message when form is submitted
+            $('#message-form').submit(function(e) {
+                e.preventDefault();
+                sendMessage();
             });
         });
-        
     </script>
 </body>
 </html>

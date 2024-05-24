@@ -1,24 +1,39 @@
+{% load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incoming Testimonials</title>
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Incoming Testimonials</h1>
-    <ul>
-        {% for testimonial in incoming_testimonials %}
-            <li>
-                <strong>From:</strong> {{ testimonial.from_user.username }}<br>
-                <strong>Testimonial:</strong> {{ testimonial.testimonials }}<br>
-                <strong>Type:</strong> {{ testimonial.type }}<br>
-                <strong>Updated Date:</strong> {{ testimonial.updated_date }}<br>
-                <strong>State of Request:</strong> {{ testimonial.state_of_request }}<br>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Incoming Testimonials</h1>
+        <ul class="divide-y divide-gray-300">
+            {% for testimonial in incoming_testimonials %}
+            <li class="py-4">
+                <div class="mb-2">
+                    <span class="font-bold text-gray-700">From:</span> {{ testimonial.from_user.username }}
+                </div>
+                <div class="mb-2">
+                    <span class="font-bold text-gray-700">Testimonial:</span> {{ testimonial.testimonials }}
+                </div>
+                <div class="mb-2">
+                    <span class="font-bold text-gray-700">Type:</span> {{ testimonial.type }}
+                </div>
+                <div class="mb-2">
+                    <span class="font-bold text-gray-700">Updated Date:</span> {{ testimonial.updated_date }}
+                </div>
+                <div class="mb-2">
+                    <span class="font-bold text-gray-700">State of Request:</span> {{ testimonial.state_of_request }}
+                </div>
             </li>
-        {% empty %}
-            <li>No incoming testimonials</li>
-        {% endfor %}
-    </ul>
+            {% empty %}
+            <li class="py-4 text-gray-700">No incoming testimonials</li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
