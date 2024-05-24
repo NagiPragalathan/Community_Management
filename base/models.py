@@ -5,6 +5,12 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 import uuid
 
+from django.core.exceptions import ValidationError
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+
+
+
 
 class OTPVerification(models.Model):
     id = models.AutoField(primary_key=True)
@@ -14,17 +20,43 @@ class OTPVerification(models.Model):
 
     def __str__(self):
         return f"OTPVerification(id={self.id}, otp_key={self.otp_key}, updated_time={self.updated_time})"
+
+class ChapterName(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    chapter_name = models.CharField(max_length=255)
+    last_updated_date = models.DateField(auto_now=True)
     
+    def __str__(self):
+        return self.chapter_name
+
 
 class MainProfile(models.Model):
+    TITLE_CHOICES = [
+        ('Mr.', 'Mr.'),
+        ('Mrs.', 'Mrs.'),
+        ('Miss', 'Miss'),
+        ('Ms.', 'Ms.'),
+        ('Dr.', 'Dr.'),
+    ]
+
+    GENDER_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    ]
+
+    MEMBERSHIP_STATUS_CHOICES = [
+        ('Active', 'Active'),
+        ('Not Active', 'Not Active'),
+    ]
+
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=5, blank=True, null=True)
+    title = models.CharField(max_length=5, choices=TITLE_CHOICES, blank=True, null=True)
     first_name = models.CharField(max_length=100, blank=True, null=True)
     last_name = models.CharField(max_length=100, blank=True, null=True)
     suffix = models.CharField(max_length=100, blank=True, null=True)
     display_name = models.CharField(max_length=100, blank=True, null=True)
-    gender = models.CharField(max_length=6)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
     company_name = models.CharField(max_length=255, blank=True, null=True)
     product_service_description = models.CharField(max_length=255, blank=True, null=True)
     gst_registered_state = models.CharField(max_length=100, blank=True, null=True)
@@ -32,15 +64,14 @@ class MainProfile(models.Model):
     industry = models.CharField(max_length=255, blank=True, null=True)
     classification = models.CharField(max_length=255, blank=True, null=True)
     requested_speciality = models.CharField(max_length=255, blank=True, null=True)
-    membership_status = models.CharField(max_length=11)
-    RenewalDueDate = models.CharField(max_length=255, blank=True, null=True) # dynamic
-    Chapter = models.CharField(max_length=255, blank=True, null=True) # dynamic
+    membership_status = models.CharField(max_length=11, choices=MEMBERSHIP_STATUS_CHOICES)
+    RenewalDueDate = models.CharField(max_length=255, blank=True, null=True)
+    Chapter = models.ForeignKey('ChapterName', related_name='members', on_delete=models.SET_NULL, blank=True, null=True)  # Reference to Chapter model
     my_business = models.TextField(blank=True, null=True)
     keywords = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.title} {self.first_name} {self.last_name}"
-    
+        return f"{self.title} {self.first_name} {self.last_name}"    
 
 class ContactDetails(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
@@ -264,6 +295,8 @@ class Gallery(models.Model):
 
         def __str__(self):
             return f'Gallery Image - {self.user.username}'
+        
+############################################# Completely for admin dashboard ###############################################
 
 class CountryData(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -287,12 +320,69 @@ class Region(models.Model):
     country = models.ForeignKey(CountryData, related_name='regions', on_delete=models.CASCADE)
     city = models.ForeignKey(CityData, related_name='regions', on_delete=models.CASCADE)
     region_name = models.CharField(max_length=255)
-    ed = models.ForeignKey(User, related_name='ed_relations', on_delete=models.CASCADE, blank=True, null=True)
-    ad = models.ForeignKey(User, related_name='ad_relations', on_delete=models.CASCADE, blank=True, null=True)
-    sd1 = models.ForeignKey(User, related_name='sd1_relations', on_delete=models.CASCADE, blank=True, null=True)
-    sd2 = models.ForeignKey(User, related_name='sd2_relations', on_delete=models.CASCADE, blank=True, null=True)
     last_updated_date = models.DateField(auto_now=True)
+    member_positions = models.ManyToManyField('RegionMemberPosition', related_name='regions', blank=True)
 
     def __str__(self):
         return f'{self.region_name} in {self.city}, {self.country}'
 
+class RegionPosition(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    RegionpositionName = models.CharField(max_length=255)
+    lastupdateddate = models.DateTimeField(default=timezone.now)
+    isRegion = models.BooleanField(default=False)  # New boolean field
+
+    def __str__(self):
+        return self.RegionpositionName
+
+class RegionMemberPosition(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, related_name='member_positions', on_delete=models.CASCADE)
+    position = models.ForeignKey(RegionPosition, related_name='member_positions', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user} - {self.position}'
+
+
+class Chapter(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.ForeignKey('ChapterName', related_name='chapters', on_delete=models.CASCADE)
+    region = models.ForeignKey('Region', related_name='chapters', on_delete=models.CASCADE)
+    country = models.ForeignKey('CountryData', related_name='chapters', on_delete=models.CASCADE)
+    city = models.ForeignKey('CityData', related_name='chapters', on_delete=models.CASCADE)
+    member_positions = models.ManyToManyField('ChapterMemberPosition', related_name='chapters', blank=True)
+    last_updated_date = models.DateField(auto_now=True)
+    type = models.CharField(max_length=255, choices=[('online', 'Online'), ('offline', 'Offline')])
+    day = models.CharField(
+        max_length=9,
+        choices=[
+            ('Monday', 'Monday'),
+            ('Tuesday', 'Tuesday'),
+            ('Wednesday', 'Wednesday'),
+            ('Thursday', 'Thursday'),
+            ('Friday', 'Friday'),
+            ('Saturday', 'Saturday')
+        ]
+    )
+    chapter_members = models.ManyToManyField('MainProfile', related_name='chapters', blank=True)
+
+    def __str__(self):
+        return self.name.chapter_name  # Adjusted to display the ChapterName
+
+class ChapterPosition(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    Chapterposition = models.CharField(max_length=255)
+    is_chapter = models.BooleanField(default=False)
+    lastupdateddate = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.Chapterposition
+
+class ChapterMemberPosition(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, related_name='chapter_member_positions', on_delete=models.CASCADE)
+    position = models.ForeignKey(ChapterPosition, related_name='chapter_member_positions', on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, related_name='chapter_member_positions', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user} - {self.position}'

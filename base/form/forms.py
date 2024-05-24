@@ -1,5 +1,6 @@
 from django import forms
-from base.models import CityData
+from base.models import CityData, ChapterPosition
+from django.contrib.auth.models import User
 
 class CityDataForm(forms.ModelForm):
     class Meta:

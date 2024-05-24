@@ -92,6 +92,8 @@ position for super user
     - position
     - region
 }
+last_updated_date
+
 
 DATA :
 - ED - userTable for relation
