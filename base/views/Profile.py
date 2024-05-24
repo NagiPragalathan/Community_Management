@@ -292,7 +292,6 @@ def add_or_edit_bio(request):
 
     return render(request, 'Profile/add_or_edit_bio.html', {'bio': bio})
 
-<<<<<<< HEAD
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Gallery >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 def add_gallery(request):
@@ -316,7 +315,3 @@ def delete_image(request):
         except Gallery.DoesNotExist:
             return JsonResponse({'error': 'Image not found'})
     return JsonResponse({'error': 'Invalid request'})
-=======
-
-
->>>>>>> 2556d30a25b843f35bf7073a99ccebba6fc98a8b
