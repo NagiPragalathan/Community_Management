@@ -11,7 +11,7 @@
 
 
 ```user name, pass, chapter, role, 
-name business cat classification chapter```
+name business cat classification chapter ```
 
 
 ## MY NETWORK
@@ -27,6 +27,7 @@ name business cat classification chapter```
 - Approve new user
 - enter 
 - admin only crate user
+- admin can access member profile data
 
 ----------------------------------------
 
@@ -81,17 +82,119 @@ position for super user
 
 
 
-
-
-
-
-
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Create Regin >>>>>>>>>>>>>>>>>>>>>>
 - Country
 - city
 - Region Name
-- ED - userRelation
-- AD - userRelation
-- SD1 - userRelation
-- SD2 - userRelation
-D = Members
+
+-  position => {
+    - username
+    - position
+    - region
+}
+
+DATA :
+- ED - userTable for relation
+- AD - userTable for relation
+- SD1 - userTable for relation
+- SD2 - userTable for relation
+- LastUpdatedDate
+
+
+D = should be Members 
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> create chapter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+NOTE: 
+- without 5 mem chapter can't create
+- chapter settings will be show after submitting chapter.
+{
+    - create => { chapter details, member details }
+    - settings => { chapter settings }
+    - positions => { member positions }
+}
+---------------------------------------------------------------------------
+- name
+- region
+- country
+- city
+
+- member => {
+    - user name
+    - chapter
+}
+
+-  position => {
+    - username
+    - position
+    - chapter
+    - isChapter
+}
+
+- meeting type [online, offline]
+- meeting day [day] except sunday ..!
+
+------------------------- Position table --------------------------------
+
+- uuid
+- position
+- isChapter
+- chapter
+
+X= using check box
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+--------------------------- Member Details -------------------------------
+- Main Profile
+- User Profile
+- Training History
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-------------------------- Training Db ----------------------------------
+- Training name (Event Type) => {date, event name, region} => it's separate page
+- Training date  \
+- region name   --- Last update should be saved in default
+- chapter name   /
+- member => user table 
+-------------------------------------------------------------------------
+
+
+-------------------------- Training Attendance --------------------------
+
+
+-------------------------------------------------------------------------
+
+
+Group :-:
+------------------------------------- Team chat ------------------------------------
+- Group
+    - add members
+    - remove members by created user
+    - chat
+    - group details
+- admin can delete group or member by admin.
+
+
+
+
+
+
+
+
+
+--------------------------------------------- Work Space ----------------------------------------
+user = [   arun    ]
+position = _____________v
+           | p   |
+           | vp   |
+
+
+- arun => chapter _/
+
+-
+
+- p, Ad, vp
+
+p
+cha = []
+----------------------------------------------------------------------------------------------------------------------

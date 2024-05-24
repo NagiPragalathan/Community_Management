@@ -268,7 +268,7 @@ class Gallery(models.Model):
 class CountryData(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     country_name = models.CharField(max_length=255)
-    last_updated_date = models.DateField()
+    last_updated_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.country_name
@@ -276,7 +276,23 @@ class CountryData(models.Model):
 class CityData(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     city_name = models.CharField(max_length=255)
-    last_updated_date = models.DateField()
+    country = models.ForeignKey(CountryData, related_name='cities', on_delete=models.CASCADE)
+    last_updated_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.city_name
+
+class Region(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    country = models.ForeignKey(CountryData, related_name='regions', on_delete=models.CASCADE)
+    city = models.ForeignKey(CityData, related_name='regions', on_delete=models.CASCADE)
+    region_name = models.CharField(max_length=255)
+    ed = models.ForeignKey(User, related_name='ed_relations', on_delete=models.CASCADE, blank=True, null=True)
+    ad = models.ForeignKey(User, related_name='ad_relations', on_delete=models.CASCADE, blank=True, null=True)
+    sd1 = models.ForeignKey(User, related_name='sd1_relations', on_delete=models.CASCADE, blank=True, null=True)
+    sd2 = models.ForeignKey(User, related_name='sd2_relations', on_delete=models.CASCADE, blank=True, null=True)
+    last_updated_date = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.region_name} in {self.city}, {self.country}'
+

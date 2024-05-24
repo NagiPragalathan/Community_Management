@@ -22,6 +22,7 @@ urlpatterns = []
 common = [
     path('home', home, name='home'),
     path('', home, name='home'),
+    path('add_city', add_city, name="add_city")
 ]
 
 
@@ -68,7 +69,6 @@ chat = [
     path('update_message/<int:receiver_id>/', update_message, name='update_message'),
     path('get_messages/<int:receiver_id>/', get_messages, name='get_messages'),
     path('unseen_messages', unseen_messages, name='unseen_messages'),
-    
 ]
 
 testimonial = [
