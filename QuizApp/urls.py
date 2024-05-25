@@ -7,7 +7,6 @@ from QuizApp import settings
 # Django views
 from base.views.auth import *
 from base.views.common import *
-from base.views.FileManagement import *
 from base.views.Profile import *
 from base.views.connections import *
 from base.views.chat import *
@@ -17,6 +16,15 @@ from base.views.AccountSettings import *
 from django.contrib.auth.views import PasswordResetConfirmView
 
 urlpatterns = []
+
+
+
+common = [
+    path('home', home, name='home'),
+    path('', home, name='home'),
+    path('add_city', add_city, name="add_city")
+]
+
 
 admin_ = [
     path('admin/', admin.site.urls),   
@@ -35,18 +43,6 @@ auth = [
     path('reset/<uidb64>/<token>/', custom_password_reset_confirm, name='custom_password_reset_confirm'),
 ]
 
-
-common = [
-    path('home', home, name='home'),
-    path('', home, name='home'),
-]
-
-file_manager = [
-    path('add_data', add_data, name='add_data'),
-    path('list_data', list_data, name='list_data'),
-    path('add_folder', add_folder, name='add_folder'),
-    path('list_folders/<str:path>', list_folders, name='list_folders'),
-]
 
 profile =[
     path('add_profile', add_profile, name='add_profile'),
@@ -73,7 +69,6 @@ chat = [
     path('update_message/<int:receiver_id>/', update_message, name='update_message'),
     path('get_messages/<int:receiver_id>/', get_messages, name='get_messages'),
     path('unseen_messages', unseen_messages, name='unseen_messages'),
-    
 ]
 
 testimonial = [
@@ -93,7 +88,6 @@ urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
 urlpatterns.extend(common)
 urlpatterns.extend(profile)
-urlpatterns.extend(file_manager)
 urlpatterns.extend(testimonial)
 urlpatterns.extend(connections)
 urlpatterns.extend(account_settings)
