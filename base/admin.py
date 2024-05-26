@@ -1,3 +1,4 @@
+from django.contrib.admin import AdminSite
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 from .models import (
@@ -5,6 +6,15 @@ from .models import (
     Chapter, ChapterMemberPosition, ChapterPosition, MainProfile, ChapterName
 )
 from django import forms
+from django.contrib.auth.models import User
+
+class Admin(AdminSite):
+    site_header = 'Victory Connect Admin'
+    site_title = 'Admin Portal'
+    index_title = 'Welcome to Victory Connect Admin Portal'
+
+admin_site = Admin(name='admin')
+admin_site.register(User)
 
 class ChapterMemberPositionInline(admin.TabularInline):
     model = ChapterMemberPosition
@@ -42,14 +52,14 @@ class ChapterForm(forms.ModelForm):
             raise ValidationError("You need at least one Chapter member to create a Chapter.")
         return chapter_members
 
-@admin.register(MainProfile)
+admin_site.register(MainProfile)
 class MainProfileAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'user', 'first_name', 'last_name', 'membership_status', 'RenewalDueDate')
     search_fields = ('first_name', 'last_name', 'user__username')
     list_filter = ('membership_status', 'gender', 'industry')
     autocomplete_fields = ['user', 'Chapter']
     readonly_fields = ['uuid']
-    filter_horizontal = ['chapters']
+    # filter_horizontal = ['']
 
     fieldsets = (
         (None, {
@@ -71,7 +81,7 @@ class MainProfileAdmin(admin.ModelAdmin):
             raise ValidationError("First name and last name are required.")
         super().save_model(request, obj, form, change)
 
-@admin.register(Chapter)
+admin_site.register(Chapter)
 class ChapterAdmin(admin.ModelAdmin):
     list_display = ('name', 'region', 'country', 'city', 'type', 'day', 'last_updated_date')
     search_fields = ('name', 'region__region_name', 'country__country_name', 'city__city_name')
@@ -86,53 +96,53 @@ class ChapterAdmin(admin.ModelAdmin):
         if MainProfile.objects.count() < 5:
             raise ValidationError("You need at least 5 MainProfile instances to create a Chapter.")
         super().save_model(request, obj, form, change)
-@admin.register(CountryData)
+admin_site.register(CountryData)
 class CountryDataAdmin(admin.ModelAdmin):
     list_display = ('country_name', 'last_updated_date')
     search_fields = ('country_name',)
     list_filter = ('last_updated_date',)
 
-@admin.register(CityData)
+admin_site.register(CityData)
 class CityDataAdmin(admin.ModelAdmin):
     list_display = ('city_name', 'country', 'last_updated_date')
     search_fields = ('city_name', 'country__country_name')
     list_filter = ('country', 'last_updated_date')
     autocomplete_fields = ['country']
 
-@admin.register(Region)
+admin_site.register(Region)
 class RegionAdmin(admin.ModelAdmin):
     list_display = ('region_name', 'country', 'city', 'last_updated_date')
     search_fields = ('region_name', 'country__country_name', 'city__city_name')
     list_filter = ('country', 'city', 'last_updated_date')
     autocomplete_fields = ['country', 'city']
 
-@admin.register(RegionPosition)
+admin_site.register(RegionPosition)
 class RegionPositionAdmin(admin.ModelAdmin):
     list_display = ('RegionpositionName', 'lastupdateddate', 'isRegion')
     search_fields = ('RegionpositionName',)
     list_filter = ('isRegion', 'lastupdateddate')
 
-@admin.register(RegionMemberPosition)
+admin_site.register(RegionMemberPosition)
 class MemberPositionAdmin(admin.ModelAdmin):
     list_display = ('user', 'position')
     search_fields = ('user__username', 'position__RegionpositionName')
     list_filter = ('position',)
     autocomplete_fields = ['user', 'position']
 
-@admin.register(ChapterMemberPosition)
+admin_site.register(ChapterMemberPosition)
 class ChapterMemberPositionAdmin(admin.ModelAdmin):
     list_display = ('user', 'position', 'chapter')
     search_fields = ('user__username', 'position__Chapterposition', 'chapter__name__chapter_name')
     list_filter = ('chapter', 'position', 'user')
     autocomplete_fields = ['user', 'position', 'chapter']
 
-@admin.register(ChapterPosition)
+admin_site.register(ChapterPosition)
 class ChapterPositionAdmin(admin.ModelAdmin):
     list_display = ('Chapterposition', 'is_chapter', 'lastupdateddate')
     search_fields = ('Chapterposition',)
     list_filter = ('is_chapter', 'lastupdateddate')
 
-@admin.register(ChapterName)
+admin_site.register(ChapterName)
 class ChapterNameAdmin(admin.ModelAdmin):
     list_display = ('chapter_name', 'last_updated_date')
     search_fields = ('chapter_name',)

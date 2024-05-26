@@ -1,5 +1,6 @@
 # Django  inbuilt models
 from django.contrib import admin
+from base.admin import admin_site
 from django.urls import path, include
 from django.conf.urls.static import static
 from QuizApp import settings
@@ -27,8 +28,8 @@ common = [
 
 
 admin_ = [
-    path('admin/', admin.site.urls),   
-    path('admin/', admin.site.urls, name='admin'), 
+    # path('admin/', admin.site.urls),   
+    path('admin/', admin_site.urls, name='admin'), 
 ]
 
 auth = [
