@@ -73,7 +73,7 @@
                         </svg>
                     </h1>
                 </div>
-                <div class="hidden" id="dropdown-2">
+                <div class="" id="dropdown-2">
                     <div class="flex flex-col md:mx-60 mx-4">
                         <div class="flex justify-between font-semibold my-2">
                             <p class="text-lg  text-slate-400">Connections</p>
@@ -90,7 +90,7 @@
                                 </svg>
                             </p>
                         </div>
-                        <div class="hidden" id="dropdown-3">
+                        <div class="" id="dropdown-3">
                             <div class="flex flex-col">
                                 <div class="flex justify-evenly m-2">
                                     <p class=" text-lg text-slate-400">Finance</p>
@@ -113,7 +113,7 @@
                                 </svg>
                             </p>
                         </div>
-                        <div class="hidden" id="dropdown-4">
+                        <div class="" id="dropdown-4">
                             <div class="flex flex-col">
                                 <div class="flex justify-evenly m-2">
                                     <a href="" class=" text-lg font-semibold text-[#7F60F9] flex items-center px-2">Network rules
@@ -152,7 +152,7 @@
                         </svg>
                     </h1>
                 </div>
-                <div class="hidden" id="dropdown-5">
+                <div class="" id="dropdown-5">
                     <div class="flex flex-col font-semibold md:mx-60 mx-4">
                         
                             <a href="{% url 'change_password' %}" class="text-lg  text-slate-400 hover:text-purple-600 ">change password</a>
@@ -210,7 +210,7 @@
         document.querySelectorAll('.toggle-list').forEach(button => {
             button.addEventListener('click',() => {
                 const targetId = button.getAttribute('data-target');
-                const dropdown = document.getElementById(targetId);
+                const dropdown = document.getElementById('targetId');
                 dropdown.classList.toggle('hidden');
             })
         })
