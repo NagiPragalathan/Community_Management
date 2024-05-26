@@ -1,29 +1,40 @@
-<!-- incoming_requests.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incoming Connection Requests</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Incoming Connection Requests</h1>
-
-    <ul>
-        {% for connection in incoming_requests %}
-        <li>
-            {{ connection.connection.username }} wants to connect
-            <form action="{% url 'accept_connection_request' connection.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Accept</button>
-            </form>
-            <form action="{% url 'reject_connection_request' connection.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Reject</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Incoming Connection Requests</h1>
+        
+        <ul class="divide-y divide-gray-200">
+            {% for connection in incoming_requests %}
+                <li class="py-4 flex flex-col sm:flex-row items-center justify-between">
+                    <span class="text-lg font-medium text-gray-900 mb-2 sm:mb-0">{{ connection.connection.username }} wants to connect</span>
+                    <div class="flex space-x-4">
+                        <form action="{% url 'accept_connection_request' connection.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">
+                                Accept
+                            </button>
+                        </form>
+                        <form action="{% url 'reject_connection_request' connection.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300">
+                                Reject
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        
+        {% if not incoming_requests %}
+            <p class="text-center text-gray-600 mt-4">No incoming connection requests at the moment.</p>
+        {% endif %}
+    </div>
 </body>
 </html>

@@ -7,34 +7,40 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-3xl mx-auto p-5 bg-white rounded-lg shadow">
-        <h1 class="text-2xl font-bold text-center text-gray-700 mb-6">{% if address %}Edit Address{% else %}Add Address{% endif %}</h1>
-        <form method="post" class="mb-6">
+    <div class="w-full max-w-3xl mx-auto p-8 bg-white rounded-lg shadow-lg my-20">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-10">{% if address %}Edit Address{% else %}Add Address{% endif %}</h1>
+        <form method="post" class="space-y-6">
             {% csrf_token %}
             {% if address %}
                 <input type="hidden" name="address_id" value="{{ address.id }}">
             {% endif %}
             <div class="grid grid-cols-1 gap-6">
                 <input type="hidden" name="address_type" id="address_type" value="Address" required>
-                <label for="address_line_1" class="block font-medium text-gray-700">Address Line 1:</label>
-                <input type="text" name="address_line_1" id="address_line_1" value="{% if address %}{{ address.address_line_1 }}{% endif %}" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-
-                <label for="address_line_2" class="block font-medium text-gray-700">Address Line 2:</label>
-                <input type="text" name="address_line_2" id="address_line_2" value="{% if address %}{{ address.address_line_2 }}{% endif %}" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-
-                <label for="city" class="block font-medium text-gray-700">City:</label>
-                <input type="text" name="city" id="city" value="{% if address %}{{ address.city }}{% endif %}" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-
-                <label for="state" class="block font-medium text-gray-700">State:</label>
-                <input type="text" name="state" id="state" value="{% if address %}{{ address.state }}{% endif %}" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-
-                <label for="country" class="block font-medium text-gray-700">Country:</label>
-                <input type="text" name="country" id="country" value="{% if address %}{{ address.country }}{% endif %}" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-
-                <label for="zip_code" class="block font-medium text-gray-700">Zip Code:</label>
-                <input type="text" name="zip_code" id="zip_code" value="{% if address %}{{ address.zip_code }}{% endif %}" required class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
-                
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out">{% if address %}Update{% else %}Add{% endif %} Address</button>
+                <div>
+                    <label for="address_line_1" class="block text-lg font-medium text-gray-700">Address Line 1:</label>
+                    <input type="text" name="address_line_1" id="address_line_1" value="{% if address %}{{ address.address_line_1 }}{% endif %}" required class="form-input block w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label for="address_line_2" class="block text-lg font-medium text-gray-700">Address Line 2:</label>
+                    <input type="text" name="address_line_2" id="address_line_2" value="{% if address %}{{ address.address_line_2 }}{% endif %}" class="form-input block w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label for="city" class="block text-lg font-medium text-gray-700">City:</label>
+                    <input type="text" name="city" id="city" value="{% if address %}{{ address.city }}{% endif %}" required class="form-input block w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label for="state" class="block text-lg font-medium text-gray-700">State:</label>
+                    <input type="text" name="state" id="state" value="{% if address %}{{ address.state }}{% endif %}" required class="form-input block w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label for="country" class="block text-lg font-medium text-gray-700">Country:</label>
+                    <input type="text" name="country" id="country" value="{% if address %}{{ address.country }}{% endif %}" required class="form-input block w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label for="zip_code" class="block text-lg font-medium text-gray-700">Zip Code:</label>
+                    <input type="text" name="zip_code" id="zip_code" value="{% if address %}{{ address.zip_code }}{% endif %}" required class="form-input block w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                </div>
+                <button type="submit" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">{% if address %}Update{% else %}Add{% endif %} Address</button>
             </div>
         </form>
     </div>

@@ -4,69 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add/Edit Bio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Add/Edit Bio</h1>
-    <form method="post">
-        {% csrf_token %}
-        
-        <!-- Years In Business -->
-        <label for="years_in_business">Years In Business:</label>
-        <input type="number" name="years_in_business" id="years_in_business" value="{{ bio.years_in_business }}" required>
-        <br>
-        
-        <!-- Previous Types of Jobs -->
-        <label for="previous_jobs">Previous Types of Jobs:</label>
-        <textarea name="previous_jobs" id="previous_jobs" required>{{ bio.previous_jobs }}</textarea>
-        <br>
-        
-        <!-- Spouse -->
-        <label for="spouse">Spouse:</label>
-        <input type="text" name="spouse" id="spouse" value="{{ bio.spouse }}">
-        <br>
-        
-        <!-- Children -->
-        <label for="children">Children:</label>
-        <input type="text" name="children" id="children" value="{{ bio.children }}">
-        <br>
-        
-        <!-- Pets -->
-        <label for="pets">Pets:</label>
-        <input type="text" name="pets" id="pets" value="{{ bio.pets }}">
-        <br>
-        
-        <!-- Hobbies & Interests -->
-        <label for="hobbies_interests">Hobbies & Interests:</label>
-        <textarea name="hobbies_interests" id="hobbies_interests">{{ bio.hobbies_interests }}</textarea>
-        <br>
-        
-        <!-- City of Residence -->
-        <label for="city_residence">City of Residence:</label>
-        <input type="text" name="city_residence" id="city_residence" value="{{ bio.city_residence }}">
-        <br>
-        
-        <!-- Years in that City -->
-        <label for="years_in_city">Years in that City:</label>
-        <input type="number" name="years_in_city" id="years_in_city" value="{{ bio.years_in_city }}">
-        <br>
-        
-        <!-- My Burning Desire -->
-        <label for="burning_desire">My Burning Desire:</label>
-        <textarea name="burning_desire" id="burning_desire">{{ bio.burning_desire }}</textarea>
-        <br>
-        
-        <!-- Something No One Here Knows About Me -->
-        <label for="something_unknown">Something No One Here Knows About Me:</label>
-        <textarea name="something_unknown" id="something_unknown">{{ bio.something_unknown }}</textarea>
-        <br>
-        
-        <!-- My Key to Success -->
-        <label for="key_to_success">My Key to Success:</label>
-        <input type="text" name="key_to_success" id="key_to_success" value="{{ bio.key_to_success }}">
-        <br>
-        
-        <!-- Add/Edit button -->
-        <button type="submit">Save</button>
-    </form>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-xl font-semibold text-gray-700 mb-6">Add/Edit Bio</h1>
+        <form method="post" class="grid grid-cols-1 gap-6">
+            {% csrf_token %}
+            
+            <!-- Years In Business -->
+            <div>
+                <label for="years_in_business" class="block font-medium text-gray-700">Years In Business:</label>
+                <input type="number" name="years_in_business" id="years_in_business" value="{{ bio.years_in_business }}" required class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <!-- Previous Types of Jobs -->
+            <div>
+                <label for="previous_jobs" class="block font-medium text-gray-700">Previous Types of Jobs:</label>
+                <textarea name="previous_jobs" id="previous_jobs" required class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 border focus:ring focus:ring-indigo-500 focus:ring-opacity-50">{{ bio.previous_jobs }}</textarea>
+            </div>
+            
+            <!-- Spouse -->
+            <div>
+                <label for="spouse" class="block font-medium text-gray-700">Spouse:</label>
+                <input type="text" name="spouse" id="spouse" value="{{ bio.spouse }}" class="mt-1 block w-full px-3 py-2 border rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <!-- Children -->
+            <div>
+                <label for="children" class="block font-medium text-gray-700">Children:</label>
+                <input type="text" name="children" id="children" value="{{ bio.children }}" class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <!-- Pets -->
+            <div>
+                <label for="pets" class="block font-medium text-gray-700">Pets:</label
+                <input type="text" name="pets" id="pets" value="{{ bio.pets }}" class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <!-- Hobbies & Interests -->
+            <div>
+                <label for="hobbies_interests" class="block font-medium text-gray-700">Hobbies & Interests:</label>
+                <textarea name="hobbies_interests" id="hobbies_interests" class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">{{ bio.hobbies_interests }}</textarea>
+            </div>
+            
+            <!-- City of Residence -->
+            <div>
+                <label for="city_residence" class="block font-medium text-gray-700">City of Residence:</label>
+                <input type="text" name="city_residence" id="city_residence" value="{{ bio.city_residence }}" class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <!-- Years in that City -->
+            <div>
+                <label for="years_in_city" class="block font-medium text-gray-700">Years in that City:</label>
+                <input type="number" name="years_in_city" id="years_in_city" value="{{ bio.years_in_city }}" class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <!-- My Burning Desire -->
+            <div>
+                <label for="burning_desire" class="block font-medium text-gray-700">My Burning Desire:</label>
+                <textarea name="burning_desire" id="burning_desire" class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">{{ bio.burning_desire }}</textarea>
+            </div>
+            
+            <!-- Something No One Here Knows About Me -->
+            <div>
+                <label for="something_unknown" class="block font-medium text-gray-700">Something No One Here Knows About Me:</label>
+                <textarea name="something_unknown" id="something_unknown" class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">{{ bio.something_unknown }}</textarea>
+            </div>
+            
+            <!-- My Key to Success -->
+            <div>
+                <label for="key_to_success" class="block font-medium text-gray-700">My Key to Success:</label>
+                <input type="text" name="key_to_success" id="key_to_success" value="{{ bio.key_to_success }}" class="mt-1 block w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50">
+            </div>
+            
+            <!-- Add/Edit button -->
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">Save</button>
+        </form>
+    </div>
 </body>
 </html>
