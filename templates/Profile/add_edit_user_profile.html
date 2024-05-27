@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,38 +8,39 @@
     <title>{% if user_profile %} Edit {% else %} Add {% endif %} User Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-xl p-6 bg-white rounded-lg shadow-md">
-        <h1 class="text-xl font-semibold text-gray-900">{% if user_profile %} Edit {% else %} Add {% endif %} User Profile</h1>
-        <form method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
-            {% csrf_token %}
-            <div>
-                <label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
-                <input type="text" id="username" name="username" {% if user_profile %} value="{{ user_profile.user.username }}" {% endif %} required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-indigo-500">
-            </div>
-            
-            <div>
-                <label for="language" class="block text-sm font-medium text-gray-700">Language:</label>
-                <input type="text" id="language" name="language" {% if user_profile %} value="{{ user_profile.language }}" {% endif %} required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-indigo-500">
-            </div>
-            
-            <div>
-                <label for="timezone" class="block text-sm font-medium text-gray-700">Timezone:</label>
-                <input type="text" id="timezone" name="timezone" {% if user_profile %} value="{{ user_profile.timezone }}" {% endif %} required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-indigo-500">
-            </div>
-            
-            <div>
-                <label for="profile_image" class="block text-sm font-medium text-gray-700">Profile Image:</label>
-                <input type="file" id="profile_image" name="profile_image" accept="image/*" class="mt-1 block w-full file:border file:border-gray-300 file:rounded-md file:px-3 file:py-2 file:text-sm file:font-medium file:bg-white file:text-gray-700 hover:file:bg-gray-50">
-            </div>
-            
-            <div>
-                <label for="company_logo" class="block text-sm font-medium text-gray-700">Company Logo:</label>
-                <input type="file" id="company_logo" name="company_logo" accept="image/*" class="mt-1 block w-full file:border file:border-gray-300 file:rounded-md file:px-3 file:py-2 file:text-sm file:font-medium file:bg-white file:text-gray-700 hover:file:bg-gray-50">
-            </div>
-            
-            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out">{% if user_profile %} Update {% else %} Submit {% endif %}</button>
-        </form>
-    </div>
-</body>
-</html>
+
+    <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+        <div class="w-full max-w-xl md:my-6 p-6 bg-white rounded-lg shadow-md">
+            <h1 class="text-xl font-semibold text-gray-900">{% if user_profile %} Edit {% else %} Add {% endif %} User Profile</h1>
+            <form method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username:</label>
+                    <input type="text" id="username" name="username" {% if user_profile %} value="{{ user_profile.user.username }}" {% endif %} required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="language" class="block text-sm font-medium text-gray-700">Language:</label>
+                    <input type="text" id="language" name="language" {% if user_profile %} value="{{ user_profile.language }}" {% endif %} required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="timezone" class="block text-sm font-medium text-gray-700">Timezone:</label>
+                    <input type="text" id="timezone" name="timezone" {% if user_profile %} value="{{ user_profile.timezone }}" {% endif %} required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="profile_image" class="block text-sm font-medium text-gray-700">Profile Image:</label>
+                    <input type="file" id="profile_image" name="profile_image" accept="image/*" class="mt-1 block w-full file:border file:border-gray-300 file:rounded-md file:px-3 file:py-2 file:text-sm file:font-medium file:bg-white file:text-gray-700 hover:file:bg-gray-50">
+                </div>
+                
+                <div>
+                    <label for="company_logo" class="block text-sm font-medium text-gray-700">Company Logo:</label>
+                    <input type="file" id="company_logo" name="company_logo" accept="image/*" class="mt-1 block w-full file:border file:border-gray-300 file:rounded-md file:px-3 file:py-2 file:text-sm file:font-medium file:bg-white file:text-gray-700 hover:file:bg-gray-50">
+                </div>
+                
+                <button type="submit" class="w-full bg-[#7c40ff] hover:bg-[#7c40d8] text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out">{% if user_profile %} Update {% else %} Submit {% endif %}</button>
+            </form>
+        </div>
+    </body>
+{% endblock content %}
