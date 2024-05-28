@@ -11,6 +11,7 @@ from base.views.Profile import *
 from base.views.connections import *
 from base.views.chat import *
 from base.views.Testimonials import *
+from base.views.GroupCURD import *
 from base.views.AccountSettings import *
 
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -21,7 +22,7 @@ urlpatterns = []
 
 common = [
     path('home', home, name='home'),
-    path('', home, name='home'),
+    path('', index, name='index'),
     path('add_city', add_city, name="add_city")
 ]
 
@@ -83,9 +84,17 @@ account_settings = [
     path('edit_or_add_account_settings', edit_or_add_account_settings, name='edit_or_add_account_settings'),
 ]
 
+group = [
+    path('groups/', group_crud, name='group_crud'),
+    path('groups/<uuid:pk>/', group_crud, name='group_crud'),
+    path('list_groups', list_groups, name='list_groups'),
+     path('select2/', include('django_select2.urls')),
+]
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
+urlpatterns.extend(group)
 urlpatterns.extend(common)
 urlpatterns.extend(profile)
 urlpatterns.extend(testimonial)

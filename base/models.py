@@ -386,3 +386,37 @@ class ChapterMemberPosition(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.position}'
+    
+class Group(models.Model):
+    OPEN = 'Open'
+    INVITE_ONLY = 'Invite Only'
+
+    VIEW_AND_POST = 'View and post'
+
+    GROUP_TYPES = [
+        (OPEN, 'Open'),
+        (INVITE_ONLY, 'Invite Only'),
+    ]
+
+    ACCESS_TYPES = [
+        (VIEW_AND_POST, 'View and post'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    group_type = models.CharField(max_length=20, choices=GROUP_TYPES)
+    access_type = models.CharField(max_length=20, choices=ACCESS_TYPES)
+    language = models.CharField(max_length=100)  # This can be changed to a choice field if you have a predefined list of languages
+    logo = models.ImageField(upload_to='group_logos/', blank=True, null=True)
+    invite_connections = models.ManyToManyField(User, related_name='invited_groups')
+    description = models.TextField(blank=True, null=True)
+    group_counts = models.PositiveIntegerField(default=0)
+    lastupdateddate = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Group'
+        verbose_name_plural = 'Groups'
