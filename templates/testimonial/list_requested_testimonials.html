@@ -1,22 +1,41 @@
+{% extends 'base.html' %}
+{% block content%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List of Requested Testimonials</title>
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>List of Requested Testimonials</h1>
-    <ul>
-        {% for testimonial in requested_testimonials %}
-            <li>
-                <strong>From:</strong> {{ testimonial.from_user.username }}<br>
-                <strong>To:</strong> {{ testimonial.to_user.username }}<br>
-                <strong>Testimonials:</strong> {{ testimonial.testimonials }}<br>
-                <strong>Updated Date:</strong> {{ testimonial.updated_date }}<br>
-                <strong>State of Request:</strong> {{ testimonial.get_state_of_request_display }}<br>
-            </li>
-        {% endfor %}
-    </ul>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8 px-4">
+        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">List of Requested Testimonials</h1>
+        <ul class="divide-y divide-gray-300 bg-white p-6 rounded-lg shadow-lg">
+            {% for testimonial in requested_testimonials %}
+                <li class="py-4">
+                    <div class="mb-2">
+                        <span class="font-bold text-gray-700">From:</span> <span class="text-gray-900">{{ testimonial.from_user.username }}</span>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold text-gray-700">To:</span> <span class="text-gray-900">{{ testimonial.to_user.username }}</span>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold text-gray-700">Testimonial:</span> <span class="text-gray-900">{{ testimonial.testimonials }}</span>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold text-gray-700">Updated Date:</span> <span class="text-gray-900">{{ testimonial.updated_date }}</span>
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold text-gray-700">State of Request:</span> <span class="text-gray-900">{{ testimonial.get_state_of_request_display }}</span>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="py-4 text-center text-gray-700">No requested testimonials found.</li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
+{% endblock content %}

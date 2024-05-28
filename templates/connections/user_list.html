@@ -1,10 +1,31 @@
-<h1>List of Users</h1>
-<ul>
-    {% for user in users %}
-        {% if user.status == 'none' %}
-        <li>{{ user.username }} - <a href="{% url 'send_connection_request' user.id %}">Send Connection Request</a></li>
-        {% else %}
-        <li>{{ user.username }} - <a href="{% url 'send_connection_request' user.id %}">Pending Connection Request</a></li>
-        {% endif %}
-    {% endfor %}
-</ul>
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">List of Users</h1>
+        <ul class="divide-y divide-gray-200">
+            {% for user in users %}
+                <li class="py-4 flex items-center justify-between">
+                    <span class="text-lg font-medium text-gray-900">{{ user.username }}</span>
+                    {% if user.status == 'none' %}
+                        <a href="{% url 'send_connection_request' user.id %}" class="bg-violet-500 text-white py-2 px-6 font-semibold rounded hover:bg-violet-600 transition duration-300">
+                            connect
+                        </a>
+                    {% else %}
+                        <span class="text-gray-500 bg-gray-100 py-2 px-4 rounded">Pending Connection Request</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
+{% endblock content %}

@@ -1,61 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Contact Details</title>
-</head>
-<body>
-    <h1>Edit Contact Details</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="show_on_bni_public_websites">Show on BNI Public Websites:</label>
-
-        <input type="checkbox" name="show_on_bni_public_websites" value="on">
-        <br>
-        <label for="billing_address_quick_copy">Billing Address Quick Copy:</label>
-        <textarea id="billing_address_quick_copy" name="billing_address_quick_copy">{{ initial_data.billing_address_quick_copy }}</textarea>
-        <br>
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" value="{{ initial_data.phone }}" required>
-        <br>
-        <label for="direct_number">Direct Number:</label>
-        <input type="text" id="direct_number" name="direct_number" value="{{ initial_data.direct_number }}">
-        <br>
-        <label for="home">Home:</label>
-        <input type="text" id="home" name="home" value="{{ initial_data.home }}">
-        <br>
-        <label for="mobile_number">Mobile Number:</label>
-        <input type="text" id="mobile_number" name="mobile_number" value="{{ initial_data.mobile_number }}">
-        <br>
-        <label for="pager">Pager:</label>
-        <input type="text" id="pager" name="pager" value="{{ initial_data.pager }}">
-        <br>
-        <label for="voice_mail">Voice Mail:</label>
-        <input type="text" id="voice_mail" name="voice_mail" value="{{ initial_data.voice_mail }}">
-        <br>
-        <label for="toll_free">Toll Free:</label>
-        <input type="text" id="toll_free" name="toll_free" value="{{ initial_data.toll_free }}">
-        <br>
-        <label for="fax">Fax:</label>
-        <input type="text" id="fax" name="fax" value="{{ initial_data.fax }}">
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ initial_data.email }}" required>
-        <br>
-        <label for="receive_updates_from_bni">Receive updates from BNI:</label>
-        <input type="checkbox" id="receive_updates_from_bni" name="receive_updates_from_bni" {% if initial_data.receive_updates_from_bni %}checked{% endif %}>
-        <br>
-        <label for="share_revenue_data_with_bni_director">Share revenue data with BNI Director:</label>
-        <input type="checkbox" id="share_revenue_data_with_bni_director" name="share_revenue_data_with_bni_director" {% if initial_data.share_revenue_data_with_bni_director %}checked{% endif %}>
-        <br>
-        <label for="website">Website:</label>
-        <input type="url" id="website" name="website" value="{{ initial_data.website }}">
-        <br>
-        <label for="social_networking_links">Social Networking Links:</label>
-        <input type="text" value="{{ initial_data.social_networking_links }}"/>
-        <br>
-        <input type="submit" value="Submit">
-    </form>
+{% extends 'base.html' %}
+{% block content %}
+<body class="bg-gray-100">
+    <div class="max-w-4xl md:min-w-[50%]  p-5">
+        <h1 class="text-3xl font-semibold mb-6 flex justify-center">Edit Contact Details</h1>
+        <form method="post" class="bg-white p-6 rounded shadow-sm">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <label for="show_on_bni_public_websites" class="inline-flex items-center">
+                        <input type="checkbox" id="show_on_bni_public_websites" name="show_on_bni_public_websites" value="on" class="form-checkbox h-4 w-4 mr-2">
+                        Show on Victory Connect's Public Websites
+                    </label>
+                </div>
+                <div>
+                    <label for="billing_address_quick_copy" class="block">Billing Address Quick Copy:</label>
+                    <textarea id="billing_address_quick_copy" name="billing_address_quick_copy" class="form-textarea mt-1 border p-1 rounded block w-full">{{ initial_data.billing_address_quick_copy }}</textarea>
+                </div>
+                <div>
+                    <label for="phone" class="block">Phone:</label>
+                    <input type="text" id="phone" name="phone" value="{{ initial_data.phone }}" required class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="direct_number" class="block">Direct Number:</label>
+                    <input type="text" id="direct_number" name="direct_number" value="{{ initial_data.direct_number }}" class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="home" class="block">Home:</label>
+                    <input type="text" id="home" name="home" value="{{ initial_data.home }}" class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="mobile_number" class="block">Mobile Number:</label>
+                    <input type="text" id="mobile_number" name="mobile_number" value="{{ initial_data.mobile_number }}" class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="pager" class="block">Pager:</label>
+                    <input type="text" id="pager" name="pager" value="{{ initial_data.pager }}" class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="voice_mail" class="block">Voice Mail:</label>
+                    <input type="text" id="voice_mail" name="voice_mail" value="{{ initial_data.voice_mail }}" class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="toll_free" class="block">Toll Free:</label>
+                    <input type="text" id="toll_free" name="toll_free" value="{{ initial_data.toll_free }}" class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="fax" class="block">Fax:</label>
+                    <input type="text" id="fax" name="fax" value="{{ initial_data.fax }}" class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="email" class="block">Email:</label>
+                    <input type="email" id="email" name="email" value="{{ initial_data.email }}" required class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="receive_updates_from_bni" class="inline-flex items-center">
+                        <input type="checkbox" id="receive_updates_from_bni" class="h-4 w-4 mr-2" name="receive_updates_from_bni" {% if initial_data.receive_updates_from_bni %}checked{% endif %} class="form-checkbox">
+                        Receive updates from BNI
+                    </label>
+                </div>
+                <div>
+                    <label for="share_revenue_data_with_bni_director" class="inline-flex items-center">
+                        <input type="checkbox" id="share_revenue_data_with_bni_director" class="h-4 w-4 mr-2" name="share_revenue_data_with_bni_director" {% if initial_data.share_revenue_data_with_bni_director %}checked{% endif %} class="form-checkbox">
+                        Share revenue data with BNI Director
+                    </label>
+                </div>
+                <div>
+                    <label for="website" class="block">Website:</label>
+                    <input type="url" id="website" name="website" value="{{ initial_data.website }}" class="form-input border p-2 rounded mt-1 block w-full">
+                </div>
+                <div>
+                    <label for="social_networking_links" class="block">Social Networking Links:</label>
+                    <input type="text" id="social_networking_links" name="social_networking_links" value="{{ initial_data.social_networking_links }}" class="form-input border rounded p-2 mt-1 block w-full">
+                </div>
+            </div>
+            <button type="submit" class="mt-4 w-full bg-violet-500 hover:bg-violet-600 text-white font-bold py-2 px-4 rounded">Submit</button>
+        </form>
+    </div>
 </body>
-</html>
+{%endblock content%}

@@ -61,7 +61,7 @@ profile =[
     path('add_gallery', add_gallery, name='add_gallery'),
 ]
 
-connections = [
+connections = [ 
     path('send_connection_request/<int:user_id>', send_connection_request, name='send_connection_request'),
     path('accept_connection_request/<int:connection_id>', accept_connection_request, name='accept_connection_request'),
     path('connections', connection_list, name='connection_list'),

@@ -4,23 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Testimonial</title>
+    <!-- Include Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Request Testimonial</h1>
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <div>
-            <label for="message">Message:</label><br>
-            <textarea id="message" name="message" rows="4" cols="50"></textarea>
-        </div>
-        <input type="submit" value="Request Testimonial">
-    </form>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8 px-4">
+        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Request Testimonial</h1>
+        
+        {% if messages %}
+            <ul class="mb-4">
+                {% for message in messages %}
+                    <li class="text-red-500">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="post" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="message" class="block text-gray-700 font-bold mb-2">Message:</label>
+                <textarea id="message" name="message" rows="4" class="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:border-blue-500" placeholder="Write your message here..."></textarea>
+            </div>
+            <div class="flex justify-center">
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">Request Testimonial</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

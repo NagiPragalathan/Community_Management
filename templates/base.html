@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Victory Connect</title>
+    
+    <style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col justify-between w-full">
+        <header class="py-4 pl-4 bg-[#7c40d8] flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-4xl text-white font-bold">Victory Connect</h1>
+            </div>
+            <div class="md:hidden flex items-center pr-10">
+                <i class="fa-solid fa-bars text-white text-2xl"></i>
+            </div>
+        </header>
+        <nav class="flex flex-row justify-around mt-5 overflow-x-auto scrollbar-hide mx-1 z-10">
+            <div class="relative group p-4">
+                <a href="#" class="bg-[#7c40d8] rounded-lg p-2 px-6 text-xl text-white font-semibold mx-2 hover:text-[#7c40d8] hover:bg-white hover:border-[#7c40d8] border">Network</a>
+                <div class="  left-0 bg-[#7c40d8] rounded-lg py-3 text-xl text-white font-semibold mx-2 flex flex-col hidden group-hover:flex">
+                    <a href="#" class="p-1 text-sm font-semibold hover:bg-purple-200 hover:text-black hover:border-2 border-black">Groups</a>
+                    <a href="#" class="p-1 text-sm font-semibold hover:bg-purple-200 hover:text-black hover:border-2 border-black">Connections</a>
+                    <a href="#" class="p-1 text-sm font-semibold hover:bg-purple-200 hover:text-black hover:border-2 border-black">Testimonials</a>
+                    <a href="#" class="p-1 text-sm font-semibold hover:bg-purple-200 hover:text-black hover:border-2 border-black">Picture Gallery</a>
+                </div>
+            </div>
+            <div class="relative group p-4">
+                <a href="#" class="bg-[#7c40d8] rounded-lg p-2 px-6 text-xl text-white font-semibold mx-2 hover:text-[#7c40d8] hover:bg-white hover:border-[#7c40d8] border">Operations</a>
+                <div class=" left-0 bg-[#7c40d8] rounded-lg py-2 text-xl text-white font-semibold mx-2 flex flex-col hidden group-hover:flex">
+                    <a href="#" class="p-1 text-sm font-semibold hover:bg-purple-200 hover:text-black hover:border-2 border-black">Chapter</a>
+                </div>
+            </div>
+            <div class="relative group p-4">
+                <a href="#" class="bg-[#7c40d8] rounded-lg p-2 px-6 text-xl text-white font-semibold mx-2 hover:text-[#7c40d8] hover:bg-white hover:border-[#7c40d8] border">Reports</a>
+                <div class=" left-0 bg-[#7c40d8] rounded-lg py-2 text-xl text-white font-semibold mx-2 flex flex-col hidden group-hover:flex">
+                    <a href="#" class="p-1 text-sm font-semibold hover:bg-purple-200 hover:text-black hover:border-2 border-black">Chapter</a>
+                </div>
+            </div>
+            <div class="relative group p-4">
+                <a href="#" class="bg-[#7c40d8] rounded-lg p-2 px-6 text-xl text-white font-semibold mx-2 hover:text-[#7c40d8] hover:bg-white hover:border-[#7c40d8] border">Updates</a>
+            </div>
+        </nav>
+        
+        <main class="flex-grow flex justify-center my-4">
+            {% block content %}
+            {% endblock content %}
+        </main>
+
+        <footer class="bg-white text-center py-6">
+            <div class="flex flex-col items-center justify-end h-[100%]">
+                <p class="font-semibold text-lg mb-2">© 2024 Victory Connect. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-purple-600 hover:text-purple-800 hover:underline font-semibold">Terms of Use</a>
+                    <p class="text-2xl font-bold">|</p>
+                    <a href="#" class="text-purple-600 hover:text-purple-800 hover:underline font-semibold">Privacy Policy</a>
+                    <p class="text-2xl font-bold">|</p>
+                    <a href="#" class="text-purple-600 hover:text-purple-800 hover:underline font-semibold">Browser Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
