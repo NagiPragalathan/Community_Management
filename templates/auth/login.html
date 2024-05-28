@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class=" ">
-  <form method="post" action="{% url 'login'%}" class=" bg-[#0F172A] min-h-[100vh] flex flex-col justify-around items-center md:flex-row md:justify-center  ">
+  <form method="post" action="{% url 'login'%}" class=" bg-[#0F172A] min-h-[100vh] flex flex-col justify-around items-center md:flex-row md:justify-center  " novalidate>
     {% csrf_token %}
     <div class="flex items-center justify-center md:w-[60vw] max-[w-80%] ">
       <img src="{% static 'assets/design.png' %}" class=" md:px-0 px-10 mt-10" alt="">
@@ -22,15 +22,15 @@
       </div>
       <div class="input-box flex flex-col">
         <label for="email" class="text-[#E4E4E7] mt-5">Email address</label>
-        <input type="email" placeholder="example@gmail.com" id="email" name="username" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2">
-        <label for="password" class="text-[#E4E4E7] mt-3">password</label>
-        <input type="password" id="password" name="password" placeholder="********" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white inline-block w-80 mt-2">
+        <input type="email" placeholder="example@gmail.com" id="email" name="username" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address.">
+        <label for="password" class="text-[#E4E4E7] mt-3">Password</label>
+        <input type="password" id="password" name="password" placeholder="********" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white inline-block w-80 mt-2" required minlength="8" title="Password must be at least 8 characters long.">
         <div class="flex justify-around mt-5 px-2">
           <div class="flex ">
             <input type="checkbox" class="bg-[#0F172A] text-[#0F172A] border border-[#94A3B8]">
             <p class=" text-sm text-[#94A3B8] px-2">Remember me</p>
           </div>
-          <a href="{% url 'forgot_password' %}" class="text-sm text-blue-700 hover:text-blue-500">Forgot password ?</a>
+          <a href="{% url 'forgot_password' %}" class="text-sm text-blue-700 hover:text-blue-500">Forgot password?</a>
         </div>
         <button class="bg-blue-600 rounded-full text-xl py-2 text-white w-40 mt-5 hover:bg-blue-800">Login</button>
 
