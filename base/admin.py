@@ -49,7 +49,6 @@ class MainProfileAdmin(admin.ModelAdmin):
     list_filter = ('membership_status', 'gender', 'industry')
     autocomplete_fields = ['user', 'Chapter']
     readonly_fields = ['uuid']
-    filter_horizontal = ['chapters']
 
     fieldsets = (
         (None, {
