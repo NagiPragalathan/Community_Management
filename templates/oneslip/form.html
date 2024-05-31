@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New One-to-One Slip</title>
+</head>
+<body>
+    <h1>New One-to-One Slip</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'onetooneslip_list' %}">Back to One-to-One Slip list</a>
+</body>
+</html>

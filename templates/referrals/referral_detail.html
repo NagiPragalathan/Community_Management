@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Referral Detail</title>
+</head>
+<body>
+    <h1>Referral Detail</h1>
+
+    <p><strong>Chapter Name:</strong> {{ referral.chapter_name }}</p>
+    <p><strong>Region Name:</strong> {{ referral.region_name }}</p>
+    <p><strong>Referral:</strong> {{ referral.referral }}</p>
+    <p><strong>Referral Type:</strong> {{ referral.get_referral_type_display }}</p>
+    <p><strong>Referral Status:</strong> {{ referral.get_referral_status_display }}</p>
+    <p><strong>Address:</strong> {{ referral.address }}</p>
+    <p><strong>Telephone:</strong> {{ referral.telephone }}</p>
+    <p><strong>Email:</strong> {{ referral.email }}</p>
+    <p><strong>Comments:</strong> {{ referral.comments }}</p>
+
+    <a href="{% url 'referral_edit' pk=referral.pk %}">Edit</a>
+    <a href="{% url 'referral_list' %}">Back to list</a>
+</body>
+</html>

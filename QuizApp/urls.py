@@ -15,6 +15,9 @@ from base.views.chat import *
 from base.views.Testimonials import *
 from base.views.GroupCURD import *
 from base.views.AccountSettings import *
+from base.views.tyfcb import *
+from base.views.referrals import *
+
 
 from django.contrib.auth.views import PasswordResetConfirmView
 
@@ -98,6 +101,21 @@ group = [
      path('select2/', include('django_select2.urls')),
 ]
 
+tyfcb =[
+    path('tyfcb/', tyfcb_list, name='tyfcb_list'),
+    path('tyfcb/new/', tyfcb_create, name='tyfcb_create'),
+    path('tyfcb/<uuid:pk>/', tyfcb_detail, name='tyfcb_detail'),
+    path('tyfcb/<uuid:pk>/edit/', tyfcb_edit, name='tyfcb_edit'),
+]
+
+referrals = [
+    path('referrals/', referral_list, name='referral_list'),
+    path('referrals/new/', referral_create, name='referral_create'),
+    path('referrals/<uuid:pk>/', referral_detail, name='referral_detail'),
+    path('referrals/<uuid:pk>/edit/',referral_edit, name='referral_edit'),
+]
+
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -107,6 +125,7 @@ urlpatterns.extend(profile)
 urlpatterns.extend(testimonial)
 urlpatterns.extend(connections)
 urlpatterns.extend(account_settings)
+urlpatterns.extend(tyfcb)
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

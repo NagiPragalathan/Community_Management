@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>One-to-One Slip Detail</title>
+</head>
+<body>
+    <h1>One-to-One Slip Detail</h1>
+
+    <p><strong>Region Name:</strong> {{ onetooneslip.region_name }}</p>
+    <p><strong>Chapter Name:</strong> {{ onetooneslip.chapter_name }}</p>
+    <p><strong>Invited By:</strong> {{ onetooneslip.invited_by }}</p>
+    <p><strong>Location:</strong> {{ onetooneslip.location }}</p>
+    <p><strong>Conversation:</strong> {{ onetooneslip.conversation }}</p>
+    <p><strong>Date:</strong> {{ onetooneslip.date }}</p>
+
+    <a href="{% url 'onetooneslip_edit' pk=onetooneslip.pk %}">Edit</a>
+    <a href="{% url 'onetooneslip_list' %}">Back to list</a>
+</body>
+</html>

@@ -18,3 +18,6 @@ NavBar :https://tailwindcomponents.com/component/megamenu
 	Review My CEU Slips
 	Received Referrals Report
 	Print Your Weekly Slips
+
+
+chapter and region *  in db

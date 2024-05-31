@@ -3,3 +3,4 @@ django_otp
 django-cors-headers
 pillow
 django-jazzmin
+django-select2

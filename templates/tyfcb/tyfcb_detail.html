@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TYFCB Detail</title>
+</head>
+<body>
+    <h1>TYFCB Detail</h1>
+
+    <p><strong>Chapter Name:</strong> {{ tyfcb.chapter_name }}</p>
+    <p><strong>Region Name:</strong> {{ tyfcb.region_name }}</p>
+    <p><strong>Referral Amount:</strong> {{ tyfcb.referral_amount }}</p>
+    <p><strong>Business Type:</strong> {{ tyfcb.get_business_type_display }}</p>
+    <p><strong>Referral Type:</strong> {{ tyfcb.get_referral_type_display }}</p>
+    <p><strong>Comments:</strong> {{ tyfcb.comments }}</p>
+
+    <a href="{% url 'tyfcb_edit' pk=tyfcb.pk %}">Edit</a>
+    <a href="{% url 'tyfcb_list' %}">Back to list</a>
+</body>
+</html>

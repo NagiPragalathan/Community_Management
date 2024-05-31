@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TYFCB List</title>
+</head>
+<body>
+    <h1>TYFCB List</h1>
+    <ul>
+        {% for tyfcb in tyfcbs %}
+            <li><a href="{% url 'tyfcb_detail' pk=tyfcb.pk %}">{{ tyfcb }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'tyfcb_create' %}">Add a new TYFCB</a>
+</body>
+</html>

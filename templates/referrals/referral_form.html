@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Referral</title>
+</head>
+<body>
+    <h1>New Referral</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'referral_list' %}">Back to Referral list</a>
+</body>
+</html>

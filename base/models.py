@@ -417,3 +417,89 @@ class Group(models.Model):
     class Meta:
         verbose_name = 'Group'
         verbose_name_plural = 'Groups'
+
+
+
+
+class TYFCB(models.Model):
+    BUSINESS_TYPE_CHOICES = [
+        ('new', 'New'),
+        ('repeat', 'Repeat'),
+    ]
+
+    REFERRAL_TYPE_CHOICES = [
+        ('tier_1', 'Tier 1'),
+        ('tier_2', 'Tier 2'),
+        ('tier_3+', 'Tier 3+'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    chapter_name = models.ForeignKey(ChapterName, on_delete=models.CASCADE)
+    region_name = models.ForeignKey(Region, on_delete=models.CASCADE)
+    referral_amount = models.IntegerField()
+    business_type = models.CharField(max_length=10, choices=BUSINESS_TYPE_CHOICES)
+    referral_type = models.CharField(max_length=10, choices=REFERRAL_TYPE_CHOICES)
+    comments = models.TextField()
+
+    def __str__(self):
+        return f"{self.chapter_name} - {self.region_name} - {self.referral_amount}"
+    
+
+class Referral(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    chapter_name = models.ForeignKey(ChapterName, on_delete=models.CASCADE)
+    region_name = models.ForeignKey(Region, on_delete=models.CASCADE)
+    referral = models.TextField()
+    TIER1 = 'tier 1'
+    TIER2 = 'tier 2'
+    REFERRAL_TYPE_CHOICES = [
+        (TIER1, 'Tier 1'),
+        (TIER2, 'Tier 2'),
+    ]
+    referral_type = models.CharField(
+        max_length=6,
+        choices=REFERRAL_TYPE_CHOICES,
+        default=TIER1,
+    )
+    ID_GIVEN = 'id_given'
+    CONTACT_LATER = 'contact_later'
+    REFERRAL_STATUS_CHOICES = [
+        (ID_GIVEN, 'ID Given'),
+        (CONTACT_LATER, 'Contact Later'),
+    ]
+    referral_status = models.CharField(
+        max_length=12,
+        choices=REFERRAL_STATUS_CHOICES,
+        default=ID_GIVEN,
+    )
+    address = models.TextField(blank=True, null=True)
+    telephone = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.chapter_name} - {self.region_name} - {self.referral_type} - {self.referral_status}"
+
+
+class OneToOneSlip(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    region_name = models.ForeignKey(Region, on_delete=models.CASCADE)
+    chapter_name = models.ForeignKey(ChapterName, on_delete=models.CASCADE)
+    invited_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    location = models.CharField(max_length=255)
+    conversation = models.TextField()
+    date = models.DateField()
+
+    def __str__(self):
+        return f"One-to-One Slip: {self.region_name} - {self.chapter_name} - {self.invited_by.username}"
+    
+
+class ChapterEdUnit(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    course_title = models.CharField(max_length=255)
+    credits = models.FloatField()
+    qty_earned = models.IntegerField(default=0)
+    total_credit_last_week = models.FloatField()
+
+    def __str__(self):
+        return self.course_title

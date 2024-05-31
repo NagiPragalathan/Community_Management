@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New TYFCB</title>
+</head>
+<body>
+    <h1>New TYFCB</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'tyfcb_list' %}">Back to TYFCB list</a>
+</body>
+</html>
