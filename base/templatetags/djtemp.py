@@ -1672,3 +1672,9 @@ Description: Evaluates the given expression arg.
 Syntax: {{ arg|Eval }}
 Example: If arg is "2 + 3 * 4", {{ arg|Eval }} will output 14.'''
     return eval(arg)
+
+
+@register.filter(name='startswith')
+def startswith(value, arg):
+    """Check if a string starts with the given argument."""
+    return value.lower().startswith(arg.lower())

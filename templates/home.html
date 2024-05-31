@@ -1,28 +1,15 @@
-{% extends 'base.html'%} {% load static %} {% block content%}
-<div class="p-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-        <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-            <div class="flex justify-between mb-6">
-                <div>
-                    <div class="flex items-center mb-1">
-                        <div class="text-2xl font-semibold">2</div>
-                    </div>
-                    <div class="text-sm font-medium text-gray-400">My Groups</div>
-                </div>
-                 <div class="dropdown">
-                    <button type="button" class="dropdown-toggle text-gray-400 hover:text-gray-600"><i class="ri-more-fill"></i></button>
-                    <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
-                        <li>
-                            <a href="#" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">View Connections</a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Views Groups</a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">My groups</a>
-                        </li>
-                    </ul>
-                </div> 
+{% extends 'base.html'%}
+{% load static %}
+{% block content%}
+        <div class="mt-8 mb-5 flex flex-col min-h-[50vh] ">
+            <div class="flex justify-evenly md:justify-around items-center  border-b-2 border-black mx-10">
+                <h1 class="toggle-list text-xl font-bold px-2 flex items-center " data-target="dropdown-1">My BNI Bussiness
+                    <svg class="fill-current w-8 h-6 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                    </svg>
+                </h1>
+                <p class="text-[#7F60F9] hidden md:flex">My personal Participation Report</p>
+                <p class="font-bold hidden md:flex">Renewal Due Date: 01/09/2024</p>
             </div>
             <a href="" class="text-[#f84525] font-medium text-sm hover:text-red-800">View</a>
         </div>

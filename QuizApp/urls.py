@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from QuizApp import settings
+from django.conf.urls.i18n import i18n_patterns
+
 
 # Django views
 from base.views.auth import *
@@ -28,9 +30,14 @@ common = [
 
 
 admin_ = [
-    path('admin/', admin.site.urls),   
-    path('admin/', admin.site.urls, name='admin'), 
+    # path('admin/', admin.site.urls),   
+    path('admin/', admin.site.urls, name='admin'),
 ]
+
+admin_ += i18n_patterns(
+    path('admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
+)
 
 auth = [
     path('accounts/', include('django.contrib.auth.urls')),  # Use built-in authentication views

@@ -32,6 +32,7 @@ MAX_GROUPS_PER_USER = 10
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -43,6 +44,17 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('es', 'Spanish'),
+    ('ta', 'Tamil'),
+    ('hi', 'Hindi'),
+]
+
+
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -52,15 +64,15 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:8000',  # Replace with the actual port you are using
+    'http://127.0.0.1:8000',
     'http://localhost:8000',
-    # Add other allowed origins as needed
 ]
-ROOT_URLCONF = "QuizApp.urls"
 
+ROOT_URLCONF = "QuizApp.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -78,7 +90,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "QuizApp.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -147,4 +158,84 @@ EMAIL_HOST_USER = ''  # TODO: Your email
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_PASSWORD = ''  # TODO: Give APP Password here
+EMAIL_USE_TLS = True
+
+
+
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Victory Connect Admin",
+    "site_header": "Victory Connect",
+    "site_brand": "Victory Connect",
+    "login_logo": None,
+    "login_logo_dark": None,
+    "site_logo_classes": "img-circle",
+    "site_icon": None,
+    "welcome_sign": "Welcome to the Victory Connect Admin Portal",
+    "search_model": ["auth.User", "auth.Group"],
+    "user_avatar": None,
+
+    ############
+    # Top Menu #
+    ############
+
+    "topmenu_links": [
+
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+        # {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+        {"model": "auth.User"},
+        {"app": "books"},
+    ],
+
+
+    #############
+    # Side Menu #
+    #############
+
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
+    "custom_links": {
+        "books": [{
+            "name": "Make Messages", 
+            "url": "make_messages", 
+            "icon": "fas fa-comments",
+            "permissions": ["books.view_book"]
+        }]
+    },
+
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+
+    #################
+    # Related Modal #
+    #################
+
+    "related_modal_active": False,
+
+    #############
+    # UI Tweaks #
+    #############
+
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+
+    ###############
+    # Change view #
+    ###############
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
+    "language_chooser": True,
+}
+
 EMAIL_USE_TLS = True

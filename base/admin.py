@@ -5,6 +5,7 @@ from .models import (
     Chapter, ChapterMemberPosition, ChapterPosition, MainProfile, ChapterName
 )
 from django import forms
+from django.contrib.auth.models import User
 
 class ChapterMemberPositionInline(admin.TabularInline):
     model = ChapterMemberPosition
@@ -49,6 +50,7 @@ class MainProfileAdmin(admin.ModelAdmin):
     list_filter = ('membership_status', 'gender', 'industry')
     autocomplete_fields = ['user', 'Chapter']
     readonly_fields = ['uuid']
+    # filter_horizontal = ['']
 
     fieldsets = (
         (None, {

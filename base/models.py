@@ -10,8 +10,6 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
-
-
 class OTPVerification(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.EmailField()
@@ -66,7 +64,7 @@ class MainProfile(models.Model):
     requested_speciality = models.CharField(max_length=255, blank=True, null=True)
     membership_status = models.CharField(max_length=11, choices=MEMBERSHIP_STATUS_CHOICES)
     RenewalDueDate = models.CharField(max_length=255, blank=True, null=True)
-    Chapter = models.ForeignKey('ChapterName', related_name='members', on_delete=models.SET_NULL, blank=True, null=True)  # Reference to Chapter model
+    Chapter = models.ForeignKey('ChapterName', related_name='members', on_delete=models.SET_NULL, blank=True, null=True) 
     my_business = models.TextField(blank=True, null=True)
     keywords = models.CharField(max_length=255, blank=True, null=True)
 
@@ -193,7 +191,6 @@ class Message(models.Model):
     def mark_as_seen(self):
         self.seen = True
         self.save()
-        
         
 class Testimonial(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
