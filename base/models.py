@@ -457,7 +457,7 @@ class Referral(models.Model):
         (TIER2, 'Tier 2'),
     ]
     referral_type = models.CharField(
-        max_length=6,
+        max_length=13,
         choices=REFERRAL_TYPE_CHOICES,
         default=TIER1,
     )
@@ -468,7 +468,7 @@ class Referral(models.Model):
         (CONTACT_LATER, 'Contact Later'),
     ]
     referral_status = models.CharField(
-        max_length=12,
+        max_length=13,
         choices=REFERRAL_STATUS_CHOICES,
         default=ID_GIVEN,
     )
