@@ -5,6 +5,9 @@ from base.models import CityData
 from base.form.forms import CityDataForm
 
 
+def index(request):
+    return render(request, "index.html")
+
 def home(request):
     return render(request, "home.html")
 

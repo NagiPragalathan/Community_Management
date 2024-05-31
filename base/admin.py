@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 from .models import (
-    CountryData, CityData, Region, RegionPosition, RegionMemberPosition,
+    CountryData, CityData, Region, RegionPosition, RegionMemberPosition, Group,
     Chapter, ChapterMemberPosition, ChapterPosition, MainProfile, ChapterName
 )
 from django import forms
@@ -138,3 +138,12 @@ class ChapterNameAdmin(admin.ModelAdmin):
     list_display = ('chapter_name', 'last_updated_date')
     search_fields = ('chapter_name',)
     list_filter = ('last_updated_date',)
+
+class GroupAdmin(admin.ModelAdmin):
+    list_display = ('name', 'creator', 'group_type', 'access_type', 'language', 'group_counts', 'lastupdateddate')
+    search_fields = ('name', 'creator__username', 'group_type', 'access_type', 'language')
+    list_filter = ('group_type', 'access_type', 'language')
+    filter_horizontal = ('invite_connections',)
+    readonly_fields = ('lastupdateddate',)
+
+admin.site.register(Group, GroupAdmin)

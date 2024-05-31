@@ -2,3 +2,19 @@ https://www.bootdey.com/snippets/view/file-manager-with-folders-recent-files-and
 
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 
+NavBar :https://tailwindcomponents.com/component/megamenu
+
+
+
+
+	Submit TYFCB Slips
+	Submit Referral Slips
+	Submit One-to-One Slips
+	Submit CEU Slips
+	Track Your Referrals Received Online
+	Review My TYFCB Slips
+	Review My Referral Slips
+	Review My One-to-One Slips
+	Review My CEU Slips
+	Received Referrals Report
+	Print Your Weekly Slips

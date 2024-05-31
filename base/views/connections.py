@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from base.models import Connection
+from base.models import Connection, MainProfile
 from django.contrib.auth.models import User
 
 
@@ -31,8 +31,9 @@ def list_users(request):
             i.status = 'pending'
         else:
             i.status = 'none'
+    profiles = MainProfile.objects.filter(user__in=users)
             
-    return render(request, 'connections/user_list.html', {'users': users})
+    return render(request, 'connections/user_list.html', {'profiles': profiles})
 
 def send_connection_request(request, user_id):
     print("req:", request.method)
