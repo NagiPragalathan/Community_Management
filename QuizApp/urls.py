@@ -126,6 +126,7 @@ urlpatterns.extend(testimonial)
 urlpatterns.extend(connections)
 urlpatterns.extend(account_settings)
 urlpatterns.extend(tyfcb)
+urlpatterns.extend(referrals)
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
