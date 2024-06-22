@@ -1,16 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Profile</title>
-    <!-- Add Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 font-sans">
-    <div class="max-w-xl md:min-w-[50%] mx-auto  mt-10 p-6 md:px-12 bg-white rounded-lg shadow-xl shadow-black">
+
+<div class=" font-sans flex justify-center p-10">
+    <div class="max-w-xl md:min-w-[50%] mx-auto p-6 bg-white rounded-lg shadow-xl shadow-black" style="margin:0px">
         <h1 class="text-3xl text-purple-500 font-bold text-center mb-6">Add Profile</h1>
         {% if messages %}
             <div class="mb-4">
@@ -97,7 +89,11 @@
             </div>
             <div>
                 <label for="chapter" class="block text-sm font-medium text-gray-700">Chapter:</label>
-                <input type="text" name="chapter" id="chapter" class="mt-1 border  p-2 block w-full rounded-md focus:ring focus:ring-indigo-200">
+                <select name="chapter" id="chapter" class="mt-1 border p-2 block w-full rounded-md focus:ring focus:ring-indigo-200">
+                    {% for chapter in chapters %}
+                        <option value="{{ chapter.id }}">{{ chapter.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div>
                 <label for="my_business" class="block text-sm font-medium text-gray-700">My Business:</label>
@@ -110,6 +106,5 @@
             <button type="submit" class="w-full bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 transition duration-300">Submit</button>
         </form>
     </div>
-</body>
-</html>
+</div>
 {% endblock content %}

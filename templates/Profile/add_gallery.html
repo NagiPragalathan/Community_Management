@@ -1,22 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Gallery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .delete-btn {
-            background: rgba(255, 255, 255, 0.8);
-            border: none;
-            border-radius: 50%;
-            padding: 0.25rem;
-        }
-    </style>
-</head>
-<body class="bg-gray-100 p-6">
+<div class="bg-gray-100 p-6">
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">My Image Gallery</h1>
         <form method="post" enctype="multipart/form-data" class="mb-6">
@@ -75,6 +59,5 @@
             });
         });
     </script>
-</body>
-</html>
+</div>
 {% endblock content %}

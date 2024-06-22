@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from base.models import MainProfile, ContactDetails, UserProfile, Address, BillingAddress, Bio, Gallery
+from base.models import MainProfile, ContactDetails, UserProfile, Address, BillingAddress, Bio, Gallery, ChapterName
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -56,7 +56,8 @@ def add_profile(request):
         messages.success(request, 'Profile added successfully.')
     try:
         profile = MainProfile.objects.get(user=request.user)
-        return render(request, 'profile/add_profile.html', {'data':profile})
+        chapter = ChapterName.objects.all()
+        return render(request, 'profile/add_profile.html', {'data':profile, 'chapter':chapter})
     except:
         return render(request, 'profile/add_profile.html')
         

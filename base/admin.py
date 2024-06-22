@@ -139,11 +139,14 @@ class ChapterNameAdmin(admin.ModelAdmin):
     search_fields = ('chapter_name',)
     list_filter = ('last_updated_date',)
 
+@admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
-    list_display = ('name', 'creator', 'group_type', 'access_type', 'language', 'group_counts', 'lastupdateddate')
-    search_fields = ('name', 'creator__username', 'group_type', 'access_type', 'language')
-    list_filter = ('group_type', 'access_type', 'language')
-    filter_horizontal = ('invite_connections',)
-    readonly_fields = ('lastupdateddate',)
+    list_display = ('name', 'creator', 'group_type', 'access_type', 'lastupdateddate')
+    search_fields = ('name', 'creator__username', 'group_type', 'access_type')
+    list_filter = ('group_type', 'access_type', 'lastupdateddate')
 
-admin.site.register(Group, GroupAdmin)
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'creator', 'group_type', 'access_type', 'language', 'logo', 'invite_connections', 'description')
+        }),
+    )

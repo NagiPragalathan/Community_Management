@@ -33,7 +33,6 @@ common = [
 
 
 admin_ = [
-    # path('admin/', admin.site.urls),   
     path('admin/', admin.site.urls, name='admin'),
 ]
 
@@ -95,9 +94,9 @@ account_settings = [
 ]
 
 group = [
-    path('groups/', group_crud, name='group_crud'),
+      path('groups/', list_groups, name='list_groups'),
     path('groups/<uuid:pk>/', group_crud, name='group_crud'),
-    path('list_groups', list_groups, name='list_groups'),
+    path('groups/new/', group_crud, name='group_crud_new'),
      path('select2/', include('django_select2.urls')),
 ]
 

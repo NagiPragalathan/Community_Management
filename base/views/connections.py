@@ -19,21 +19,26 @@ def connection_list(request):
     return render(request, 'connections/connections.html', {'connections': connections})
 
 
+@login_required
 def list_users(request):
     # Get the current user's accepted and pending connections
     accepted_connections = Connection.objects.filter(user=request.user, status='accepted').values_list('connection', flat=True)
     pending_connections = Connection.objects.filter(user=request.user, status='pending').values_list('connection', flat=True)
 
     # Filter users excluding the current user and their accepted and pending connections
-    users = User.objects.exclude(id=request.user.id).exclude(id__in=accepted_connections)
-    for i in users:
-        if i.id  in pending_connections:
-            i.status = 'pending'
-        else:
-            i.status = 'none'
+    users = User.objects.exclude(id=request.user.id).exclude(id__in=accepted_connections).exclude(id__in=pending_connections)
+    for user in users:
+        user.status = 'pending' if user.id in pending_connections else 'none'
+        print(user, user.status)
+
     profiles = MainProfile.objects.filter(user__in=users)
-            
+    print("Profiles:", profiles)  # Debug print
+
+    for profile in profiles:
+        print(profile.user.username, profile.user.status)  # Debug print
+
     return render(request, 'connections/user_list.html', {'profiles': profiles})
+
 
 def send_connection_request(request, user_id):
     print("req:", request.method)
