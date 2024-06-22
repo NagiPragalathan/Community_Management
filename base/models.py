@@ -447,6 +447,7 @@ class TYFCB(models.Model):
 
 class Referral(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referrals')
     chapter_name = models.ForeignKey(ChapterName, on_delete=models.CASCADE)
     region_name = models.ForeignKey(Region, on_delete=models.CASCADE)
     referral = models.TextField()
@@ -456,22 +457,14 @@ class Referral(models.Model):
         (TIER1, 'Tier 1'),
         (TIER2, 'Tier 2'),
     ]
-    referral_type = models.CharField(
-        max_length=13,
-        choices=REFERRAL_TYPE_CHOICES,
-        default=TIER1,
-    )
+    referral_type = models.CharField(max_length=13, choices=REFERRAL_TYPE_CHOICES, default=TIER1)
     ID_GIVEN = 'id_given'
     CONTACT_LATER = 'contact_later'
     REFERRAL_STATUS_CHOICES = [
         (ID_GIVEN, 'ID Given'),
         (CONTACT_LATER, 'Contact Later'),
     ]
-    referral_status = models.CharField(
-        max_length=13,
-        choices=REFERRAL_STATUS_CHOICES,
-        default=ID_GIVEN,
-    )
+    referral_status = models.CharField(max_length=13, choices=REFERRAL_STATUS_CHOICES, default=ID_GIVEN)
     address = models.TextField(blank=True, null=True)
     telephone = models.CharField(max_length=15, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
