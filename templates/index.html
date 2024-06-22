@@ -40,16 +40,16 @@
                             </button>
                         </div>
         
-                        <div class="hidden lg:flex lg:ml-16 lg:items-center lg:justify-center lg:space-x-10 xl:space-x-16">
+                        {% comment %} <div class="hidden lg:flex lg:ml-16 lg:items-center lg:justify-center lg:space-x-10 xl:space-x-16">
                             <a href="#" title="" class="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Features </a>
         
                             <a href="#" title="" class="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Pricing </a>
         
                             <a href="#" title="" class="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Network </a>
-                        </div>
+                        </div> {% endcomment %}
         
                         <div class="hidden lg:ml-auto lg:flex lg:items-center lg:space-x-10">
-                            <a href="#" title="" class="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Member Login </a>
+                            <a href="{% url 'login' %}" title="" class="text-base font-medium text-gray-900 transition-all duration-200 rounded focus:outline-none font-pj hover:text-opacity-50 focus:ring-1 focus:ring-gray-900 focus:ring-offset-2"> Member Login </a>
         
                             <a
                                 href="#"
@@ -137,7 +137,7 @@
                         <div class="absolute inset-0 h-2/3 bg-gray-50"></div>
                         <div class="relative mx-auto">
                             <div class="lg:max-w-6xl lg:mx-auto" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                                <img style="width: 77%; box-shadow: 0px 0px 20px 0px #9d9c9c;" class="transform scale-110" src="{% static 'images/Folders/image.png' %}" alt="Business Networking Illustration" />
+                                <img style="width: 77%; box-shadow: 0px 0px 20px 0px #9d9c9c; margin-top:15px;" class="transform scale-110" src="{% static 'images/Folders/image.png' %}" alt="Business Networking Illustration" />
                             </div>
                         </div>
                     </div>
@@ -183,7 +183,7 @@
                 <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
                     <div class="max-w-2xl mx-auto text-center">
                         <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">Frequently Asked Questions</h2>
-                        <p class="mt-4 text-base font-normal leading-7 text-gray-600 lg:text-lg lg:mt-6 lg:leading-8">Get answers to the most common questions about Vectory Connect.</p>
+                        <p class="mt-4 text-base font-normal leading-7 text-gray-600 lg:text-lg lg:mt-6 lg:leading-8">Get answers to the most common questions about Victory Connect.</p>
                     </div>
 
                     <div class="max-w-5xl mx-auto mt-12 overflow-hidden border border-gray-200 divide-y divide-gray-200 sm:mt-16 rounded-xl" x-data="{ active: 1 }">
@@ -201,7 +201,7 @@
                         >
                             <h3>
                                 <button @click="expanded = !expanded" :aria-expanded="expanded" class="flex items-center justify-between w-full px-6 py-5 text-lg font-semibold text-left text-gray-900 sm:p-6">
-                                    <span> Q. What is Vectory Connect? </span>
+                                    <span> Q. What is Victory Connect? </span>
                                     <span x-show="expanded" aria-hidden="true" class="ml-4">
                                         <svg class="w-6 h-6 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -217,7 +217,7 @@
 
                             <div x-show="expanded" x-collapse>
                                 <div class="px-6 pb-6">
-                                    <p class="text-base text-gray-600">Vectory Connect is a global business networking platform designed to help professionals connect, collaborate, and grow their businesses through valuable connections and resources.</p>
+                                    <p class="text-base text-gray-600">Victory Connect is a global business networking platform designed to help professionals connect, collaborate, and grow their businesses through valuable connections and resources.</p>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                         >
                             <h3>
                                 <button @click="expanded = !expanded" :aria-expanded="expanded" class="flex items-center justify-between w-full px-6 py-5 text-lg font-semibold text-left text-gray-900 sm:p-6">
-                                    <span> Q. How can I join Vectory Connect? </span>
+                                    <span> Q. How can I join Victory Connect? </span>
                                     <span x-show="expanded" aria-hidden="true" class="ml-4">
                                         <svg class="w-6 h-6 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -252,7 +252,7 @@
 
                             <div x-show="expanded" x-collapse>
                                 <div class="px-6 pb-6">
-                                    <p class="text-base text-gray-600">Joining Vectory Connect is simple. Click on the "Join Now" button, fill out the registration form, and start connecting with professionals from around the world.</p>
+                                    <p class="text-base text-gray-600">Joining Victory Connect is simple. Click on the "Join Now" button, fill out the registration form, and start connecting with professionals from around the world.</p>
                                 </div>
                             </div>
                         </div>
@@ -287,7 +287,7 @@
 
                             <div x-show="expanded" x-collapse>
                                 <div class="px-6 pb-6">
-                                    <p class="text-base text-gray-600">As a member of Vectory Connect, you get access to exclusive networking events, business resources, referral opportunities, and a global network of professionals dedicated to helping you grow your business.</p>
+                                    <p class="text-base text-gray-600">As a member of Victory Connect, you get access to exclusive networking events, business resources, referral opportunities, and a global network of professionals dedicated to helping you grow your business.</p>
                                 </div>
                             </div>
                         </div>
@@ -322,7 +322,7 @@
 
                             <div x-show="expanded" x-collapse>
                                 <div class="px-6 pb-6">
-                                    <p class="text-base text-gray-600">Managing your Vectory Connect account is easy. Simply log in to your member dashboard, where you can update your profile, manage connections, and access all member resources.</p>
+                                    <p class="text-base text-gray-600">Managing your Victory Connect account is easy. Simply log in to your member dashboard, where you can update your profile, manage connections, and access all member resources.</p>
                                 </div>
                             </div>
                         </div>
@@ -357,7 +357,7 @@
 
                             <div x-show="expanded" x-collapse>
                                 <div class="px-6 pb-6">
-                                    <p class="text-base text-gray-600">Yes, Vectory Connect offers a 30-day free trial period. Sign up today and explore all the benefits of our networking platform with no obligation.</p>
+                                    <p class="text-base text-gray-600">Yes, Victory Connect offers a 30-day free trial period. Sign up today and explore all the benefits of our networking platform with no obligation.</p>
                                 </div>
                             </div>
                         </div>
@@ -427,7 +427,7 @@
                 <footer class="py-12 bg-gray-50 sm:py-16 lg:py-20">
                     <div class="px-4 mx-auto lg:px-8 sm:px-6 max-w-7xl">
                         <div class="md:flex md:items-center md:justify-between">
-                            <p class="max-w-sm text-2xl font-bold leading-tight text-gray-900 sm:text-3xl">Learn how to grow 💪 your business with Vectory Connect</p>
+                            <p class="max-w-sm text-2xl font-bold leading-tight text-gray-900 sm:text-3xl">Learn how to grow 💪 your business with Victory Connect</p>
 
                             <div class="flex-shrink-0 mt-6 md:mt-0">
                                 <a
@@ -446,8 +446,8 @@
                         <div class="grid grid-cols-2 mt-12 lg:mt-16 gap-y-12 sm:gap-x-8 sm:gap-y-16 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 lg:gap-x-12 xl:gap-x-16">
                             <div class="col-span-2 lg:col-span-2 sm:col-span-3 xl:col-span-3">
                                 <div class="lg:max-w-sm">
-                                    <p class="text-base font-bold text-gray-900">About Vectory Connect</p>
-                                    <p class="mt-8 text-sm font-normal leading-6 text-gray-600">Vectory Connect is a premier business networking platform that helps professionals build valuable connections, collaborate, and grow their businesses. Join us to access exclusive resources and networking opportunities.</p>
+                                    <p class="text-base font-bold text-gray-900">About Victory Connect</p>
+                                    <p class="mt-8 text-sm font-normal leading-6 text-gray-600">Victory Connect is a premier business networking platform that helps professionals build valuable connections, collaborate, and grow their businesses. Join us to access exclusive resources and networking opportunities.</p>
 
                                     <ul class="flex items-center mt-8 space-x-8">
                                         <li>
