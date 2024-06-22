@@ -102,16 +102,15 @@ group = [
 
 tyfcb =[
     path('tyfcb/', tyfcb_list, name='tyfcb_list'),
+    path('tyfcb_review/', tyfcb_list, name='tyfcb_review'),
     path('tyfcb/new/', tyfcb_create, name='tyfcb_create'),
     path('tyfcb/<uuid:pk>/', tyfcb_detail, name='tyfcb_detail'),
     path('tyfcb/<uuid:pk>/edit/', tyfcb_edit, name='tyfcb_edit'),
 ]
 
 referrals = [
-    path('referrals/', referral_list, name='referral_list'),
-    path('referrals/new/', referral_create, name='referral_create'),
-    path('referrals/<uuid:pk>/', referral_detail, name='referral_detail'),
-    path('referrals/<uuid:pk>/edit/',referral_edit, name='referral_edit'),
+    path('referrals/new/', create_referral, name='create_referral'),
+    path('referrals/', list_referrals, name='list_referrals'),
 ]
 
 

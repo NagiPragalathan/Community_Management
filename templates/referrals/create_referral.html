@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<body>
+    <div class="container mx-auto mt-10">
+        <h1 class="text-xl font-bold mb-5">Referral Slip</h1>
+        <form method="POST" action="" class="space-y-4">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <div>
+                <label for="to_member">To Member:</label>
+                <select id="to_member" name="to_member" class="border border-gray-300 rounded px-2 py-1" required>
+                    {% for member in members %}
+                    <option value="{{ member.id }}">{{ member.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="referral">Referral:</label>
+                <textarea id="referral" name="referral" class="border border-gray-300 rounded px-2 py-1" required></textarea>
+            </div>
+            <div>
+                <label for="referral_type">Referral Type:</label>
+                <select id="referral_type" name="referral_type" class="border border-gray-300 rounded px-2 py-1" required>
+                    <option value="tier_1">Tier 1 (inside)</option>
+                    <option value="tier_2">Tier 2 (outside)</option>
+                </select>
+            </div>
+            <div>
+                <label for="referral_status">Referral Status:</label>
+                <select id="referral_status" name="referral_status" class="border border-gray-300 rounded px-2 py-1" required>
+                    <option value="given_card">Given your card</option>
+                    <option value="will_call">Told them you would call</option>
+                </select>
+            </div>
+            <div>
+                <label for="telephone">Telephone:</label>
+                <input type="text" id="telephone" name="telephone" class="border border-gray-300 rounded px-2 py-1" required>
+            </div>
+            <div>
+                <label for="referral_heat">How hot is this referral?</label>
+                <select id="referral_heat" name="referral_heat" class="border border-gray-300 rounded px-2 py-1" required>
+                    <option value="hot">Hot</option>
+                    <option value="tepid">Tepid</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

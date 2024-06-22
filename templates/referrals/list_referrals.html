@@ -1,0 +1,20 @@
+<!-- referrals/referral_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Referral List</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Filter</button>
+</form>
+
+<h3>Filtered Referrals:</h3>
+<ul>
+    {% for referral in referrals %}
+        <li>{{ referral.chapter_name }} - {{ referral.region_name }} - {{ referral.received_date }}</li>
+    {% empty %}
+        <li>No referrals found for selected dates.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

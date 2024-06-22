@@ -1,6 +1,5 @@
 from django import forms
 from .models import TYFCB
-from .models import Referral
 from .models import OneToOneSlip
 from .models import ChapterEdUnit
 
@@ -14,26 +13,10 @@ class TYFCBForm(forms.ModelForm):
         }
 
 
-class ReferralForm(forms.ModelForm):
-    class Meta:
-        model = Referral
-        fields = [
-            'chapter_name', 
-            'region_name', 
-            'referral', 
-            'referral_type', 
-            'referral_status', 
-            'address', 
-            'telephone', 
-            'email', 
-            'comments'
-        ]
-        widgets = {
-            'referral_type': forms.RadioSelect,
-            'referral_status': forms.CheckboxSelectMultiple,
-            'address': forms.Textarea(attrs={'rows': 2}),
-            'comments': forms.Textarea(attrs={'rows': 2}),
-        }
+class ReferralFilterForm(forms.Form):
+    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+
 
 
 class OneToOneSlipForm(forms.ModelForm):

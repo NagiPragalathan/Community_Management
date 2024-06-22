@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 import uuid
+from django.utils import timezone
 
 from django.core.exceptions import ValidationError
 from django.utils import timezone
@@ -421,57 +422,52 @@ class Group(models.Model):
 
 
 class TYFCB(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     BUSINESS_TYPE_CHOICES = [
         ('new', 'New'),
         ('repeat', 'Repeat'),
     ]
-
     REFERRAL_TYPE_CHOICES = [
         ('tier_1', 'Tier 1'),
         ('tier_2', 'Tier 2'),
         ('tier_3+', 'Tier 3+'),
     ]
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     chapter_name = models.ForeignKey(ChapterName, on_delete=models.CASCADE)
     region_name = models.ForeignKey(Region, on_delete=models.CASCADE)
     referral_amount = models.IntegerField()
     business_type = models.CharField(max_length=10, choices=BUSINESS_TYPE_CHOICES)
     referral_type = models.CharField(max_length=10, choices=REFERRAL_TYPE_CHOICES)
+    start_date = models.DateField(default=timezone.now)
+    end_date = models.DateField(default=timezone.now)
     comments = models.TextField()
 
     def __str__(self):
         return f"{self.chapter_name} - {self.region_name} - {self.referral_amount}"
     
 
-class Referral(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referrals')
-    chapter_name = models.ForeignKey(ChapterName, on_delete=models.CASCADE)
-    region_name = models.ForeignKey(Region, on_delete=models.CASCADE)
-    referral = models.TextField()
-    TIER1 = 'tier 1'
-    TIER2 = 'tier 2'
-    REFERRAL_TYPE_CHOICES = [
-        (TIER1, 'Tier 1'),
-        (TIER2, 'Tier 2'),
-    ]
-    referral_type = models.CharField(max_length=13, choices=REFERRAL_TYPE_CHOICES, default=TIER1)
-    ID_GIVEN = 'id_given'
-    CONTACT_LATER = 'contact_later'
-    REFERRAL_STATUS_CHOICES = [
-        (ID_GIVEN, 'ID Given'),
-        (CONTACT_LATER, 'Contact Later'),
-    ]
-    referral_status = models.CharField(max_length=13, choices=REFERRAL_STATUS_CHOICES, default=ID_GIVEN)
-    address = models.TextField(blank=True, null=True)
-    telephone = models.CharField(max_length=15, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    comments = models.TextField(blank=True, null=True)
+class Member(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.chapter_name} - {self.region_name} - {self.referral_type} - {self.referral_status}"
+        return self.name
 
+class ReferralSlip(models.Model):
+    date = models.DateField(auto_now_add=True)
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referrals_sent')
+    to_member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='referrals_received')
+    referral_description = models.TextField()
+    referral_type = models.CharField(max_length=20, choices=[('tier_1', 'Tier 1 (inside)'), ('tier_2', 'Tier 2 (outside)')])
+    referral_status = models.CharField(max_length=100, choices=[('given_card', 'Given your card'), ('will_call', 'Told them you would call')])
+    address = models.CharField(max_length=255, blank=True)
+    telephone = models.CharField(max_length=15)
+    email = models.EmailField(blank=True)
+    comments = models.TextField(blank=True)
+    referral_heat = models.CharField(max_length=10, choices=[('hot', 'Hot'), ('tepid', 'Tepid')])
+
+    def __str__(self):
+        return f"Referral from {self.from_user.username} to {self.to_member.name} on {self.date}"
 
 class OneToOneSlip(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
