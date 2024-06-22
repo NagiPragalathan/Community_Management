@@ -114,11 +114,13 @@ def user_login(request):
         print(user)
         if user is not None:
             login(request, user)
-            return redirect('home')  # Redirect to your home page
+            return redirect('dashboard')
         else:
             return HttpResponse("Invalid login credentials")
-    
-    return render(request, 'auth/login.html')
+    else:
+        if request.user.is_authenticated:
+            return redirect('dashboard')
+        return render(request, 'auth/login.html')
 
 
 def change_password(request):

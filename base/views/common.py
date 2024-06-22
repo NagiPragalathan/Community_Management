@@ -1,15 +1,27 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from base.models import CityData
+from base.models import CityData, Group, Connection
 from base.form.forms import CityDataForm
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     return render(request, "index.html")
 
-def home(request):
-    return render(request, "home.html")
+@login_required(login_url='/login/')
+def dashboard(request):
+    user = request.user
+    group_count = Group.objects.filter(creator=user).count()
+    connection_count = Connection.objects.filter(user=user, status='accepted').count()
+    
+    context = {
+        'group_count': group_count,
+        'connection_count': connection_count,
+    }
+    return render(request, 'dashboard.html', context)
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Country >>>>>>>>>>>>>>>>>>>>>>>>
 
