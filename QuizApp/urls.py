@@ -26,7 +26,7 @@ urlpatterns = []
 
 
 common = [
-    path('home', home, name='home'),
+    path('dashboard', home, name='home'),
     path('', index, name='index'),
     path('add_city', add_city, name="add_city")
 ]
