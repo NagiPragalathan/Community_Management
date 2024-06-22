@@ -1,15 +1,18 @@
+# myapp/views.py
+
 from django.shortcuts import render, get_object_or_404, redirect
-from base.models import Group
-from base.form.forms import GroupForm
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from base.models import Group
+from base.form.forms import GroupForm
 
+@login_required
 def list_groups(request):
     groups = Group.objects.all()
-    return render(request, 'Group/listGroup.html', {
-        'groups': groups,
-    })
+    return render(request, 'Group/listGroup.html', {'groups': groups})
 
+@login_required
 def group_crud(request, pk=None):
     if pk:
         group = get_object_or_404(Group, pk=pk)

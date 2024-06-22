@@ -1,15 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if user_profile %} Edit {% else %} Add {% endif %} User Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-    <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-gray-100 flex items-center justify-center min-h-screen">
         <div class="w-full max-w-xl md:my-6 p-6 bg-white rounded-lg shadow-md">
             <h1 class="text-xl font-semibold text-gray-900">{% if user_profile %} Edit {% else %} Add {% endif %} User Profile</h1>
             <form method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
@@ -31,16 +22,33 @@
                 
                 <div>
                     <label for="profile_image" class="block text-sm font-medium text-gray-700">Profile Image:</label>
+                    <div style="background: #e8e8e8; padding: 10px; border-radius: 8px;"> 
+                        <h3>Old Profile image</h3>
+                        {% if user_profile.profile_image %}
+                            <img src="{{ user_profile.profile_image.url }}"/>
+                        {% else %}
+                            <p>No image are updated Yet.</p>
+                        {% endif %}
+                    </div>
                     <input type="file" id="profile_image" name="profile_image" accept="image/*" class="mt-1 block w-full file:border file:border-gray-300 file:rounded-md file:px-3 file:py-2 file:text-sm file:font-medium file:bg-white file:text-gray-700 hover:file:bg-gray-50">
                 </div>
                 
                 <div>
                     <label for="company_logo" class="block text-sm font-medium text-gray-700">Company Logo:</label>
+                    <div style="background: #e8e8e8; padding: 10px; border-radius: 8px;"> 
+                        <h3>Old Profile image</h3>
+                        {% if user_profile.profile_image %}
+                            <img src="{{ user_profile.company_logo.url }}"/>
+                        {% else %}
+                            <p>No image are updated Yet.</p>
+                        {% endif %}
+                    </div>
                     <input type="file" id="company_logo" name="company_logo" accept="image/*" class="mt-1 block w-full file:border file:border-gray-300 file:rounded-md file:px-3 file:py-2 file:text-sm file:font-medium file:bg-white file:text-gray-700 hover:file:bg-gray-50">
                 </div>
-                
+
                 <button type="submit" class="w-full bg-[#7c40ff] hover:bg-[#7c40d8] text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out">{% if user_profile %} Update {% else %} Submit {% endif %}</button>
             </form>
         </div>
-    </body>
+
+    </div>
 {% endblock content %}

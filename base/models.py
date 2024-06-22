@@ -406,7 +406,6 @@ class Group(models.Model):
     access_type = models.CharField(max_length=20, choices=ACCESS_TYPES)
     language = models.CharField(max_length=100)  # This can be changed to a choice field if you have a predefined list of languages
     logo = models.ImageField(upload_to='group_logos/', blank=True, null=True)
-    invite_connections = models.ManyToManyField(User, related_name='invited_groups')
     description = models.TextField(blank=True, null=True)
     group_counts = models.PositiveIntegerField(default=0)
     lastupdateddate = models.DateTimeField(default=timezone.now)
