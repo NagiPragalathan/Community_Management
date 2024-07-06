@@ -8,45 +8,46 @@
         <input type="text" id="searchInput" placeholder="Search connections..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-300">
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="profileContainer">
-        {% for profile in profiles %}
+        {% for item in profiles_with_con_ids %}
         <div class="flex flex-col justify-center profile-card bg-white rounded-3xl shadow-xl overflow-hidden p-6 cursor-pointer" 
-             data-id="{{ profile.user.id }}" 
-             data-name="{{ profile.display_name }}" 
-             data-company="{{ profile.company_name }}" 
-             data-industry="{{ profile.industry }}" 
-             data-keywords="{{ profile.keywords }}" 
-             data-title="{{ profile.title }}" 
-             data-first-name="{{ profile.first_name }}" 
-             data-last-name="{{ profile.last_name }}" 
-             data-gender="{{ profile.gender }}" 
-             data-membership-status="{{ profile.membership_status }}"
-             data-address="{{ profile.address }}"
-             data-contact="{{ profile.contact }}"
+             data-id="{{ item.profile.user.id }}" 
+             data-conid="{{ item.con_id }}" 
+             data-name="{{ item.profile.display_name }}" 
+             data-company="{{ item.profile.company_name }}" 
+             data-industry="{{ item.profile.industry }}" 
+             data-keywords="{{ item.profile.keywords }}" 
+             data-title="{{ item.profile.title }}" 
+             data-first-name="{{ item.profile.first_name }}" 
+             data-last-name="{{ item.profile.last_name }}" 
+             data-gender="{{ item.profile.gender }}" 
+             data-membership-status="{{ item.profile.membership_status }}"
+             data-address="{{ item.profile.address }}"
+             data-contact="{{ item.profile.contact }}"
              data-profile-url="asdfg">
             <div class="flex items-center justify-between flex-col">
-                {% if profile.user.profile_image %}
-                <img src="{{ profile.user.profile_image.url }}" alt="{{ profile.display_name }}" class="w-16 h-16 rounded-full object-cover">
+                {% if item.profile.user.profile_image %}
+                <img src="{{ item.profile.user.profile_image.url }}" alt="{{ item.profile.display_name }}" class="w-16 h-16 rounded-full object-cover">
                 {% else %}
-                <img src="https://static.vecteezy.com/system/resources/previews/002/265/650/original/unknown-person-user-icon-for-web-vector.jpg" alt="{{ profile.display_name }}" class="w-16 h-16 rounded-full object-cover">
+                <img src="https://static.vecteezy.com/system/resources/previews/002/265/650/original/unknown-person-user-icon-for-web-vector.jpg" alt="{{ item.profile.display_name }}" class="w-16 h-16 rounded-full object-cover">
                 {% endif %}
                 <div class="ml-4 flex flex-col">
-                    <p class="text-lg font-medium text-gray-900 truncate">{{ profile.title }} {{ profile.first_name }} {{ profile.last_name }}</p>
-                    <p class="text-sm text-gray-500">{{ profile.membership_status }}</p>
+                    <p class="text-lg font-medium text-gray-900 truncate">{{ item.profile.title }} {{ item.profile.first_name }} {{ item.profile.last_name }}</p>
+                    <p class="text-sm text-gray-500">{{ item.profile.membership_status }}</p>
                 </div>
             </div>
             <div class="mt-4">
-                <p class="text-sm text-gray-500"><strong>Company:</strong> {{ profile.company_name }}</p>
-                <p class="text-sm text-gray-500"><strong>GST ID/PAN:</strong> {{ profile.gst_identification_number_or_pan }}</p>
-                <p class="text-sm text-gray-500"><strong>Industry:</strong> {{ profile.industry }}</p>
-                <p class="text-sm text-gray-500"><strong>Gender:</strong> {{ profile.gender }}</p>
+                <p class="text-sm text-gray-500"><strong>Company:</strong> {{ item.profile.company_name }}</p>
+                <p class="text-sm text-gray-500"><strong>GST ID/PAN:</strong> {{ item.profile.gst_identification_number_or_pan }}</p>
+                <p class="text-sm text-gray-500"><strong>Industry:</strong> {{ item.profile.industry }}</p>
+                <p class="text-sm text-gray-500"><strong>Gender:</strong> {{ item.profile.gender }}</p>
             </div>
-            <p class="mt-2 text-gray-600">{{ profile.product_service_description }}</p>
+            <p class="mt-2 text-gray-600">{{ item.profile.product_service_description }}</p>
             <div class="flex flex-wrap gap-2 mt-4">
-                {% if profile.industry %}
-                <span class="text-xs font-semibold py-1 px-3 bg-blue-500 text-white rounded-full">{{ profile.industry }}</span>
+                {% if item.profile.industry %}
+                <span class="text-xs font-semibold py-1 px-3 bg-blue-500 text-white rounded-full">{{ item.profile.industry }}</span>
                 {% endif %}
-                {% if profile.keywords %}
-                <span class="text-xs font-semibold py-1 px-3 bg-green-500 text-white rounded-full">{{ profile.keywords }}</span>
+                {% if item.profile.keywords %}
+                <span class="text-xs font-semibold py-1 px-3 bg-green-500 text-white rounded-full">{{ item.profile.keywords }}</span>
                 {% endif %}
             </div>
         </div>
@@ -124,6 +125,7 @@
     document.querySelectorAll('.profile-card').forEach(card => {
         card.addEventListener('click', function() {
             let id = this.getAttribute('data-id');
+            let conid = this.getAttribute('data-conid');
             let name = this.getAttribute('data-name');
             let company = this.getAttribute('data-company');
             let industry = this.getAttribute('data-industry');
@@ -137,8 +139,8 @@
             document.getElementById('modalIndustry').innerText = `Industry: ${industry}`;
             document.getElementById('modalAddress').innerText = `Address: ${address}`;
             document.getElementById('modalContact').innerText = `Contact: ${contact}`;
-            document.getElementById('acceptForm').action = `{% url 'accept_connection_request' 0 %}`.replace('0', id);
-            document.getElementById('rejectForm').action = `{% url 'reject_connection_request' 0 %}`.replace('0', id);
+            document.getElementById('acceptForm').action = `{% url 'accept_connection_request' 0 %}`.replace('0', conid);
+            document.getElementById('rejectForm').action = `{% url 'reject_connection_request' 0 %}`.replace('0', conid);
 
             document.getElementById('profileModal').classList.remove('hidden');
         });
@@ -148,4 +150,4 @@
         document.getElementById('profileModal').classList.add('hidden');
     });
 </script>
-{% endblock %}
+{% endblock content %}

@@ -46,7 +46,7 @@ def incoming_testimonials(request):
 
     for i in Testimonial.objects.all():
         print(i.from_user.username, i.to_user.username)
-    Testimonial.objects.all().delete()
+
     # Filter testimonials where the to_user is the current user
     incoming_testimonials = Testimonial.objects.filter(to_user=current_user).exclude(type='req_testimonials')
 
@@ -59,9 +59,11 @@ def request_testimonial(request, receiver_id):
     receiver_user = get_object_or_404(User, id=receiver_id)
     
     # Check if a testimonial request already exists from the current user to the specified user
-    existing_request = Testimonial.objects.filter(from_user=request.user, to_user=receiver_user).exclude(type='req_testimonials').exists()
+    existing_request = Testimonial.objects.filter(from_user=request.user, to_user=receiver_user, type='req_testimonials').exists()
+    
     if existing_request:
         # If a request already exists, display an error message or handle it as desired
+        print("You have already requested a testimonial from this user.")
         messages.error(request, 'You have already requested a testimonial from this user.')
         return redirect('connections')  # Redirect to the appropriate URL
     
@@ -99,6 +101,10 @@ def list_requested_testimonials(request):
 def list_inboxrequested_testimonials(request):
     # Filter testimonials where type is 'req_testimonials'
     requested_testimonials = Testimonial.objects.filter(type='req_testimonials', to_user=request.user)
+    
+    for i in Testimonial.objects.all():
+        print(i.type, i.to_user, i.from_user)
+    print(requested_testimonials)
 
     # Pass the queryset to the template for rendering
     return render(request, 'testimonial/list_requested_testimonials.html', {'requested_testimonials': requested_testimonials})
