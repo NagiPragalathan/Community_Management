@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
-from base.models import CityData, Group, Connection
+from django.shortcuts import render, redirect
+from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, UserProfile
 from base.form.forms import CityDataForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -41,3 +41,43 @@ def add_city(request):
     else:
         form = CityDataForm()
     return render(request, 'region/city_form.html', {'form': form, 'city':city})
+
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Common Data >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+def common_data(request):
+    context = {}
+    if request.user.is_authenticated:
+        current_user = request.user
+        usr_name = current_user.username
+        profile = MainProfile.objects.get(user=current_user)
+        unseen_messages = oneToOneMessage.objects.filter(receiver=current_user, seen=False)
+        unseen_messages_count = unseen_messages.count()
+
+        # Annotate each message with the sender's display name
+        unseen_messages_list = []
+        for message in unseen_messages:
+            message.display = MainProfile.objects.get(user=message.sender).display_name
+            try:
+                message.image = UserProfile.objects.get(user=message.sender).profile_image
+            except:
+                message.image = "none"
+                
+            unseen_messages_list.append(message)
+            print(message)
+
+        context.update({
+            'usr_profile': profile,
+            'usr_name': usr_name,
+            'unseen_messages_count': unseen_messages_count,
+            'unseen_messages': unseen_messages_list,
+        })
+    else:
+        context.update({
+            'usr_name': "No name",
+            'unseen_messages_count': 0,
+            'unseen_messages': [],
+        })
+
+    return context
+

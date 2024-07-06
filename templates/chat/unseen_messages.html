@@ -1,23 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unseen Messages</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-6">
-    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg" style="margin: 4%;">
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Unseen Messages</h1>
         
         {% for user, messages in unseen_messages_per_user.items %}
             <div class="mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">Messages from {{ user.username }}</h2>
-                <ul class="bg-gray-50 p-4 rounded-lg shadow-inner">
+                <ul class="bg-gray-50 p-4 rounded-lg shadow-inner divide-y divide-gray-200">
                     {% for message in messages %}
-                        <li class="mb-2 p-2 bg-white rounded shadow-sm">{{ message.content }}</li>
+                        <li class="py-2">
+                            <p class="text-gray-700">{{ message.content }}</p>
+                            <p class="text-sm text-gray-500">{{ message.timestamp }}</p>
+                        </li>
                     {% endfor %}
                 </ul>
                 <a href="{% url 'chat' user.id %}" class="inline-block mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
@@ -30,6 +25,5 @@
             <p class="text-center text-gray-600 mt-4">No unseen messages at the moment.</p>
         {% endif %}
     </div>
-</body>
-</html>
+
 {% endblock content %}
