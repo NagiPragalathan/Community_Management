@@ -1,0 +1,50 @@
+<!-- templates/weekly_slips.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">Weekly Slips</h1>
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="from_date" class="block text-sm font-medium text-gray-700">From:</label>
+                <input type="date" id="from_date" name="from_date" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="to_date" class="block text-sm font-medium text-gray-700">To:</label>
+                <input type="date" id="to_date" name="to_date" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+        </div>
+        <button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Generate Report</button>
+    </form>
+
+    {% if weekly_slips %}
+    <h2 class="text-xl font-semibold mb-2">Parameters</h2>
+    <p class="mb-2">From: {{ from_date }}</p>
+    <p class="mb-2">To: {{ to_date }}</p>
+
+    <div class="overflow-x-auto">
+        {% for slip in weekly_slips %}
+        <div class="bg-white p-4 shadow rounded-lg mb-4">
+            <h3 class="text-lg font-semibold mb-2">Chapter: {{ slip.chapter }}</h3>
+            <p><strong>Running User:</strong> {{ slip.user.username }}</p>
+            <p><strong>Run At:</strong> {{ slip.run_at }}</p>
+            <p><strong>Chapter:</strong> {{ slip.chapter }}</p>
+            <h4 class="font-semibold mt-4 mb-2">Referral Slip</h4>
+            <p><strong>To:</strong> {{ slip.referral_to }}</p>
+            <p><strong>From:</strong> {{ slip.referral_from }}</p>
+            <p><strong>Referral:</strong> {{ slip.referral }}</p>
+            <h4 class="font-semibold mt-4 mb-2">TYFCB</h4>
+            <p>{{ slip.tyfcb|linebreaks }}</p>
+            <h4 class="font-semibold mt-4 mb-2">One to Ones</h4>
+            <p>{{ slip.one_to_ones|linebreaks }}</p>
+            <h4 class="font-semibold mt-4 mb-2">Visitors</h4>
+            <p>{{ slip.visitors }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

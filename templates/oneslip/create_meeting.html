@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Meeting{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-xl">
+        <h1 class="text-2xl font-bold mb-4">Create a New Meeting</h1>
+        <form method="POST" action="{% url 'create_meeting' %}">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="met_with" class="block text-gray-700 text-sm font-bold mb-2">Met With:</label>
+                <select id="met_with" name="met_with" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="location" class="block text-gray-700 text-sm font-bold mb-2">Location:</label>
+                <input type="text" id="location" name="location" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="mb-4">
+                <label for="topics_of_conversation" class="block text-gray-700 text-sm font-bold mb-2">Topics of Conversation:</label>
+                <textarea id="topics_of_conversation" name="topics_of_conversation" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="date" class="block text-gray-700 text-sm font-bold mb-2">Date:</label>
+                <input type="date" id="date" name="date" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            </div>
+            <div class="flex items-center justify-between">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Submit
+                </button>
+                <button type="reset" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Clear
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -17,6 +17,10 @@ from base.views.GroupCURD import *
 from base.views.AccountSettings import *
 from base.views.tyfcb import *
 from base.views.referrals import *
+from base.views.onetoone import *
+from base.views.ceu import *
+from base.views.weeklyslips import *
+
 
 
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -111,7 +115,25 @@ tyfcb =[
 referrals = [
     path('referrals/new/', create_referral, name='create_referral'),
     path('referrals/', list_referrals, name='list_referrals'),
+    path('referral-report/', referral_report, name='referral_report'), 
+
 ]
+
+onetoone =[
+    path('meetings/new/', create_meeting, name='create_meeting'),
+    path('meetings/', meeting_list, name='meeting_list'),
+    path('meetings/one-to-one/', one_to_one_list, name='one_to_one_list'),
+]
+
+ceu =[
+    path('ceus/create/', create_ceu, name='create_ceu'),
+    path('ceus/review/', review_ceu, name='review_ceu'),
+]
+
+weeklyslips =[
+    path('weeklyslips/weeklyslips/', weekly_slips, name='weekly_slips'),
+]
+
 
 
 urlpatterns.extend(auth)
@@ -125,6 +147,9 @@ urlpatterns.extend(connections)
 urlpatterns.extend(account_settings)
 urlpatterns.extend(tyfcb)
 urlpatterns.extend(referrals)
+urlpatterns.extend(onetoone)
+urlpatterns.extend(weeklyslips)
+urlpatterns+=ceu
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

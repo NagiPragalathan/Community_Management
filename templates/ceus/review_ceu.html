@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-lg font-bold">Review CEUs</h1>
+    {% for ceu in ceus %}
+    <div class="border p-2 mb-2">
+        <p><strong>Date:</strong> {{ ceu.date }}</p>
+        <p><strong>Course Title:</strong> {{ ceu.course_title }}</p>
+        <p><strong>Credits:</strong> {{ ceu.credits_per_course }}</p>
+        <p><strong>QTY Earned:</strong> {{ ceu.qty_earned }}</p>
+    </div>
+    {% empty %}
+    <p>No CEU records found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

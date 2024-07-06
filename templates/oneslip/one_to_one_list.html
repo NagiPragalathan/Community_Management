@@ -1,0 +1,22 @@
+{% extends 'base.html '%}
+{% block content %}
+<body>
+    <div class="container mx-auto mt-10">
+        <h1 class="text-xl font-bold mb-5">One-to-One Meetings</h1>
+        <ul>
+            {% for meeting in meetings %}
+            <li class="mb-4 p-4 border border-gray-300 rounded">
+                <p><strong>Date:</strong> {{ meeting.date }}</p>
+                <p><strong>Location:</strong> {{ meeting.location }}</p>
+                <p><strong>Met With:</strong> {{ meeting.met_with.username }}</p>
+                <p><strong>Invited By:</strong> {{ meeting.invited_by.username }}</p>
+                <p><strong>Topics:</strong> {{ meeting.topics_of_conversation }}</p>
+            </li>
+            {% empty %}
+            <p>No one-to-one meetings found.</p>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+
+{% endblock content %}

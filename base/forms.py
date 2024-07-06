@@ -1,7 +1,5 @@
 from django import forms
-from .models import TYFCB
-from .models import OneToOneSlip
-from .models import ChapterEdUnit
+from base.models import TYFCB
 
 class TYFCBForm(forms.ModelForm):
     class Meta:
@@ -19,31 +17,24 @@ class ReferralFilterForm(forms.Form):
 
 
 
-class OneToOneSlipForm(forms.ModelForm):
-    class Meta:
-        model = OneToOneSlip
-        fields = ['region_name', 'chapter_name', 'invited_by', 'location', 'conversation', 'date']
-        widgets = {
-            'region_name': forms.Select(attrs={'required': 'required'}),
-            'chapter_name': forms.Select(attrs={'required': 'required'}),
-            'invited_by': forms.Select(attrs={'required': 'required'}),
-            'location': forms.TextInput(attrs={'required': 'required'}),
-            'conversation': forms.Textarea(attrs={'required': 'required'}),
-            'date': forms.DateInput(attrs={'type': 'date', 'required': 'required'}),
-        }
+# class OneToOneSlipForm(forms.ModelForm):
+#     class Meta:
+#         model = OneToOneSlip
+#         fields = ['region_name', 'chapter_name', 'invited_by', 'location', 'conversation', 'date']
+#         widgets = {
+#             'region_name': forms.Select(attrs={'required': 'required'}),
+#             'chapter_name': forms.Select(attrs={'required': 'required'}),
+#             'invited_by': forms.Select(attrs={'required': 'required'}),
+#             'location': forms.TextInput(attrs={'required': 'required'}),
+#             'conversation': forms.Textarea(attrs={'required': 'required'}),
+#             'date': forms.DateInput(attrs={'type': 'date', 'required': 'required'}),
+#         }
 
 
 
 
-class ChapterEdUnitForm(forms.ModelForm):
-    class Meta:
-        model = ChapterEdUnit
-        fields = ['course_title', 'credits', 'total_credit_last_week']
+# class ChapterEdUnitForm(forms.ModelForm):
+#     class Meta:
+#         model = ChapterEdUnit
+#         fields = ['course_title', 'credits', 'total_credit_last_week']
 
-class QtyEarnedForm(forms.ModelForm):
-    class Meta:
-        model = ChapterEdUnit
-        fields = ['qty_earned']
-        widgets = {
-            'qty_earned': forms.NumberInput(attrs={'required': 'true'}),
-        }
