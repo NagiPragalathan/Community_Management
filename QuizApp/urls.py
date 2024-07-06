@@ -4,7 +4,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from QuizApp import settings
 from django.conf.urls.i18n import i18n_patterns
-
+from django.urls import re_path
 
 # Django views
 from base.views.auth import *
@@ -20,7 +20,6 @@ from base.views.referrals import *
 from base.views.onetoone import *
 from base.views.ceu import *
 from base.views.weeklyslips import *
-
 
 
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -71,17 +70,17 @@ profile =[
 connections = [ 
     path('send_connection_request/<int:user_id>', send_connection_request, name='send_connection_request'),
     path('accept_connection_request/<int:connection_id>', accept_connection_request, name='accept_connection_request'),
-    path('connections', connection_list, name='connection_list'),
+    path('connections', connection_list, name='connections'),
     path('list_users', list_users, name='list_users'),
+    path('pending_request', pending_request, name='pending_request'),
     path('incoming_requests', incoming_requests, name='incoming_requests'),
     path('reject_connection_request/<int:connection_id>', reject_connection_request, name='reject_connection_request'),
-    path('accept_connection_request/<int:connection_id>', accept_connection_request, name='accept_connection_request'),
 ]
 
 chat = [
     path('chat/<int:receiver_id>/', chat_view, name='chat'),
     path('update_message/<int:receiver_id>/', update_message, name='update_message'),
-    path('get_messages/<int:receiver_id>/', get_messages, name='get_messages'),
+    path('get_messages/<int:receiver_id>/', one_to_one_get_messages, name='get_messages'),
     path('unseen_messages', unseen_messages, name='unseen_messages'),
 ]
 
@@ -95,13 +94,6 @@ testimonial = [
 
 account_settings = [
     path('edit_or_add_account_settings', edit_or_add_account_settings, name='edit_or_add_account_settings'),
-]
-
-group = [
-      path('groups/', list_groups, name='list_groups'),
-    path('groups/<uuid:pk>/', group_crud, name='group_crud'),
-    path('groups/new/', group_crud, name='group_crud_new'),
-     path('select2/', include('django_select2.urls')),
 ]
 
 tyfcb =[
@@ -135,6 +127,20 @@ weeklyslips =[
 ]
 
 
+group_chat = [
+    path('chat/<str:room_name>/', room, name='room'),
+    path('chat/<str:room_name>/send/', send_message, name='send_message'),
+    path('chat/<str:room_name>/messages/', get_messages, name='get_messages'),
+]
+
+group = [
+    path('groups/', list_groups, name='list_groups'),
+    path('mygroups/', my_list_groups, name='my_list_groups'),
+    path('groups/new/', group_crud, name='group_crud_new'),
+    path('groups/<uuid:pk>/', group_crud, name='group_crud'),
+    path('join/<uuid:group_id>/', join_group, name='join_group'),
+]
+
 
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
@@ -150,6 +156,7 @@ urlpatterns.extend(referrals)
 urlpatterns.extend(onetoone)
 urlpatterns.extend(weeklyslips)
 urlpatterns+=ceu
+urlpatterns+=group_chat
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

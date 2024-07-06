@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from base.models import CityData, Group, Connection
 from base.form.forms import CityDataForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 def index(request):
@@ -15,7 +16,10 @@ def index(request):
 def dashboard(request):
     user = request.user
     group_count = Group.objects.filter(creator=user).count()
-    connection_count = Connection.objects.filter(user=user, status='accepted').count()
+    connection_count = Connection.objects.filter(
+        Q(user=request.user) | Q(connection=request.user), 
+        status='accepted'
+    ).count()
     
     context = {
         'group_count': group_count,

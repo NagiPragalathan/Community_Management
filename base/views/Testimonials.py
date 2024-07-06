@@ -60,7 +60,7 @@ def request_testimonial(request, receiver_id):
     if existing_request:
         # If a request already exists, display an error message or handle it as desired
         messages.error(request, 'You have already requested a testimonial from this user.')
-        return redirect('connection_list')  # Redirect to the appropriate URL
+        return redirect('connections')  # Redirect to the appropriate URL
     
     if request.method == 'POST':
         from_user = request.user

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block content %}
+<div class="container">
+    <h1>Room: {{ room_name }}</h1>
+    <div>
+        <input type="text" id="join-link" value="{{ request.scheme }}://{{ request.get_host }}{% url 'join_group' group.id %}" readonly style="width: 80%;">
+        <button onclick="copyLink()">Copy Link</button>
+    </div>
+    
+    {% if not user|is_member:room_name %}
+        <a href="{% url 'join_group' group.id %}">Join Group</a>
+    {% endif %}
+    
+    <div id="chat-log">
+        {% for message in messages %}
+            <div><strong>{{ message.user.username }}:</strong> {{ message.content }}</div>
+        {% endfor %}
+    </div>
+    <input id="chat-message-input" type="text" size="100">
+    <button id="chat-message-submit">Send</button>
+</div>
+
+<script>
+const roomName = "{{ room_name }}";
+
+function fetchMessages() {
+    fetch(`/chat/${roomName}/messages/`)
+        .then(response => response.json())
+        .then(data => {
+            const chatLog = document.getElementById('chat-log');
+            chatLog.innerHTML = '';
+            data.messages.forEach(message => {
+                const messageDiv = document.createElement('div');
+                messageDiv.innerHTML = `<strong>${message.user}:</strong> ${message.message}`;
+                chatLog.appendChild(messageDiv);
+            });
+        });
+}
+
+document.querySelector('#chat-message-submit').onclick = function(e) {
+    const messageInputDom = document.querySelector('#chat-message-input');
+    const message = messageInputDom.value;
+
+    fetch(`/chat/${roomName}/send/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: `message=${message}`
+    }).then(response => response.json())
+      .then(data => {
+          fetchMessages();
+          messageInputDom.value = '';
+      });
+};
+
+setInterval(fetchMessages, 1000);  // Poll for new messages every second
+
+fetchMessages();
+</script>
+{% endblock %}

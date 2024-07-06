@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 import uuid
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
+from django.urls import reverse
 
 class OTPVerification(models.Model):
     id = models.AutoField(primary_key=True)
@@ -382,10 +382,14 @@ class ChapterMemberPosition(models.Model):
     def __str__(self):
         return f'{self.user} - {self.position}'
     
+from django.db import models
+from django.contrib.auth.models import User
+import uuid
+from django.utils import timezone
+
 class Group(models.Model):
     OPEN = 'Open'
     INVITE_ONLY = 'Invite Only'
-
     VIEW_AND_POST = 'View and post'
 
     GROUP_TYPES = [
@@ -407,15 +411,22 @@ class Group(models.Model):
     description = models.TextField(blank=True, null=True)
     group_counts = models.PositiveIntegerField(default=0)
     lastupdateddate = models.DateTimeField(default=timezone.now)
-    
+    members = models.ManyToManyField(User, related_name='joined_groups', blank=True)
+
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.members.filter(id=self.creator.id).exists():
+            self.members.add(self.creator)
+
+    def get_join_link(self):
+        return reverse('join_group', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Group'
         verbose_name_plural = 'Groups'
-
-
 
 
 class TYFCB(models.Model):
@@ -532,3 +543,33 @@ class WeeklySlip(models.Model):
 
     def __str__(self):
         return f"Weekly Slip for {self.user.username} from {self.from_date} to {self.to_date}"
+
+
+class Room(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+class Message(models.Model):
+    room = models.ForeignKey(Room, related_name='messages', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username}: {self.content}'
+
+    class Meta:
+        ordering = ('timestamp',)
+        
+class oneToOneMessage(models.Model):
+    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    seen = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'From {self.sender} to {self.receiver}: {self.content}'
+
+    def mark_as_seen(self):
+        self.seen = True
+        self.save()
