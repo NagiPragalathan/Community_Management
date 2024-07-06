@@ -3,14 +3,17 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from base.models import Group, Room, Message
-from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def list_groups(request):
     groups = Group.objects.all()
+    return render(request, 'Group/listGroup.html', {'groups': groups})
+
+@login_required
+def my_list_groups(request):
+    groups = Group.objects.filter(members=request.user)
     return render(request, 'Group/listGroup.html', {'groups': groups})
 
 @login_required
@@ -24,7 +27,7 @@ def group_crud(request, pk=None):
         if 'delete' in request.POST:
             if group:
                 group.delete()
-            return redirect('list_groups')  # Redirect to the list of groups after deletion
+            return redirect('list_groups')
         else:
             user_groups_count = Group.objects.filter(creator=request.user).count()
             if not pk and user_groups_count >= 5:
@@ -83,7 +86,7 @@ def room(request, room_name):
     if request.user not in group.members.all():
         return redirect('list_groups')
     messages = Message.objects.filter(room=room).order_by('timestamp')
-    return render(request, 'Group/room.html', {'room_name': room_name, 'room': room, 'messages': messages})
+    return render(request, 'Group/room.html', {'room_name': room_name, 'room': room, 'messages': messages, 'group': group})
 
 @login_required
 @require_POST

@@ -16,7 +16,6 @@
                 <option value="Open">Open</option>
                 <option value="Invite Only">Invite Only</option>
             </select>
-            <a href="{% url 'group_crud_new' %}" class="block px-4 py-3 font-medium text-center text-white transition-colors duration-300 transform bg-yellow-400 rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80" style="background:#00d7a8 !important">My Group</a>
             <a href="{% url 'group_crud_new' %}" class="block px-4 py-3 font-medium text-center text-white transition-colors duration-300 transform bg-yellow-400 rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80" style="background:#16a687 !important">Create Group</a>
         </div>
     </div>
@@ -48,7 +47,7 @@
                             <span class="text-white text-xs font-bold py-1 px-2 rounded-full" style="background-color: #00bfff;">{{ group.access_type }}</span>
                         </div>
                         <p class="text-gray-600 font-light mb-6">{{ group.description }}</p>
-                        <a href="{% url 'room' group.name %}" class="block w-full px-4 py-3 font-medium text-center text-white transition-colors duration-300 transform bg-yellow-400 rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80" style="background:#16a687 !important">
+                        <a href="{% url 'room' room_name=group.name %}" class="block w-full px-4 py-3 font-medium text-center text-white transition-colors duration-300 transform bg-yellow-400 rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80" style="background:#16a687 !important">
                             View Details
                         </a>
                     </div>

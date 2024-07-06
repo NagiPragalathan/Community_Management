@@ -416,13 +416,17 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.members.filter(id=self.creator.id).exists():
+            self.members.add(self.creator)
+
     def get_join_link(self):
         return reverse('join_group', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Group'
         verbose_name_plural = 'Groups'
-
 
 
 class TYFCB(models.Model):
