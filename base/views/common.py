@@ -51,6 +51,10 @@ def common_data(request):
         current_user = request.user
         usr_name = current_user.username
         profile = MainProfile.objects.get(user=current_user)
+        try:
+            usr_image = UserProfile.objects.get(user=current_user).profile_image
+        except:
+            usr_image = "none"
         unseen_messages = oneToOneMessage.objects.filter(receiver=current_user, seen=False)
         unseen_messages_count = unseen_messages.count()
 
@@ -71,13 +75,10 @@ def common_data(request):
             'usr_name': usr_name,
             'unseen_messages_count': unseen_messages_count,
             'unseen_messages': unseen_messages_list,
+            'usr_image':usr_image
         })
     else:
-        context.update({
-            'usr_name': "No name",
-            'unseen_messages_count': 0,
-            'unseen_messages': [],
-        })
+        return redirect("login")
 
     return context
 
