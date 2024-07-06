@@ -82,6 +82,9 @@ def join_group(request, group_id):
     group = get_object_or_404(Group, id=group_id)
     if request.user not in group.members.all():
         group.members.add(request.user)
+        redirect("chat/"+group.name)
+    else:
+        print("User already exist..!")
     return redirect('room', room_name=group.name)
 
 @login_required
