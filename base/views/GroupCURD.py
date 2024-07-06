@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from base.models import Group, Room, Message
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.db.models import Q
+
 
 @login_required
 def list_groups(request):
@@ -17,7 +19,7 @@ def list_groups(request):
 @login_required
 def my_list_groups(request):
     groups = Group.objects.filter(members=request.user)
-    return render(request, 'Group/listGroup.html', {'groups': groups})
+    return render(request, 'Group/my_group.html', {'groups': groups})
 
 @login_required
 def group_crud(request, pk=None):
