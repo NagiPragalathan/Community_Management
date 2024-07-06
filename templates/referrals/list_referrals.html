@@ -1,20 +1,25 @@
-<!-- referrals/referral_list.html -->
 {% extends 'base.html' %}
-
 {% block content %}
-<h2>Referral List</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Filter</button>
-</form>
-
-<h3>Filtered Referrals:</h3>
-<ul>
-    {% for referral in referrals %}
-        <li>{{ referral.chapter_name }} - {{ referral.region_name }} - {{ referral.received_date }}</li>
-    {% empty %}
-        <li>No referrals found for selected dates.</li>
-    {% endfor %}
-</ul>
+<body>
+    <div class="container mx-auto mt-10">
+        <h1 class="text-xl font-bold mb-5">List of Referrals</h1>
+        {% if referrals %}
+            <ul>
+                {% for referral in referrals %}
+                    <li class="mb-2 p-2 border border-gray-200 rounded">
+                        <strong>To:</strong> {{ referral.to_member.id }} <br>
+                        <strong>Date:</strong> {{ referral.date }} <br>
+                        <strong>Description:</strong> {{ referral.referral_description }} <br>
+                        <strong>Status:</strong> {{ referral.get_referral_status_display }} <br>
+                        <strong>Type:</strong> {{ referral.get_referral_type_display }} <br>
+                        <strong>Heat:</strong> {{ referral.get_referral_heat_display }} <br>
+                        <strong>Comments:</strong> {{ referral.comments }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No referrals found.</p>
+        {% endif %}
+    </div>
+</body>
 {% endblock %}

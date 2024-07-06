@@ -1,32 +1,28 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import ChapterEdUnit
-from .forms import ChapterEdUnitForm, QtyEarnedForm
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from base.models import ChapterEducationUnit, User
+from django.utils.timezone import now
 
-def chapteredunit_list(request):
-    chapteredunits = ChapterEdUnit.objects.all()
-    return render(request, 'ceu/chapteredunit_list.html', {'chapteredunits': chapteredunits})
+@login_required
+def create_ceu(request):
+    if request.method == 'POST':
+        course_title = request.POST.get('course_title')
+        credits_per_course = request.POST.get('credits_per_course')
+        qty_earned = request.POST.get('qty_earned')
+        
+        ChapterEducationUnit.objects.create(
+            user=request.user,
+            date=now(),
+            course_title=course_title,
+            credits_per_course=credits_per_course,
+            qty_earned=qty_earned,
+            total_credits_last_week=0  # Assuming some logic to calculate this
+        )
+        return redirect('review_ceu')
+    
+    return render(request, 'ceus/create_ceu.html')
 
-def chapteredunit_detail(request, pk):
-    chapteredunit = get_object_or_404(ChapterEdUnit, pk=pk)
-    return render(request, 'ceu/chapteredunit_detail.html', {'chapteredunit': chapteredunit})
-
-def chapteredunit_create(request):
-    if request.method == "POST":
-        form = ChapterEdUnitForm(request.POST)
-        if form.is_valid():
-            chapteredunit = form.save()
-            return redirect('chapteredunit_detail', pk=chapteredunit.pk)
-    else:
-        form = ChapterEdUnitForm()
-    return render(request, 'ceu/chapteredunit_form.html', {'form': form})
-
-def qty_earned_edit(request, pk):
-    chapteredunit = get_object_or_404(ChapterEdUnit, pk=pk)
-    if request.method == "POST":
-        form = QtyEarnedForm(request.POST, instance=chapteredunit)
-        if form.is_valid():
-            chapteredunit = form.save()
-            return redirect('chapteredunit_detail', pk=chapteredunit.pk)
-    else:
-        form = QtyEarnedForm(instance=chapteredunit)
-    return render(request, 'ceu/qty_earned_form.html', {'form': form})
+@login_required
+def review_ceu(request):
+    ceus = ChapterEducationUnit.objects.filter(user=request.user)
+    return render(request, 'ceus/review_ceu.html', {'ceus': ceus})

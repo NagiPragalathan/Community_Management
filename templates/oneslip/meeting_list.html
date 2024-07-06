@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Meeting List
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-bold mb-6">List of Meetings</h1>
+        {% if meetings %}
+        <div class="space-y-4">
+            {% for meeting in meetings %}
+            <div class="border-b pb-4">
+                <h2 class="text-xl font-semibold">Meeting on {{ meeting.date }}</h2>
+                <p><strong>Location:</strong> {{ meeting.location }}</p>
+                <p><strong>Met With:</strong> {{ meeting.met_with.username }}</p>
+                <p><strong>Invited By:</strong> {{ meeting.invited_by.username }}</p>
+                <p><strong>Topics of Conversation:</strong> {{ meeting.topics_of_conversation }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-600">No meetings found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

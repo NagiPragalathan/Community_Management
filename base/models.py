@@ -4,10 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 import uuid
-from django.utils import timezone
-
 from django.core.exceptions import ValidationError
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
@@ -457,10 +454,60 @@ class Member(models.Model):
     def __str__(self):
         return self.name
 
+# class ReferralSlip(models.Model):
+#     date = models.DateField(auto_now_add=True)
+#     from_user = models.ForeignKey(
+#         User, 
+#         on_delete=models.CASCADE, 
+#         related_name='referral_slips_created'  # Unique related_name for referrals created by the user
+#     )
+#     to_member = models.ForeignKey(
+#         User, 
+#         on_delete=models.CASCADE, 
+#         related_name='referrals_received'  # Unique related_name for referrals received by the user
+#     )
+#     referral_description = models.TextField()
+#     referral_type = models.CharField(max_length=20, choices=[('tier_1', 'Tier 1 (inside)'), ('tier_2', 'Tier 2 (outside)')])
+#     referral_status = models.CharField(max_length=100, choices=[('given_card', 'Given your card'), ('will_call', 'Told them you would call')])
+#     address = models.CharField(max_length=255, blank=True)
+#     telephone = models.CharField(max_length=15)
+#     email = models.EmailField(blank=True)
+#     comments = models.TextField(blank=True)
+#     referral_heat = models.CharField(max_length=10, choices=[('hot', 'Hot'), ('tepid', 'Tepid')])
+
+class Meeting(models.Model):
+    MEETING_TYPES = [
+        ('one_to_one', 'One-to-One'),
+        ('group', 'Group'),
+    ]
+    chapter = models.CharField(max_length=100, default='Radiance')
+    met_with = models.ForeignKey(User, on_delete=models.CASCADE, related_name='meetings_met_with')
+    invited_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='meetings_invited_by')
+    location = models.CharField(max_length=255)
+    topics_of_conversation = models.TextField()
+    date = models.DateField()
+    meeting_type = models.CharField(max_length=10, choices=MEETING_TYPES, default='one_to_one')
+
+    def __str__(self):
+        return f"{self.get_meeting_type_display()} on {self.date} at {self.location}"
+
+    
+
+class ChapterEducationUnit(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ceus')
+    date = models.DateField(default=timezone.now)
+    course_title = models.CharField(max_length=255)
+    credits_per_course = models.DecimalField(max_digits=4, decimal_places=1)
+    qty_earned = models.IntegerField(default=0)
+    total_credits_last_week = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.course_title} ({self.date}) - {self.user.username}"
+
 class ReferralSlip(models.Model):
     date = models.DateField(auto_now_add=True)
-    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referrals_sent')
-    to_member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='referrals_received')
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referral_slips_created')
+    to_member = models.ForeignKey(User, on_delete=models.CASCADE, related_name='referrals_received')
     referral_description = models.TextField()
     referral_type = models.CharField(max_length=20, choices=[('tier_1', 'Tier 1 (inside)'), ('tier_2', 'Tier 2 (outside)')])
     referral_status = models.CharField(max_length=100, choices=[('given_card', 'Given your card'), ('will_call', 'Told them you would call')])
@@ -469,31 +516,26 @@ class ReferralSlip(models.Model):
     email = models.EmailField(blank=True)
     comments = models.TextField(blank=True)
     referral_heat = models.CharField(max_length=10, choices=[('hot', 'Hot'), ('tepid', 'Tepid')])
+    updated_at = models.DateTimeField(auto_now=True)  # Add this field
 
     def __str__(self):
-        return f"Referral from {self.from_user.username} to {self.to_member.name} on {self.date}"
-
-class OneToOneSlip(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    region_name = models.ForeignKey(Region, on_delete=models.CASCADE)
-    chapter_name = models.ForeignKey(ChapterName, on_delete=models.CASCADE)
-    invited_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    location = models.CharField(max_length=255)
-    conversation = models.TextField()
-    date = models.DateField()
-
-    def __str__(self):
-        return f"One-to-One Slip: {self.region_name} - {self.chapter_name} - {self.invited_by.username}"
+        return f"Referral from {self.from_user} to {self.to_member}"
     
-
-class ChapterEdUnit(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    course_title = models.CharField(max_length=255)
-    credits = models.FloatField()
-    qty_earned = models.IntegerField(default=0)
-    total_credit_last_week = models.FloatField()
+class WeeklySlip(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    chapter = models.CharField(max_length=255)
+    run_at = models.DateTimeField(auto_now_add=True)
+    from_date = models.DateField()
+    to_date = models.DateField()
+    referral_to = models.CharField(max_length=255)
+    referral_from = models.CharField(max_length=255)
+    referral = models.CharField(max_length=255)
+    tyfcb = models.TextField()
+    one_to_ones = models.TextField()
+    visitors = models.TextField()
 
     def __str__(self):
+<<<<<<< HEAD
         return self.course_title
     
     
@@ -511,3 +553,6 @@ class Message(models.Model):
 
     class Meta:
         ordering = ('timestamp',)
+=======
+        return f"Weekly Slip for {self.user.username} from {self.from_date} to {self.to_date}"
+>>>>>>> fb90d919f1f8ab98742a380b1e2b279258119e99
