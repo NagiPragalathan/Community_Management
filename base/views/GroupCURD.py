@@ -3,6 +3,10 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from base.models import Group, Room, Message
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def list_groups(request):
@@ -65,10 +69,42 @@ def group_crud(request, pk=None):
     groups = Group.objects.all()
     return render(request, 'Group/group_crud.html', {'group_data': group_data, 'groups': groups, 'group': group})
 
+@login_required
+def join_group(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
+    if request.user not in group.members.all():
+        group.members.add(request.user)
+    return redirect('room', room_name=group.name)
 
+@login_required
 def room(request, room_name):
     room, created = Room.objects.get_or_create(name=room_name)
+    group = get_object_or_404(Group, name=room_name)
+    if request.user not in group.members.all():
+        return redirect('list_groups')
     messages = Message.objects.filter(room=room).order_by('timestamp')
-    for i in messages:
-        print(i.content, i.room)
-    return render(request, 'chat/room.html', {'room_name': room_name, 'room': room, 'messages': messages})
+    return render(request, 'Group/room.html', {'room_name': room_name, 'room': room, 'messages': messages})
+
+@login_required
+@require_POST
+def send_message(request, room_name):
+    room = get_object_or_404(Room, name=room_name)
+    group = get_object_or_404(Group, name=room_name)
+    if request.user not in group.members.all():
+        return JsonResponse({'error': 'You are not a member of this group.'}, status=403)
+    message = Message.objects.create(
+        room=room,
+        user=request.user,
+        content=request.POST['message']
+    )
+    return JsonResponse({'message': message.content, 'user': message.user.username, 'timestamp': message.timestamp})
+
+@login_required
+def get_messages(request, room_name):
+    room = get_object_or_404(Room, name=room_name)
+    group = get_object_or_404(Group, name=room_name)
+    if request.user not in group.members.all():
+        return JsonResponse({'error': 'You are not a member of this group.'}, status=403)
+    messages = Message.objects.filter(room=room).order_by('timestamp')
+    messages_data = [{'user': message.user.username, 'message': message.content, 'timestamp': message.timestamp} for message in messages]
+    return JsonResponse({'messages': messages_data})

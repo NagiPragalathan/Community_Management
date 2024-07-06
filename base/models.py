@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 import uuid
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-
+from django.urls import reverse
 
 class OTPVerification(models.Model):
     id = models.AutoField(primary_key=True)
@@ -411,14 +411,17 @@ class Group(models.Model):
     description = models.TextField(blank=True, null=True)
     group_counts = models.PositiveIntegerField(default=0)
     lastupdateddate = models.DateTimeField(default=timezone.now)
-    
+    members = models.ManyToManyField(User, related_name='joined_groups', blank=True)
+
     def __str__(self):
         return self.name
+
+    def get_join_link(self):
+        return reverse('join_group', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Group'
         verbose_name_plural = 'Groups'
-
 
 
 
@@ -535,10 +538,9 @@ class WeeklySlip(models.Model):
     visitors = models.TextField()
 
     def __str__(self):
-<<<<<<< HEAD
-        return self.course_title
-    
-    
+        return f"Weekly Slip for {self.user.username} from {self.from_date} to {self.to_date}"
+
+
 class Room(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
@@ -553,6 +555,3 @@ class Message(models.Model):
 
     class Meta:
         ordering = ('timestamp',)
-=======
-        return f"Weekly Slip for {self.user.username} from {self.from_date} to {self.to_date}"
->>>>>>> fb90d919f1f8ab98742a380b1e2b279258119e99

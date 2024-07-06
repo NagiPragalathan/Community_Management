@@ -17,14 +17,9 @@ from base.views.GroupCURD import *
 from base.views.AccountSettings import *
 from base.views.tyfcb import *
 from base.views.referrals import *
-<<<<<<< HEAD
-from base.views.consumers import *
-=======
 from base.views.onetoone import *
 from base.views.ceu import *
 from base.views.weeklyslips import *
-
->>>>>>> fb90d919f1f8ab98742a380b1e2b279258119e99
 
 
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -101,14 +96,6 @@ account_settings = [
     path('edit_or_add_account_settings', edit_or_add_account_settings, name='edit_or_add_account_settings'),
 ]
 
-group = [
-    path('groups/', list_groups, name='list_groups'),
-    path('groups/new/', group_crud, name='group_crud_new'),
-    path('groups/<uuid:pk>/', group_crud, name='group_crud'),
-    path('select2/', include('django_select2.urls')),
-    path('chat/<str:room_name>/', room, name='room'),
-]
-
 tyfcb =[
     path('tyfcb/', tyfcb_list, name='tyfcb_list'),
     path('tyfcb_review/', tyfcb_list, name='tyfcb_review'),
@@ -124,12 +111,6 @@ referrals = [
 
 ]
 
-<<<<<<< HEAD
-websocket_urlpatterns = [
-    re_path(r'ws/chat/(?P<room_name>\w+)/$', ChatConsumer.as_asgi()),
-]
-
-=======
 onetoone =[
     path('meetings/new/', create_meeting, name='create_meeting'),
     path('meetings/', meeting_list, name='meeting_list'),
@@ -146,7 +127,19 @@ weeklyslips =[
 ]
 
 
->>>>>>> fb90d919f1f8ab98742a380b1e2b279258119e99
+group_chat = [
+    path('chat/<str:room_name>/', room, name='room'),
+    path('chat/<str:room_name>/send/', send_message, name='send_message'),
+    path('chat/<str:room_name>/messages/', get_messages, name='get_messages'),
+]
+
+group = [
+    path('groups/', list_groups, name='list_groups'),
+    path('groups/new/', group_crud, name='group_crud_new'),
+    path('groups/<uuid:pk>/', group_crud, name='group_crud'),
+    path('join/<uuid:group_id>/', join_group, name='join_group'),
+]
+
 
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
@@ -162,6 +155,7 @@ urlpatterns.extend(referrals)
 urlpatterns.extend(onetoone)
 urlpatterns.extend(weeklyslips)
 urlpatterns+=ceu
+urlpatterns+=group_chat
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
