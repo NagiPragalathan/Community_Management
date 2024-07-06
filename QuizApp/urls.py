@@ -70,7 +70,7 @@ profile =[
 connections = [ 
     path('send_connection_request/<int:user_id>', send_connection_request, name='send_connection_request'),
     path('accept_connection_request/<int:connection_id>', accept_connection_request, name='accept_connection_request'),
-    path('connections', connection_list, name='connection_list'),
+    path('connections', connection_list, name='connections'),
     path('list_users', list_users, name='list_users'),
     path('pending_request', pending_request, name='pending_request'),
     path('incoming_requests', incoming_requests, name='incoming_requests'),
@@ -80,7 +80,7 @@ connections = [
 chat = [
     path('chat/<int:receiver_id>/', chat_view, name='chat'),
     path('update_message/<int:receiver_id>/', update_message, name='update_message'),
-    path('get_messages/<int:receiver_id>/', get_messages, name='get_messages'),
+    path('get_messages/<int:receiver_id>/', one_to_one_get_messages, name='get_messages'),
     path('unseen_messages', unseen_messages, name='unseen_messages'),
 ]
 

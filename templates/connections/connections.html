@@ -1,32 +1,147 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-
-        <!-- Connection Section -->
-        <div class="flex flex-col mt-1">
-            <div class="flex justify-between  p-3">
-                <h3 class="text-3xl font-bold px-2 flex items-center ">My Connections</h3>
-                
-            </div>
-            <ul class="list-disc list-inside">
-                {% for connection in connections %}
-                    <li class="py-2">
-                        {{ connection.connection.username }}
-                        {% if not connection.status == 'accepted' %}
-                            <form action="{% url 'send_connection_request' connection.connection.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="ml-4 bg-purple-700 text-white px-2 py-1 rounded hover:bg-white hover:text-purple-700 border">Send Connection Request</button>
-                            </form>
-                        {% else %}
-                            <a href="{% url 'chat' connection.connection.id %}" class="ml-4 text-purple-700 hover:underline">Send Message</a>
-                            <a href="{% url 'give_testimonial' connection.connection.id %}" class="ml-4 text-purple-700 hover:underline">Give Testimonial</a>
-                            <a href="{% url 'request_testimonial' connection.connection.id %}" class="ml-4 text-purple-700 hover:underline">Request Testimonial</a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-
+<div class="container mx-auto p-10 md:p-20 antialiased">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Global Peoples</h1>
+    <div class="flex justify-between mb-4">
+        <input type="text" id="searchInput" placeholder="Search connections..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-300">
     </div>
-</body>
-{% endblock content %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="profileContainer">
+        {% for profile in profiles %}
+        <div class="flex flex-col justify-center profile-card bg-white rounded-3xl shadow-xl overflow-hidden p-6 cursor-pointer" 
+             data-id="{{ profile.user.id }}" 
+             data-name="{{ profile.display_name }}" 
+             data-company="{{ profile.company_name }}" 
+             data-industry="{{ profile.industry }}" 
+             data-keywords="{{ profile.keywords }}" 
+             data-title="{{ profile.title }}" 
+             data-first-name="{{ profile.first_name }}" 
+             data-last-name="{{ profile.last_name }}" 
+             data-gender="{{ profile.gender }}" 
+             data-membership-status="{{ profile.membership_status }}"
+             data-address="{{ profile.address }}"
+             data-contact="{{ profile.contact }}"
+             data-profile-url="asdfg">
+            <div class="flex items-center justify-between flex-col">
+                {% if profile.user.profile_image %}
+                <img src="{{ profile.user.profile_image.url }}" alt="{{ profile.display_name }}" class="w-16 h-16 rounded-full object-cover">
+                {% else %}
+                <img src="https://static.vecteezy.com/system/resources/previews/002/265/650/original/unknown-person-user-icon-for-web-vector.jpg" alt="{{ profile.display_name }}" class="w-16 h-16 rounded-full object-cover">
+                {% endif %}
+                <div class="ml-4 flex flex-col">
+                    <p class="text-lg font-medium text-gray-900 truncate">{{ profile.title }} {{ profile.first_name }} {{ profile.last_name }}</p>
+                    <p class="text-sm text-gray-500">{{ profile.membership_status }}</p>
+                </div>
+            </div>
+            <div class="mt-4">
+                <p class="text-sm text-gray-500"><strong>Company:</strong> {{ profile.company_name }}</p>
+                <p class="text-sm text-gray-500"><strong>GST ID/PAN:</strong> {{ profile.gst_identification_number_or_pan }}</p>
+                <p class="text-sm text-gray-500"><strong>Industry:</strong> {{ profile.industry }}</p>
+                <p class="text-sm text-gray-500"><strong>Gender:</strong> {{ profile.gender }}</p>
+            </div>
+            <p class="mt-2 text-gray-600">{{ profile.product_service_description }}</p>
+            <div class="flex flex-wrap gap-2 mt-4">
+                {% if profile.industry %}
+                <span class="text-xs font-semibold py-1 px-3 bg-blue-500 text-white rounded-full">{{ profile.industry }}</span>
+                {% endif %}
+                {% if profile.keywords %}
+                <span class="text-xs font-semibold py-1 px-3 bg-green-500 text-white rounded-full">{{ profile.keywords }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen p-4 text-center">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
+            <div>
+                <div class="flex items-center">
+                    <div class="ml-3 w-0 flex-1">
+                        <a href="#" id="sample"><h3 class="text-lg leading-6 font-medium text-gray-900" id="modalName"></h3></a>
+                        <p class="text-sm text-gray-500" id="modalCompany"></p>
+                    </div>
+                </div>
+                <div class="mt-3 text-center sm:mt-5">
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-500" id="modalIndustry"></p>
+                        <p class="text-sm text-gray-500" id="modalAddress"></p>
+                        <p class="text-sm text-gray-500" id="modalContact"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                <a href="#" id="sendMessageBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm">Send Message</a>
+                <a href="#" id="giveTestimonialBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm">Give Testimonial</a>
+                <a href="#" id="requestTestimonialBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm">Request Testimonial</a>
+                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-4 sm:text-sm" id="closeModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        let filter = this.value.toLowerCase();
+        let cards = document.querySelectorAll('.profile-card');
+        cards.forEach(card => {
+            let name = card.getAttribute('data-name').toLowerCase();
+            let company = card.getAttribute('data-company').toLowerCase();
+            let industry = card.getAttribute('data-industry').toLowerCase();
+            let keywords = card.getAttribute('data-keywords').toLowerCase();
+            let title = card.getAttribute('data-title').toLowerCase();
+            let firstName = card.getAttribute('data-first-name').toLowerCase();
+            let lastName = card.getAttribute('data-last-name').toLowerCase();
+            let gender = card.getAttribute('data-gender').toLowerCase();
+            let membershipStatus = card.getAttribute('data-membership-status').toLowerCase();
+            if (
+                name.includes(filter) ||
+                company.includes(filter) ||
+                industry.includes(filter) ||
+                keywords.includes(filter) ||
+                title.includes(filter) ||
+                firstName.includes(filter) ||
+                lastName.includes(filter) ||
+                gender.includes(filter) ||
+                membershipStatus.includes(filter)
+            ) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
+    document.querySelectorAll('.profile-card').forEach(card => {
+        card.addEventListener('click', function() {
+            let id = this.getAttribute('data-id');
+            let name = this.getAttribute('data-name');
+            let company = this.getAttribute('data-company');
+            let industry = this.getAttribute('data-industry');
+            let address = this.getAttribute('data-address');
+            let contact = this.getAttribute('data-contact');
+            let profileUrl = this.getAttribute('data-profile-url');
+
+            document.getElementById('modalName').innerText = name;
+            document.getElementById('sample').href = profileUrl;
+            document.getElementById('modalCompany').innerText = `Company: ${company}`;
+            document.getElementById('modalIndustry').innerText = `Industry: ${industry}`;
+            document.getElementById('modalAddress').innerText = `Address: ${address}`;
+            document.getElementById('modalContact').innerText = `Contact: ${contact}`;
+            document.getElementById('sendMessageBtn').href = `{% url 'chat' 0 %}`.replace('0', id);
+            document.getElementById('giveTestimonialBtn').href = `{% url 'give_testimonial' 0 %}`.replace('0', id);
+            document.getElementById('requestTestimonialBtn').href = `{% url 'request_testimonial' 0 %}`.replace('0', id);
+
+            document.getElementById('profileModal').classList.remove('hidden');
+        });
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        document.getElementById('profileModal').classList.add('hidden');
+    });
+</script>
+{% endblock %}

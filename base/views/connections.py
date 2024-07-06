@@ -2,42 +2,21 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from base.models import Connection, MainProfile
 from django.contrib.auth.models import User
-import logging
 from django.shortcuts import get_object_or_404, redirect
-
-logger = logging.getLogger(__name__)
-
-@login_required
-def accept_connection_request(request, connection_id):
-    connection_request = get_object_or_404(Connection, id=connection_id)
-    
-    if connection_request.status != 'pending':
-        logger.error(f"Connection with id {connection_id} is not pending.")
-        return redirect('incoming_requests')
-    
-    connection_request.status = 'accepted'
-    connection_request.save()
-
-    # Create a reciprocal connection
-    reciprocal_connection, created = Connection.objects.get_or_create(
-        user=connection_request.connection,
-        connection=connection_request.user,
-        defaults={'status': 'accepted'}
-    )
-    if not created:
-        reciprocal_connection.status = 'accepted'
-        reciprocal_connection.save()
-    
-    logger.info(f"Connection request accepted for connection id {connection_id}.")
-    return redirect('connection_list')
-
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+from django.db.models import Q
 
 @login_required
 def connection_list(request):
-    connections = Connection.objects.filter(user=request.user, status='accepted')
-    return render(request, 'connections/connections.html', {'connections': connections})
+    connections = Connection.objects.filter(
+        Q(user=request.user) | Q(connection=request.user), 
+        status='accepted'
+    )
+    users = User.objects.filter(id__in=connections)
+    profiles = MainProfile.objects.filter(user__in=users)
 
+    return render(request, 'connections/connections.html', {'profiles': profiles})
 
 @login_required
 def list_users(request):
@@ -85,7 +64,7 @@ def send_connection_request(request, user_id):
         connection_request = Connection(user=sender, connection=receiver, status='pending')
         connection_request.save()
         
-        print("Connection request sent.")
+        print("Connection request sent.", connection_request.id)
         
         return redirect('list_users')
     else:
