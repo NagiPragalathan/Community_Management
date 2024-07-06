@@ -42,9 +42,18 @@ INSTALLED_APPS = [
     'django_select2',
     "base",
     'corsheaders',
+    "channels"
 ]
 
 LANGUAGE_CODE = 'en-us'
+
+ASGI_APPLICATION = 'QuizApp.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 LANGUAGES = [
     ('en', 'English'),

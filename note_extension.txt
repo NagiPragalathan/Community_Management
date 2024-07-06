@@ -1,2 +1,15 @@
 live share
 auto django
+
+
+
+group = [
+    path('groups/', list_groups, name='list_groups'),
+    path('groups/new/', group_crud, name='group_crud_new'),
+    path('groups/<uuid:pk>/', group_crud, name='group_crud'),
+    path('select2/', include('django_select2.urls')),
+]
+
+if i share the group link who ever cleck it and they are logged in users they will be join the group
+
+project name 

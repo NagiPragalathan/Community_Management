@@ -35,7 +35,7 @@ def list_users(request):
     print("Profiles:", profiles)  # Debug print
 
     for profile in profiles:
-        print(profile.user.username, profile.user.status)  # Debug print
+        print(profile.user.username)  # Debug print
 
     return render(request, 'connections/user_list.html', {'profiles': profiles})
 

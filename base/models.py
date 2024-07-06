@@ -385,10 +385,14 @@ class ChapterMemberPosition(models.Model):
     def __str__(self):
         return f'{self.user} - {self.position}'
     
+from django.db import models
+from django.contrib.auth.models import User
+import uuid
+from django.utils import timezone
+
 class Group(models.Model):
     OPEN = 'Open'
     INVITE_ONLY = 'Invite Only'
-
     VIEW_AND_POST = 'View and post'
 
     GROUP_TYPES = [
@@ -491,3 +495,19 @@ class ChapterEdUnit(models.Model):
 
     def __str__(self):
         return self.course_title
+    
+    
+class Room(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+class Message(models.Model):
+    room = models.ForeignKey(Room, related_name='messages', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username}: {self.content}'
+
+    class Meta:
+        ordering = ('timestamp',)

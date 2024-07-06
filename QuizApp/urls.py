@@ -4,7 +4,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from QuizApp import settings
 from django.conf.urls.i18n import i18n_patterns
-
+from django.urls import re_path
 
 # Django views
 from base.views.auth import *
@@ -17,6 +17,7 @@ from base.views.GroupCURD import *
 from base.views.AccountSettings import *
 from base.views.tyfcb import *
 from base.views.referrals import *
+from base.views.consumers import *
 
 
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -94,10 +95,11 @@ account_settings = [
 ]
 
 group = [
-      path('groups/', list_groups, name='list_groups'),
-    path('groups/<uuid:pk>/', group_crud, name='group_crud'),
+    path('groups/', list_groups, name='list_groups'),
     path('groups/new/', group_crud, name='group_crud_new'),
-     path('select2/', include('django_select2.urls')),
+    path('groups/<uuid:pk>/', group_crud, name='group_crud'),
+    path('select2/', include('django_select2.urls')),
+    path('chat/<str:room_name>/', room, name='room'),
 ]
 
 tyfcb =[
@@ -111,6 +113,10 @@ tyfcb =[
 referrals = [
     path('referrals/new/', create_referral, name='create_referral'),
     path('referrals/', list_referrals, name='list_referrals'),
+]
+
+websocket_urlpatterns = [
+    re_path(r'ws/chat/(?P<room_name>\w+)/$', ChatConsumer.as_asgi()),
 ]
 
 

@@ -3,7 +3,7 @@
 {% load form_tags %}
 
 {% block content %}
-<div class="container my-10 bg-white mx-2 md:mx-auto p-6 rounded-md shadow-md md:max-w-4xl">
+<div class="container my-10 bg-white mx-2 md:mx-auto p-6 rounded-md shadow-md md:max-w-4xl" style="top: -27px !important; position:relative;">
     <h1 class="text-2xl font-bold mb-5">Group CRUD Operations</h1>
 
     {% if messages %}
@@ -14,35 +14,32 @@
         </ul>
     {% endif %}
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" action="{% if group %}{% url 'group_crud' group.pk %}{% else %}{% url 'group_crud_new' %}{% endif %}">
         {% csrf_token %}
         <div class="mb-4">
-            {{ form.name.label_tag }} 
-            {{ form.name|add_class:"border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" }}
+            <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+            <input type="text" name="name" id="name" value="{{ group_data.name }}" class="border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
         <div class="mb-4">
-            {{ form.group_type.label_tag }} 
-            {{ form.group_type|add_class:"border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" }}
+            <label for="group_type" class="block text-gray-700 font-medium mb-2">Group Type</label>
+            <select name="group_type" id="group_type" class="border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="Open" {% if group_data.group_type == "Open" %}selected{% endif %}>Open</option>
+                <option value="Invite Only" {% if group_data.group_type == "Invite Only" %}selected{% endif %}>Invite Only</option>
+            </select>
         </div>
         <div class="mb-4">
-            {{ form.access_type.label_tag }} 
-            {{ form.access_type|add_class:"border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" }}
+            <label for="access_type" class="block text-gray-700 font-medium mb-2">Access Type</label>
+            <select name="access_type" id="access_type" class="border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="View and post" {% if group_data.access_type == "View and post" %}selected{% endif %}>View and post</option>
+            </select>
         </div>
         <div class="mb-4">
-            {{ form.language.label_tag }} 
-            {{ form.language|add_class:"border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" }}
+            <label for="language" class="block text-gray-700 font-medium mb-2">Language</label>
+            <input type="text" name="language" id="language" value="{{ group_data.language }}" class="border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
         <div class="mb-4">
-            {{ form.invite_connections.label_tag }} 
-            {{ form.invite_connections|add_class:"border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" }}
-        </div>
-        <div class="mb-4">
-            {{ form.description.label_tag }} 
-            {{ form.description|add_class:"border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" }}
-        </div>
-        <div class="mb-4">
-            {{ form.group_counts.label_tag }} 
-            {{ form.group_counts|add_class:"border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" }}
+            <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
+            <textarea name="description" id="description" class="border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">{{ group_data.description }}</textarea>
         </div>
         <div class="mb-4">
             <label for="logo" class="block text-gray-700 font-medium mb-2">Group Logo</label>
