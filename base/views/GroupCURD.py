@@ -8,7 +8,10 @@ from django.views.decorators.http import require_POST
 
 @login_required
 def list_groups(request):
-    groups = Group.objects.all()
+    user = request.user
+    groups = Group.objects.filter(
+        Q(group_type="Open") | Q(creator=user) | Q(members=user)
+    ).distinct()
     return render(request, 'Group/listGroup.html', {'groups': groups})
 
 @login_required
