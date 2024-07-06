@@ -4,21 +4,21 @@ from django.contrib import messages
 from base.models import Testimonial
 from django.contrib.auth.models import User
 
-
 @login_required
 def give_testimonial(request, receiver_id):
+    receiver = get_object_or_404(User, pk=receiver_id)
+    
     if request.method == 'POST':
-        # Get the receiver user
-        receiver = User.objects.get(pk=receiver_id)
-        
         # Extract testimonial content from the form
         testimonial_content = request.POST.get('testimonial_content')
-        existing_request = Testimonial.objects.filter(from_user=request.user, to_user=receiver, type='give_testimonials').exists()
-        if existing_request:
-            # If a request already exists, display an error message or handle it as desired
-            messages.error(request, 'You have already requested a testimonial from this user.')
-            return redirect('connection_list')  # Redirect to the appropriate URL
-    
+        print("testimonial_content",testimonial_content)
+        # Check if a testimonial from the current user to the receiver already exists
+        existing_testimonial = Testimonial.objects.filter(from_user=request.user, to_user=receiver, type='give_testimonials').exists()
+        if existing_testimonial:
+            # If a testimonial already exists, display an error message or handle it as desired
+            print("You have already given a testimonial to this user.")
+            messages.error(request, 'You have already given a testimonial to this user.')
+            return redirect('connections')  # Redirect to the appropriate URL
 
         # Create the testimonial
         testimonial = Testimonial.objects.create(
@@ -27,23 +27,26 @@ def give_testimonial(request, receiver_id):
             to_user=receiver,
             type='give_testimonials'
         )
-
-        # Optionally, you can update the state_of_request to 'accepted' 
-        # based on your application logic if the testimonial is automatically accepted
-
+        print("testimonial given to", receiver.username)
+        
         # Optionally, you can send a notification to the receiver that they have received a new testimonial
-
+        
         # Redirect the user to a success page or back to the profile page
-        return redirect('give_testimonial', receiver_id=receiver_id)
+        messages.success(request, 'Testimonial successfully given.')
+        return redirect('connections')
 
     else:
         # Render a form for giving testimonials
-        return render(request, 'testimonial/give_testimonial.html')
-
+        return render(request, 'testimonial/give_testimonial.html', {"receiver_id": receiver_id})
+    
+    
 def incoming_testimonials(request):
     # Retrieve the current user from the session or request.user if using Django's authentication system
     current_user = request.user
 
+    for i in Testimonial.objects.all():
+        print(i.from_user.username, i.to_user.username)
+    Testimonial.objects.all().delete()
     # Filter testimonials where the to_user is the current user
     incoming_testimonials = Testimonial.objects.filter(to_user=current_user).exclude(type='req_testimonials')
 

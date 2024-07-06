@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block content%}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +12,7 @@
 <body class="bg-gray-100">
     <div class="container mx-auto py-8 px-4">
         <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Give Testimonial</h1>
-        <form method="post" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <form method="post" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg" action="{% url 'give_testimonial' receiver_id=receiver_id %}">
             {% csrf_token %}
             <div class="mb-4">
                 <label for="testimonial_content" class="block text-gray-700 font-bold mb-2">Testimonial:</label>
@@ -25,4 +25,4 @@
     </div>
 </body>
 </html>
-{% endblock content%}
+{% endblock content %}
