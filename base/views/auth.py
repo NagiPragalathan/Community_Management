@@ -26,6 +26,8 @@ from django.contrib import messages
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
+from base.models  import MainProfile
+
 
 def generate_otp():
     # Generate a 6-digit OTP (you can adjust the length as needed)
@@ -100,6 +102,30 @@ def signup(request):
         email = request.POST['email']
         # Create user
         user = User.objects.create_user(username=username, password=password, email=email)
+        MainProfile.objects.update_or_create(
+            user=user,
+            defaults={
+                'title': "Not Updated",
+                'first_name': "",
+                'last_name': "Not Updated",
+                'suffix': "Not Updated",
+                'display_name': "Not Updated",
+                'gender': "Not Updated",
+                'company_name': "Not Updated",
+                'product_service_description': "Not Updated",
+                'gst_registered_state': "Not Updated",
+                'gst_identification_number_or_pan': "Not Updated",
+                'industry': "Not Updated",
+                'classification': "Not Updated",
+                'requested_speciality': "Not Updated",
+                'membership_status': 'Not Updated',
+                'RenewalDueDate': "Not Updated",
+                # 'Chapter': chapter,
+                'my_business': "Not Updated",
+                'keywords': "Not Updated"
+            }
+        )
+
         return redirect('login')
     return render(request, 'auth/signup_new.html')
 

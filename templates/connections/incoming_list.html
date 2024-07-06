@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container mx-auto p-10 md:p-20 antialiased">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Global Peoples</h1>
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Incoming Request</h1>
     <div class="flex justify-between mb-4">
         <input type="text" id="searchInput" placeholder="Search connections..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-300">
     </div>
@@ -75,7 +75,14 @@
                 </div>
             </div>
             <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
-                <a href="#" id="connectBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm">Connect</a>
+                <form action="{% url 'accept_connection_request' 0 %}" method="post" id="acceptForm">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:col-start-2 sm:text-sm">Accept</button>
+                </form>
+                <form action="{% url 'reject_connection_request' 0 %}" method="post" id="rejectForm">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:col-start-1 sm:text-sm">Reject</button>
+                </form>
                 <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-4 sm:text-sm" id="closeModalBtn">Close</button>
             </div>
         </div>
@@ -130,7 +137,8 @@
             document.getElementById('modalIndustry').innerText = `Industry: ${industry}`;
             document.getElementById('modalAddress').innerText = `Address: ${address}`;
             document.getElementById('modalContact').innerText = `Contact: ${contact}`;
-            document.getElementById('connectBtn').href = `{% url 'send_connection_request' 0 %}`.replace('0', id);
+            document.getElementById('acceptForm').action = `{% url 'accept_connection_request' 0 %}`.replace('0', id);
+            document.getElementById('rejectForm').action = `{% url 'reject_connection_request' 0 %}`.replace('0', id);
 
             document.getElementById('profileModal').classList.remove('hidden');
         });

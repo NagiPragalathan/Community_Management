@@ -72,9 +72,9 @@ connections = [
     path('accept_connection_request/<int:connection_id>', accept_connection_request, name='accept_connection_request'),
     path('connections', connection_list, name='connection_list'),
     path('list_users', list_users, name='list_users'),
+    path('pending_request', pending_request, name='pending_request'),
     path('incoming_requests', incoming_requests, name='incoming_requests'),
     path('reject_connection_request/<int:connection_id>', reject_connection_request, name='reject_connection_request'),
-    path('accept_connection_request/<int:connection_id>', accept_connection_request, name='accept_connection_request'),
 ]
 
 chat = [
