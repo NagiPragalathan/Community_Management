@@ -108,3 +108,7 @@ def list_inboxrequested_testimonials(request):
 
     # Pass the queryset to the template for rendering
     return render(request, 'testimonial/list_requested_testimonials.html', {'requested_testimonials': requested_testimonials})
+
+def menuOfTestimonial(request):
+    return render(request, 'testimonial/menuoftest.html')
+

@@ -8,6 +8,11 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils import timezone
+from datetime import timedelta
+
 class OTPVerification(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.EmailField()
@@ -24,6 +29,7 @@ class ChapterName(models.Model):
     
     def __str__(self):
         return self.chapter_name
+
 
 
 class MainProfile(models.Model):
@@ -61,13 +67,24 @@ class MainProfile(models.Model):
     classification = models.CharField(max_length=255, blank=True, null=True)
     requested_speciality = models.CharField(max_length=255, blank=True, null=True)
     membership_status = models.CharField(max_length=11, choices=MEMBERSHIP_STATUS_CHOICES)
-    RenewalDueDate = models.CharField(max_length=255, blank=True, null=True)
-    Chapter = models.ForeignKey('ChapterName', related_name='members', on_delete=models.SET_NULL, blank=True, null=True) 
+    renewal_due_date = models.DateField(blank=True, null=True)
+    active_until = models.DateField(blank=True, null=True)
+    Chapter = models.ForeignKey('ChapterName', related_name='members', on_delete=models.SET_NULL, blank=True, null=True)
     my_business = models.TextField(blank=True, null=True)
     keywords = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.title} {self.first_name} {self.last_name}"    
+        return f"{self.title} {self.first_name} {self.last_name}"
+
+    def check_membership_status(self):
+        if self.renewal_due_date and timezone.now().date() > self.renewal_due_date:
+            self.membership_status = 'Not Active'
+            self.active_until = self.renewal_due_date
+            self.save()
+
+@receiver(post_save, sender=MainProfile)
+def update_membership_status(sender, instance, **kwargs):
+    instance.check_membership_status()
 
 class ContactDetails(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)

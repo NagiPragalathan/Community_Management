@@ -85,6 +85,7 @@ chat = [
 ]
 
 testimonial = [
+    path('menuOfTestimonial', menuOfTestimonial, name='menuOfTestimonial'),
     path('incoming_testimonials', incoming_testimonials, name='incoming_testimonials'),
     path('list_requested_testimonials', list_requested_testimonials, name='list_requested_testimonials'),
     path('list_inboxrequested_testimonials', list_inboxrequested_testimonials, name='list_inboxrequested_testimonials'),

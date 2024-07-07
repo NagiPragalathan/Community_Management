@@ -1376,7 +1376,7 @@ video {
                         <a href="{% url 'list_users' %}" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Connections</a>
                     </li> 
                     <li class="mb-4">
-                        <a href="" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Testimonials</a>
+                        <a href="{% url 'menuOfTestimonial' %}" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Testimonials</a>
                     </li> 
                     <li class="mb-4">
                         <a href="{% url 'add_gallery' %}" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Picture Gallery</a>
@@ -1557,7 +1557,11 @@ video {
                     <button type="button" class="dropdown-toggle flex items-center">
                         <div class="flex-shrink-0 w-10 h-10 relative">
                             <div class="p-1 bg-white rounded-full focus:outline-none focus:ring">
-                                <img class="w-8 h-8 rounded-full" src="https://laravelui.spruko.com/tailwind/ynex/build/assets/images/faces/9.jpg" alt=""/>
+                                {% if usr_img != 'none' and usr_img %}
+                                  <img class="w-8 h-8 rounded-full" src="{{ usr_img.url }}" alt=""/>
+                                {% else %}
+                                  <img class="w-8 h-8 rounded-full" src="https://icons.veryicon.com/png/o/miscellaneous/two-color-icon-library/user-286.png" alt=""/>
+                                {% endif %}
                                 <div class="top-0 left-7 absolute w-3 h-3 bg-lime-400 border-2 border-white rounded-full animate-ping"></div>
                                 <div class="top-0 left-7 absolute w-3 h-3 bg-lime-500 border-2 border-white rounded-full"></div>
                             </div>
@@ -1798,8 +1802,20 @@ video {
         }
         // end: Chart
 
+      let check_usr = {{ renewal_message }};
+      document.addEventListener("DOMContentLoaded", function() {
+          // Check if the renewal date is set\
+          console.log("onload", check_usr)
+          if (check_usr == 1) {
+              window.location.href = "/";
+            } else {
+              console.log("valied use...!");
+          }
+      });
+
         
     </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
     <!-- Select2 JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
