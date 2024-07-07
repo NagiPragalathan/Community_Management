@@ -164,14 +164,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
-EMAIL_HOST_USER = ''  # TODO: Your email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_PASSWORD = ''  # TODO: Give APP Password here
+EMAIL_HOST_USER = "sitejec@gmail.com"
+EMAIL_HOST_PASSWORD = "knmdojaoweholeyy"
 EMAIL_USE_TLS = True
-
-
-
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+ADMIN_EMAIL = 'nagipragalathan@gmai.com'
 
 
 JAZZMIN_SETTINGS = {
@@ -249,3 +249,6 @@ JAZZMIN_SETTINGS = {
 }
 
 EMAIL_USE_TLS = True
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'

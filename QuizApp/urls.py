@@ -22,6 +22,7 @@ from base.views.ceu import *
 from base.views.weeklyslips import *
 from base.views.visitor import *
 from base.views.operations import *
+from base.views.contact import *
 
 
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -152,6 +153,7 @@ group = [
 
 visitor = [
     path('register/', register_visitor, name='register_visitor'),
+    path('subscription-expired/', subscription_expired, name='subscription_expired'),
 ]
 
 
@@ -168,7 +170,11 @@ Operations = [
     # Add other URL configurations
 ]
 
+contact = [
+    
+    path('contact', contact_form, name='contact_form'),
 
+]
 
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
@@ -187,6 +193,7 @@ urlpatterns+=ceu
 urlpatterns+=external_url
 urlpatterns+=group_chat
 urlpatterns+=visitor
+urlpatterns+=contact
 urlpatterns+=Operations
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

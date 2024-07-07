@@ -1807,7 +1807,7 @@ video {
           // Check if the renewal date is set\
           console.log("onload", check_usr)
           if (check_usr == 1) {
-              window.location.href = "/";
+              window.location.href = "{% url 'subscription_expired' %}";
             } else {
               console.log("valied use...!");
           }
