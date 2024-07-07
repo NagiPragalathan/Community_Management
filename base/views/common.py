@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
-from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile
+from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile, ChapterEducationUnit, TYFCB, ReferralSlip
 from base.form.forms import CityDataForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -27,7 +27,23 @@ def calculate_meeting_counts(user):
 
     return lifetime_count, last_12_months_count, percentage
 
+def calculate_ceu_counts(user):
+    # Lifetime count of CEUs
+    lifetime_count = ChapterEducationUnit.objects.filter(user=user).count()
 
+    # Calculate the date 12 months ago from today
+    twelve_months_ago = timezone.now().date() - timedelta(days=365)
+
+    # Count of CEUs in the last 12 months
+    last_12_months_count = ChapterEducationUnit.objects.filter(user=user, date__gte=twelve_months_ago).count()
+
+    # Calculate percentage
+    if lifetime_count > 0:
+        percentage = (last_12_months_count / lifetime_count) * 100
+    else:
+        percentage = 0
+
+    return lifetime_count, last_12_months_count, percentage
 
 def index(request):
     if request.user.is_authenticated:
@@ -43,6 +59,34 @@ def dashboard(request):
         status='accepted'
     ).count()
     onelifetime_count, onelast_12_months_count, onepercentage = calculate_meeting_counts(request.user)
+    eculifetime_count, eculast_12_months_count, ecupercentage = calculate_ceu_counts(request.user)
+    
+    today = timezone.now().date()
+    one_year_ago = today - timedelta(days=365)
+
+    # Lifetime counts
+    given_lifetime_count = TYFCB.objects.filter(user=user).count()
+    received_lifetime_count = TYFCB.objects.filter(thank_you_to=user).count()
+
+    # Last 12 months counts
+    given_last_12_months_count = TYFCB.objects.filter(user=user, start_date__gte=one_year_ago).count()
+    received_last_12_months_count = TYFCB.objects.filter(thank_you_to=user, start_date__gte=one_year_ago).count()
+
+    # Calculate percentages
+    given_percentage = (given_last_12_months_count / given_lifetime_count * 100) if given_lifetime_count > 0 else 0
+    received_percentage = (received_last_12_months_count / received_lifetime_count * 100) if received_lifetime_count > 0 else 0
+    
+     # Lifetime counts
+    Rgiven_lifetime_count = ReferralSlip.objects.filter(from_user=user).count()
+    Rreceived_lifetime_count = ReferralSlip.objects.filter(to_member=user).count()
+
+    # Last 12 months counts
+    Rgiven_last_12_months_count = ReferralSlip.objects.filter(from_user=user, date__gte=one_year_ago).count()
+    Rreceived_last_12_months_count = ReferralSlip.objects.filter(to_member=user, date__gte=one_year_ago).count()
+
+    # Calculate percentages
+    Rgiven_percentage = (Rgiven_last_12_months_count / Rgiven_lifetime_count * 100) if Rgiven_lifetime_count > 0 else 0
+    Rreceived_percentage = (Rreceived_last_12_months_count / Rreceived_lifetime_count * 100) if Rreceived_lifetime_count > 0 else 0
     
     context = {
         'group_count': group_count,
@@ -52,6 +96,25 @@ def dashboard(request):
         "onelast_12_months_count":onelast_12_months_count,
         "onepercentage":onepercentage,
         
+        "eculifetime_count":eculifetime_count,
+        "eculast_12_months_count": eculast_12_months_count,
+        "ecupercentage": ecupercentage,
+        
+        "given_lifetime_count":given_lifetime_count,
+        "given_last_12_months_count":given_last_12_months_count, 
+        "given_percentage": given_percentage,
+        
+        "received_lifetime_count":received_lifetime_count,
+        "received_last_12_months_count": received_last_12_months_count,
+        "received_percentage": received_percentage,
+        
+        'Rgiven_lifetime_count': Rgiven_lifetime_count,
+        'Rgiven_last_12_months_count': Rgiven_last_12_months_count,
+        'Rgiven_percentage': Rgiven_percentage,
+        
+        'Rreceived_lifetime_count': Rreceived_lifetime_count,
+        'Rreceived_last_12_months_count': Rreceived_last_12_months_count,
+        'Rreceived_percentage': Rreceived_percentage,
         
     }
     return render(request, 'dashboard.html', context)

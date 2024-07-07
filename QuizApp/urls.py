@@ -36,6 +36,10 @@ common = [
     path('add_city', add_city, name="add_city")
 ]
 
+external_url = [
+    path('select2/', include('django_select2.urls')),
+]
+
 
 admin_ = [
     path('admin/', admin.site.urls, name='admin'),
@@ -180,6 +184,7 @@ urlpatterns.extend(referrals)
 urlpatterns.extend(onetoone)
 urlpatterns.extend(weeklyslips)
 urlpatterns+=ceu
+urlpatterns+=external_url
 urlpatterns+=group_chat
 urlpatterns+=visitor
 urlpatterns+=Operations

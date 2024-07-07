@@ -440,9 +440,9 @@ class Group(models.Model):
         verbose_name = 'Group'
         verbose_name_plural = 'Groups'
 
-
 class TYFCB(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tyfcb_created_by')
+    thank_you_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tyfcb_thanked_to', null=True, blank=True)
     BUSINESS_TYPE_CHOICES = [
         ('new', 'New'),
         ('repeat', 'Repeat'),
@@ -463,8 +463,7 @@ class TYFCB(models.Model):
     comments = models.TextField()
 
     def __str__(self):
-        return f"{self.chapter_name} - {self.region_name} - {self.referral_amount}"
-    
+        return f"{self.chapter_name} - {self.region_name} - {self.referral_amount}"    
 
 class Member(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

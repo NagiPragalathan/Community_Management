@@ -30,6 +30,11 @@ def add_profile(request):
         chapter = request.POST.get('chapter'), 'chapter'
         my_business = request.POST.get('my_business', 'my_business')
         keywords = request.POST.get('keywords', 'keywords')
+        
+        userName = User.objects.get(id=request.user.id)
+        userName.first_name = first_name
+        userName.last_name = last_name
+        user.save()
 
         MainProfile.objects.update_or_create(
             user=user,
