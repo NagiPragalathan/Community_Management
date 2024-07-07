@@ -1,22 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Referral Detail</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Referral Detail</h1>
-
-    <p><strong>Chapter Name:</strong> {{ referral.chapter_name }}</p>
-    <p><strong>Region Name:</strong> {{ referral.region_name }}</p>
-    <p><strong>Referral:</strong> {{ referral.referral }}</p>
-    <p><strong>Referral Type:</strong> {{ referral.get_referral_type_display }}</p>
-    <p><strong>Referral Status:</strong> {{ referral.get_referral_status_display }}</p>
-    <p><strong>Address:</strong> {{ referral.address }}</p>
-    <p><strong>Telephone:</strong> {{ referral.telephone }}</p>
-    <p><strong>Email:</strong> {{ referral.email }}</p>
-    <p><strong>Comments:</strong> {{ referral.comments }}</p>
-
-    <a href="{% url 'referral_edit' pk=referral.pk %}">Edit</a>
-    <a href="{% url 'referral_list' %}">Back to list</a>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Referral Detail</h1>
+            
+            <p><strong>Chapter Name:</strong> {{ referral.chapter_name }}</p>
+            <p><strong>Region Name:</strong> {{ referral.region_name }}</p>
+            <p><strong>Referral:</strong> {{ referral.referral }}</p>
+            <p><strong>Referral Type:</strong> {{ referral.get_referral_type_display }}</p>
+            <p><strong>Referral Status:</strong> {{ referral.get_referral_status_display }}</p>
+            <p><strong>Address:</strong> {{ referral.address }}</p>
+            <p><strong>Telephone:</strong> {{ referral.telephone }}</p>
+            <p><strong>Email:</strong> {{ referral.email }}</p>
+            <p><strong>Comments:</strong> {{ referral.comments }}</p>
+            
+            <div class="mt-6 flex justify-between">
+                <a href="{% url 'referral_edit' pk=referral.pk %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Edit
+                </a>
+                <a href="{% url 'referral_list' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    Back to list
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

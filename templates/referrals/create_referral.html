@@ -1,47 +1,52 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<div class="container mx-auto mt-10">
-    <h1 class="text-xl font-bold mb-5">Referral Slip</h1>
-    <form method="POST" action="" class="space-y-4">
-        {% csrf_token %}
-        <div>
-            <label for="to_member">To Member:</label>
-            <select id="to_member" name="to_member" class="border border-gray-300 rounded px-2 py-1" required>
-                {% for user in members %}
-                <option value="{{ user.id }}">{{ user.username }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div>
-            <label for="referral">Referral:</label>
-            <textarea id="referral" name="referral" class="border border-gray-300 rounded px-2 py-1" required></textarea>
-        </div>
-        <div>
-            <label for="referral_type">Referral Type:</label>
-            <select id="referral_type" name="referral_type" class="border border-gray-300 rounded px-2 py-1" required>
-                <option value="tier_1">Tier 1 (inside)</option>
-                <option value="tier_2">Tier 2 (outside)</option>
-            </select>
-        </div>
-        <div>
-            <label for="referral_status">Referral Status:</label>
-            <select id="referral_status" name="referral_status" class="border border-gray-300 rounded px-2 py-1" required>
-                <option value="given_card">Given your card</option>
-                <option value="will_call">Told them you would call</option>
-            </select>
-        </div>
-        <div>
-            <label for="telephone">Telephone:</label>
-            <input type="text" id="telephone" name="telephone" class="border border-gray-300 rounded px-2 py-1" required>
-        </div>
-        <div>
-            <label for="referral_heat">How hot is this referral?</label>
-            <select id="referral_heat" name="referral_heat" class="border border-gray-300 rounded px-2 py-1" required>
-                <option value="hot">Hot</option>
-                <option value="tepid">Tepid</option>
-            </select>
-        </div>
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
-    </form>
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Referral Slip</h1>
+        <form method="POST" action="" class="space-y-6">
+            {% csrf_token %}
+            <div class="grid grid-cols-2 gap-6">
+                <div class="col-span-2 sm:col-span-1">
+                    <label for="to_member" class="block text-sm font-medium text-gray-700">To Member:</label>
+                    <select id="to_member" name="to_member" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        {% for user in members %}
+                        <option value="{{ user.id }}">{{ user.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-span-2">
+                    <label for="referral" class="block text-sm font-medium text-gray-700">Referral:</label>
+                    <textarea id="referral" name="referral" rows="4" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required></textarea>
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                    <label for="referral_type" class="block text-sm font-medium text-gray-700">Referral Type:</label>
+                    <select id="referral_type" name="referral_type" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        <option value="tier_1">Tier 1 (inside)</option>
+                        <option value="tier_2">Tier 2 (outside)</option>
+                    </select>
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                    <label for="referral_status" class="block text-sm font-medium text-gray-700">Referral Status:</label>
+                    <select id="referral_status" name="referral_status" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        <option value="given_card">Given your card</option>
+                        <option value="will_call">Told them you would call</option>
+                    </select>
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                    <label for="telephone" class="block text-sm font-medium text-gray-700">Telephone:</label>
+                    <input type="text" id="telephone" name="telephone" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                </div>
+                <div class="col-span-2 sm:col-span-1">
+                    <label for="referral_heat" class="block text-sm font-medium text-gray-700">How hot is this referral?</label>
+                    <select id="referral_heat" name="referral_heat" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" required>
+                        <option value="hot">Hot</option>
+                        <option value="tepid">Tepid</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="mt-4 w-full sm:w-auto bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

@@ -1,22 +1,24 @@
-{% extends 'base.html '%}
-{% block content %}
-<body>
-    <div class="container mx-auto mt-10">
-        <h1 class="text-xl font-bold mb-5">One-to-One Meetings</h1>
-        <ul>
-            {% for meeting in meetings %}
-            <li class="mb-4 p-4 border border-gray-300 rounded">
-                <p><strong>Date:</strong> {{ meeting.date }}</p>
-                <p><strong>Location:</strong> {{ meeting.location }}</p>
-                <p><strong>Met With:</strong> {{ meeting.met_with.username }}</p>
-                <p><strong>Invited By:</strong> {{ meeting.invited_by.username }}</p>
-                <p><strong>Topics:</strong> {{ meeting.topics_of_conversation }}</p>
-            </li>
-            {% empty %}
-            <p>No one-to-one meetings found.</p>
-            {% endfor %}
-        </ul>
-    </div>
-</body>
+{% extends 'base.html' %}
 
-{% endblock content %}
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">One-to-One Meetings</h1>
+    {% if meetings %}
+    <ul class="space-y-4">
+        {% for meeting in meetings %}
+        <li class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <h2 class="text-lg font-semibold text-blue-600 mb-2">Meeting on {{ meeting.date|date:"M d, Y" }}</h2>
+            <div class="grid grid-cols-2 gap-4 text-gray-700">
+                <p><i class="fas fa-map-marker-alt mr-2 text-gray-500"></i><strong>Location:</strong> {{ meeting.location }}</p>
+                <p><i class="fas fa-user-friends mr-2 text-gray-500"></i><strong>Met With:</strong> {{ meeting.met_with.username }}</p>
+                <p><i class="fas fa-user-plus mr-2 text-gray-500"></i><strong>Invited By:</strong> {{ meeting.invited_by.username }}</p>
+                <p><i class="fas fa-comments mr-2 text-gray-500"></i><strong>Topics:</strong> {{ meeting.topics_of_conversation }}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="text-gray-600 text-center py-4">No one-to-one meetings found.</div>
+    {% endif %}
+</div>
+{% endblock %}

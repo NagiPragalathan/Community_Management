@@ -1,15 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>TYFCB List</title>
-</head>
-<body>
-    <h1>TYFCB List</h1>
-    <ul>
-        {% for tyfcb in tyfcbs %}
-            <li><a href="{% url 'tyfcb_detail' pk=tyfcb.pk %}">{{ tyfcb }}</a></li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'tyfcb_create' %}">Add a new TYFCB</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-bold text-blue-600 mb-4">TYFCB List</h1>
+        <ul class="space-y-2">
+            {% for tyfcb in tyfcbs %}
+                <li class="bg-gray-200 p-3 rounded hover:bg-gray-300">
+                    <a href="{% url 'tyfcb_detail' pk=tyfcb.pk %}" class="hover:text-blue-500">
+                        {{ tyfcb }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'tyfcb_create' %}" class="inline-block mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded hover:bg-green-600">
+            Add a new TYFCB
+        </a>
+    </div>
+</div>
+{% endblock %}

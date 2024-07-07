@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>TYFCB Detail</title>
-</head>
-<body>
-    <h1>TYFCB Detail</h1>
+{% extends 'base.html' %}
 
-    <p><strong>Chapter Name:</strong> {{ tyfcb.chapter_name }}</p>
-    <p><strong>Region Name:</strong> {{ tyfcb.region_name }}</p>
-    <p><strong>Referral Amount:</strong> {{ tyfcb.referral_amount }}</p>
-    <p><strong>Business Type:</strong> {{ tyfcb.get_business_type_display }}</p>
-    <p><strong>Referral Type:</strong> {{ tyfcb.get_referral_type_display }}</p>
-    <p><strong>Comments:</strong> {{ tyfcb.comments }}</p>
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-bold mb-4">TYFCB Detail</h1>
 
-    <a href="{% url 'tyfcb_edit' pk=tyfcb.pk %}">Edit</a>
-    <a href="{% url 'tyfcb_list' %}">Back to list</a>
-</body>
-</html>
+        <p class="mb-2"><strong>Chapter Name:</strong> {{ tyfcb.chapter_name }}</p>
+        <p class="mb-2"><strong>Region Name:</strong> {{ tyfcb.region_name }}</p>
+        <p class="mb-2"><strong>Referral Amount:</strong> {{ tyfcb.referral_amount }}</p>
+        <p class="mb-2"><strong>Business Type:</strong> {{ tyfcb.get_business_type_display }}</p>
+        <p class="mb-2"><strong>Referral Type:</strong> {{ tyfcb.get_referral_type_display }}</p>
+        <p class="mb-4"><strong>Comments:</strong> {{ tyfcb.comments }}</p>
+
+        <a href="{% url 'tyfcb_edit' pk=tyfcb.pk %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2">Edit</a>
+        <a href="{% url 'tyfcb_list' %}" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back to list</a>
+    </div>
+</div>
+{% endblock %}

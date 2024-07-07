@@ -1,25 +1,26 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<body>
-    <div class="container mx-auto mt-10">
-        <h1 class="text-xl font-bold mb-5">List of Referrals</h1>
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">List of Referrals</h1>
         {% if referrals %}
-            <ul>
-                {% for referral in referrals %}
-                    <li class="mb-2 p-2 border border-gray-200 rounded">
-                        <strong>To:</strong> {{ referral.to_member.id }} <br>
-                        <strong>Date:</strong> {{ referral.date }} <br>
-                        <strong>Description:</strong> {{ referral.referral_description }} <br>
-                        <strong>Status:</strong> {{ referral.get_referral_status_display }} <br>
-                        <strong>Type:</strong> {{ referral.get_referral_type_display }} <br>
-                        <strong>Heat:</strong> {{ referral.get_referral_heat_display }} <br>
-                        <strong>Comments:</strong> {{ referral.comments }}
-                    </li>
-                {% endfor %}
-            </ul>
+        <div class="space-y-4">
+            {% for referral in referrals %}
+            <div class="p-4 border border-gray-200 rounded-lg">
+                <h2 class="text-lg font-semibold">Referral to {{ referral.to_member.username }}</h2>
+                <p><strong>Date:</strong> {{ referral.date|date:"M d, Y" }}</p>
+                <p><strong>Description:</strong> {{ referral.referral_description }}</p>
+                <p><strong>Status:</strong> {{ referral.get_referral_status_display }}</p>
+                <p><strong>Type:</strong> {{ referral.get_referral_type_display }}</p>
+                <p><strong>Heat:</strong> {{ referral.get_referral_heat_display }}</p>
+                <p><strong>Comments:</strong> {{ referral.comments }}</p>
+            </div>
+            {% endfor %}
+        </div>
         {% else %}
-            <p>No referrals found.</p>
+        <p class="text-gray-600">No referrals found.</p>
         {% endif %}
     </div>
-</body>
+</div>
 {% endblock %}

@@ -2,22 +2,24 @@
 
 {% block content %}
 <div class="container mx-auto p-4">
-    <h1 class="text-lg font-bold">Log New CEU</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <div>
-            <label>Course Title:</label>
-            <input type="text" name="course_title" required>
-        </div>
-        <div>
-            <label>Credits/Course:</label>
-            <input type="number" name="credits_per_course" step="0.1" required>
-        </div>
-        <div>
-            <label>QTY Earned:</label>
-            <input type="number" name="qty_earned" required>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
+    <div class="max-w-2xl mx-auto bg-white p-6 shadow-lg rounded-lg">
+        <h1 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Log New CEU</h1>
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label for="course_title" class="block text-gray-700 font-medium mb-2">Course Title:</label>
+                <input type="text" name="course_title" id="course_title" required class="block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="credits_per_course" class="block text-gray-700 font-medium mb-2">Credits/Course:</label>
+                <input type="number" name="credits_per_course" id="credits_per_course" step="0.1" required class="block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <div>
+                <label for="qty_earned" class="block text-gray-700 font-medium mb-2">QTY Earned:</label>
+                <input type="number" name="qty_earned" id="qty_earned" required class="block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-md shadow-lg hover:shadow-xl transition duration-300">Submit</button>
+        </form>
+    </div>
 </div>
 {% endblock %}
