@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from base.models import TYFCB
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from base.forms import TYFCBForm
 from django.db.models import Q  # Import the Q object here
 
@@ -19,27 +20,60 @@ def tyfcb_detail(request, pk):
 @login_required
 def tyfcb_create(request):
     if request.method == "POST":
-        form = TYFCBForm(request.POST)
-        if form.is_valid():
-            tyfcb = form.save(commit=False)
-            tyfcb.user = request.user  # Set the user to the currently logged-in user
-            tyfcb.save()
-            return redirect('tyfcb_detail', pk=tyfcb.pk)
-    else:
-        form = TYFCBForm()
-    return render(request, 'tyfcb/tyfcb_form.html', {'form': form})
+        chapter_name = request.POST.get('chapter_name')
+        region_name = request.POST.get('region_name')
+        referral_amount = request.POST.get('referral_amount')
+        business_type = request.POST.get('business_type')
+        referral_type = request.POST.get('referral_type')
+        thank_you_to_id = request.POST.get('thank_you_to')
+        comments = request.POST.get('comments')
+
+        thank_you_to = User.objects.get(id=thank_you_to_id) if thank_you_to_id else None
+
+        tyfcb = TYFCB.objects.create(
+            user=request.user,
+            chapter_name=chapter_name,
+            region_name=region_name,
+            referral_amount=referral_amount,
+            business_type=business_type,
+            referral_type=referral_type,
+            thank_you_to=thank_you_to,
+            comments=comments
+        )
+        return redirect('tyfcb_detail', pk=tyfcb.pk)
+    
+    users = User.objects.all()
+    return render(request, 'tyfcb/tyfcb_form.html', {'users': users})
 
 @login_required
 def tyfcb_edit(request, pk):
     tyfcb = get_object_or_404(TYFCB, pk=pk, user=request.user)  # Ensure user is editing their own record
+
     if request.method == "POST":
-        form = TYFCBForm(request.POST, instance=tyfcb)
-        if form.is_valid():
-            tyfcb = form.save()
-            return redirect('tyfcb_detail', pk=tyfcb.pk)
-    else:
-        form = TYFCBForm(instance=tyfcb)
-    return render(request, 'tyfcb/tyfcb_form.html', {'form': form})
+        chapter_name = request.POST.get('chapter_name')
+        region_name = request.POST.get('region_name')
+        referral_amount = request.POST.get('referral_amount')
+        business_type = request.POST.get('business_type')
+        referral_type = request.POST.get('referral_type')
+        thank_you_to_id = request.POST.get('thank_you_to')
+        comments = request.POST.get('comments')
+
+        thank_you_to = User.objects.get(id=thank_you_to_id) if thank_you_to_id else None
+
+        tyfcb.chapter_name = chapter_name
+        tyfcb.region_name = region_name
+        tyfcb.referral_amount = referral_amount
+        tyfcb.business_type = business_type
+        tyfcb.referral_type = referral_type
+        tyfcb.thank_you_to = thank_you_to
+        tyfcb.comments = comments
+        tyfcb.save()
+
+        return redirect('tyfcb_detail', pk=tyfcb.pk)
+    
+    users = User.objects.all()
+    return render(request, 'tyfcb/tyfcb_form.html', {'tyfcb': tyfcb, 'users': users})
+
 
 @login_required
 def tyfcb_list(request):
@@ -53,3 +87,4 @@ def tyfcb_list(request):
     
     tyfcbs = TYFCB.objects.filter(query)
     return render(request, 'tyfcb/tyfcb_review.html', {'tyfcbs': tyfcbs, 'start_date': start_date, 'end_date': end_date})
+

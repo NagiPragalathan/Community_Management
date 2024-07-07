@@ -105,13 +105,13 @@
                   <tbody>
                     <tr class="text-gray-700 dark:text-gray-100">
                       <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Revenue Received To My Business</th>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">119910</td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ received_lifetime_count }}</td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div class="flex items-center flex-col">
-                          <span class="mr-2">119910 (70%)</span>
+                          <span class="mr-2">{{ received_last_12_months_count }} ({{ received_percentage }}%)</span>
                           <div class="relative w-full">
                             <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                              <div style="width: 70%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
+                              <div style="width: {{ received_percentage }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-600"></div>
                             </div>
                           </div>
                         </div>
@@ -119,13 +119,13 @@
                     </tr>
                     <tr class="text-gray-700 dark:text-gray-100">
                       <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Referrals Received</th>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">6</td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ Rreceived_lifetime_count }}</td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div class="flex items-center flex-col">
-                          <span class="mr-2">119910 40%</span>
+                          <span class="mr-2">{{ Rreceived_last_12_months_count }} ({{ Rreceived_percentage }}%)</span>
                           <div class="relative w-full">
                             <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-200">
-                              <div style="width: 40%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                              <div style="width: {{ Rreceived_percentage }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
                             </div>
                           </div>
                         </div>
@@ -133,13 +133,13 @@
                     </tr>
                     <tr class="text-gray-700 dark:text-gray-100">
                       <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">TYFCB Given</th>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">5</td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ given_lifetime_count }}</td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div class="flex items-center flex-col">
-                          <span class="mr-2">119910 45%</span>
+                          <span class="mr-2">{{ given_last_12_months_count }} ({{ given_percentage }}%)</span>
                           <div class="relative w-full">
                             <div class="overflow-hidden h-2 text-xs flex rounded bg-pink-200">
-                              <div style="width: 45%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-pink-500"></div>
+                              <div style="width: {{ given_percentage }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-pink-500"></div>
                             </div>
                           </div>
                         </div>
@@ -147,13 +147,13 @@
                     </tr>
                     <tr class="text-gray-700 dark:text-gray-100">
                       <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">Referrals Given</th>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">4</td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ Rreceived_lifetime_count }}</td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div class="flex items-center flex-col">
-                          <span class="mr-2">119910 60%</span>
+                          <span class="mr-2">{{ Rreceived_last_12_months_count }} ({{ Rreceived_percentage }}%)</span>
                           <div class="relative w-full">
                             <div class="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                              <div style="width: 60%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                              <div style="width: {{ Rreceived_percentage }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
                             </div>
                           </div>
                         </div>
@@ -178,7 +178,7 @@
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ onelifetime_count }}</td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div class="flex items-center flex-col">
-                          <span class="mr-2">{{ onelast_12_months_count }} {{ onepercentage }}%</span>
+                          <span class="mr-2">{{ onelast_12_months_count }} ({{ onepercentage }}%)</span>
                           <div class="relative w-full">
                             <div class="overflow-hidden h-2 text-xs flex rounded bg-red-200">
                               <div style="width: {{ onepercentage }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
@@ -189,13 +189,13 @@
                     </tr>
                     <tr class="text-gray-700 dark:text-gray-100">
                       <th class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">CEUs</th>
-                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">4</td>
+                      <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ eculifetime_count }}</td>
                       <td class="border-t-0 px-4 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         <div class="flex items-center flex-col">
-                          <span class="mr-2">119910 60%</span>
+                          <span class="mr-2">{{ eculast_12_months_count }} ({{ ecupercentage }}%)</span>
                           <div class="relative w-full">
                             <div class="overflow-hidden h-2 text-xs flex rounded bg-red-200">
-                              <div style="width: 60%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
+                              <div style="width: {{ ecupercentage }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"></div>
                             </div>
                           </div>
                         </div>

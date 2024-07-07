@@ -1,50 +1,107 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container mx-auto p-4">
-    <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
-        <h1 class="text-2xl font-bold mb-6">New TYFCB Entry</h1>
+    <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">{% if tyfcb %}Edit TYFCB Entry{% else %}New TYFCB Entry{% endif %}</h1>
         <form method="post" class="space-y-4">
             {% csrf_token %}
-            
-            {% for field in form %}
+
             <div class="mb-4">
-                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
-                    {{ field.label }}
-                </label>
-                {% if field.is_hidden %}
-                    {{ field }}
-                {% elif field.field.widget.input_type == 'radio' %}
-                    <div class="mt-2 space-y-2">
-                        {% for radio in field %}
-                            {% if radio.choice_label != "---------" %}
-                            <div class="flex items-center">
-                                <input type="radio" name="{{ radio.name }}" value="{{ radio.choice_value }}" id="{{ radio.id_for_label }}"
-                                       class="form-radio text-blue-500 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                                       {{ radio.tag_attrs }}>
-                                <label for="{{ radio.id_for_label }}" class="ml-2 text-gray-700">
-                                    {{ radio.choice_label }}
-                                </label>
-                            </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}"
-                           id="{{ field.id_for_label }}" value="{{ field.value|default_if_none:'' }}"
-                           class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm 
-                                  focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                           {% if field.field.widget.attrs %} {{ field.field.widget.attrs|safe }} {% endif %}
-                           {% if field.field.required %}required{% endif %}>
-                {% endif %}
-                {% if field.help_text %}
-                    <p class="mt-1 text-xs text-gray-500">{{ field.help_text }}</p>
-                {% endif %}
-                {% if field.errors %}
-                    <p class="text-red-500 text-xs italic">{{ field.errors|first }}</p>
-                {% endif %}
+                <label for="chapter_name" class="block text-sm font-medium text-gray-700 mb-2">Chapter Name</label>
+                <input type="text" name="chapter_name" id="chapter_name"
+                       value="{{ tyfcb.chapter_name|default_if_none:'' }}"
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm
+                              focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                       required>
             </div>
-            {% endfor %}
+
+            <div class="mb-4">
+                <label for="region_name" class="block text-sm font-medium text-gray-700 mb-2">Region Name</label>
+                <input type="text" name="region_name" id="region_name"
+                       value="{{ tyfcb.region_name|default_if_none:'' }}"
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm
+                              focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                       required>
+            </div>
+
+            <div class="mb-4">
+                <label for="referral_amount" class="block text-sm font-medium text-gray-700 mb-2">Referral Amount</label>
+                <input type="number" name="referral_amount" id="referral_amount"
+                       value="{{ tyfcb.referral_amount|default_if_none:'' }}"
+                       class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm
+                              focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                       required>
+            </div>
+
+            <div class="mb-4">
+                <label for="business_type" class="block text-sm font-medium text-gray-700 mb-2">Business Type</label>
+                <div class="mt-2 space-y-2">
+                    <div class="flex items-center">
+                        <input type="radio" name="business_type" value="new" id="business_type_new"
+                               {% if tyfcb.business_type == 'new' %}checked{% endif %}
+                               class="form-radio text-blue-500 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                               required>
+                        <label for="business_type_new" class="ml-2 text-gray-700">New</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" name="business_type" value="repeat" id="business_type_repeat"
+                               {% if tyfcb.business_type == 'repeat' %}checked{% endif %}
+                               class="form-radio text-blue-500 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                               required>
+                        <label for="business_type_repeat" class="ml-2 text-gray-700">Repeat</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="referral_type" class="block text-sm font-medium text-gray-700 mb-2">Referral Type</label>
+                <div class="mt-2 space-y-2">
+                    <div class="flex items-center">
+                        <input type="radio" name="referral_type" value="tier_1" id="referral_type_tier_1"
+                               {% if tyfcb.referral_type == 'tier_1' %}checked{% endif %}
+                               class="form-radio text-blue-500 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                               required>
+                        <label for="referral_type_tier_1" class="ml-2 text-gray-700">Tier 1</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" name="referral_type" value="tier_2" id="referral_type_tier_2"
+                               {% if tyfcb.referral_type == 'tier_2' %}checked{% endif %}
+                               class="form-radio text-blue-500 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                               required>
+                        <label for="referral_type_tier_2" class="ml-2 text-gray-700">Tier 2</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" name="referral_type" value="tier_3" id="referral_type_tier_3"
+                               {% if tyfcb.referral_type == 'tier_3' %}checked{% endif %}
+                               class="form-radio text-blue-500 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                               required>
+                        <label for="referral_type_tier_3" class="ml-2 text-gray-700">Tier 3</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="thank_you_to" class="block text-sm font-medium text-gray-700 mb-2">Thank You To</label>
+                <select name="thank_you_to" id="thank_you_to"
+                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm
+                               focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    <option value="">Select a user...</option>
+                    {% for user in users %}
+                        <option value="{{ user.id }}" {% if tyfcb.thank_you_to and tyfcb.thank_you_to.id == user.id %}selected{% endif %}>
+                            {{ user.username }} - {{ user.first_name }} {{ user.last_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="comments" class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+                <textarea name="comments" id="comments" rows="4"
+                          class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm
+                                 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">{{ tyfcb.comments|default_if_none:'' }}</textarea>
+            </div>
             
             <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Save
@@ -53,4 +110,15 @@
         <a href="{% url 'tyfcb_list' %}" class="mt-4 inline-block text-blue-500 hover:underline">Back to TYFCB list</a>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script>
+    $(document).ready(function() {
+        $('#thank_you_to').select2({
+            placeholder: 'Search for a user...',
+            allowClear: true
+        });
+    });
+</script>
 {% endblock %}

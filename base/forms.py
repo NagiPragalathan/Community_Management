@@ -1,15 +1,26 @@
 from django import forms
+from django.contrib.auth.models import User
 from base.models import TYFCB
+from django_select2.forms import ModelSelect2Widget
 
 class TYFCBForm(forms.ModelForm):
+    thank_you_to = forms.ModelChoiceField(
+        queryset=User.objects.all(),
+        widget=ModelSelect2Widget(
+            model=User,
+            search_fields=['username__icontains', 'first_name__icontains', 'last_name__icontains'],
+            attrs={'data-placeholder': 'Search for a user...'}
+        ),
+        required=False,
+    )
+
     class Meta:
         model = TYFCB
-        fields = ['chapter_name', 'region_name', 'referral_amount', 'business_type', 'referral_type', 'comments']
+        fields = ['chapter_name', 'region_name', 'referral_amount', 'business_type', 'referral_type', 'comments', 'thank_you_to']
         widgets = {
             'business_type': forms.RadioSelect,
             'referral_type': forms.RadioSelect,
         }
-
 
 class ReferralFilterForm(forms.Form):
     start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
