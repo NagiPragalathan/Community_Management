@@ -604,3 +604,28 @@ class Visitor(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+class Visitor(models.Model):
+    TITLE_CHOICES = [
+        ('Mr.', 'Mr.'),
+        ('Ms.', 'Ms.'),
+        ('Mrs.', 'Mrs.'),
+    ]
+    
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    title = models.CharField(max_length=10, choices=TITLE_CHOICES, blank=True)
+    email = models.EmailField()
+    company_name = models.CharField(max_length=100, blank=True)
+    personal_message = models.TextField(blank=True)
+    invitation_sent = models.BooleanField(default=False)
+    date_sent = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.title} {self.first_name} {self.last_name}"
+
+    def send_invitation(self):
+        # Placeholder for sending email logic
+        self.invitation_sent = True
+        self.date_sent = models.DateTimeField(auto_now_add=True)
+        self.save()
