@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">Operations View</h1>
+
+        <!-- Chapter Operations -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Chapter</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-100 p-4 rounded">
+                    <h3 class="text-lg font-medium">Manage Visitors</h3>
+                    <p><a href="{% url 'visitor_registration_portal' %}" class="text-blue-500 hover:text-blue-700">Visitor Registration Portal</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meeting Management -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Meeting Management</h2>
+            <div class="bg-gray-100 p-4 rounded">
+                <h3 class="text-lg font-medium">PALMS Summary</h3>
+                <p><a href="{% url 'view_palms_summary' %}" class="text-blue-500 hover:text-blue-700">View PALMS Summary</a></p>
+            </div>
+        </div>
+
+        <!-- Manage Goals -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Manage Goals</h2>
+            <div class="bg-gray-100 p-4 rounded">
+                <h3 class="text-lg font-medium">Chapter Goals</h3>
+                <p><a href="{% url 'view_chapter_goals' %}" class="text-blue-500 hover:text-blue-700">View Chapter Goals</a></p>
+            </div>
+        </div>
+
+        <!-- Email Communication -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Create Email</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-100 p-4 rounded">
+                    <p><a href="{% url 'email_my_chapter' %}" class="text-blue-500 hover:text-blue-700">Email My Chapter</a></p>
+                    <p><a href="{% url 'email_visitor_invitation' %}" class="text-blue-500 hover:text-blue-700">Email Visitor Invitation</a></p>
+                    <p><a href="{% url 'email_chapter_visitors' %}" class="text-blue-500 hover:text-blue-700">Email Chapter Visitors</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage News -->
+        <div>
+            <h2 class="text-xl font-semibold mb-4">Manage News</h2>
+            <div class="bg-gray-100 p-4 rounded">
+                <h3 class="text-lg font-medium">News Management</h3>
+                <p><a href="{% url 'manage_news' %}" class="text-blue-500 hover:text-blue-700">Manage News</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

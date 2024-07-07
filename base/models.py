@@ -585,3 +585,23 @@ class oneToOneMessage(models.Model):
     def mark_as_seen(self):
         self.seen = True
         self.save()
+
+class Visitor(models.Model):
+    title = models.CharField(max_length=10, blank=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    suffix = models.CharField(max_length=10, blank=True)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
+    company_name = models.CharField(max_length=100, blank=True)
+    address_line_1 = models.CharField(max_length=255, blank=True)
+    address_line_2 = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    post_code = models.CharField(max_length=10, blank=True)
+    category = models.CharField(max_length=100)
+    visitor_type = models.CharField(max_length=50)
+    visit_date = models.DateField()
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

@@ -20,6 +20,8 @@ from base.views.referrals import *
 from base.views.onetoone import *
 from base.views.ceu import *
 from base.views.weeklyslips import *
+from base.views.visitor import *
+from base.views.operations import *
 
 
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -144,6 +146,25 @@ group = [
     path('join/<uuid:group_id>/', join_group, name='join_group'),
 ]
 
+visitor = [
+    path('register/', register_visitor, name='register_visitor'),
+]
+
+
+
+Operations = [
+    path('visitor_registration_portal/', visitor_registration_portal, name='visitor_registration_portal'),
+    path('view_palms_summary/', view_palms_summary, name='view_palms_summary'),
+    path('view_chapter_goals/', view_chapter_goals, name='view_chapter_goals'),
+    path('email_my_chapter/', email_my_chapter, name='email_my_chapter'),
+    path('email_visitor_invitation/', email_visitor_invitation, name='email_visitor_invitation'),
+    path('email_chapter_visitors/', email_chapter_visitors, name='email_chapter_visitors'),
+    path('manage_news/', manage_news, name='manage_news'),
+    path('operations/operations', operations, name='operations'),
+    # Add other URL configurations
+]
+
+
 
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
@@ -160,6 +181,8 @@ urlpatterns.extend(onetoone)
 urlpatterns.extend(weeklyslips)
 urlpatterns+=ceu
 urlpatterns+=group_chat
+urlpatterns+=visitor
+urlpatterns+=Operations
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
