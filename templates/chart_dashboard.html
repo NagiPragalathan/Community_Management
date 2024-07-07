@@ -1,0 +1,192 @@
+{% extends 'base.html'%} {% load static %} {% block content%}
+
+<div class="container mx-auto py-12" style="padding: 12px">
+    <h1 class="text-3xl font-bold text-center mb-8">Dashboard</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <canvas id="groupCountChart"></canvas>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <canvas id="connectionCountChart"></canvas>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <canvas id="oneMeetingsChart"></canvas>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <canvas id="ecuMeetingsChart"></canvas>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <canvas id="tyfcbGivenChart"></canvas>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <canvas id="tyfcbReceivedChart"></canvas>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <canvas id="referralsGivenChart"></canvas>
+        </div>
+        <div class="bg-white p-4 rounded-lg shadow-md">
+            <canvas id="referralsReceivedChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const groupCount = {{ group_count }};
+    const connectionCount = {{ connection_count }};
+    const onelifetimeCount = {{ onelifetime_count }};
+    const onelast12MonthsCount = {{ onelast_12_months_count }};
+    const onePercentage = {{ onepercentage }};
+    const eculifetimeCount = {{ eculifetime_count }};
+    const eculast12MonthsCount = {{ eculast_12_months_count }};
+    const ecuPercentage = {{ ecupercentage }};
+    const givenLifetimeCount = {{ given_lifetime_count }};
+    const givenLast12MonthsCount = {{ given_last_12_months_count }};
+    const givenPercentage = {{ given_percentage }};
+    const receivedLifetimeCount = {{ received_lifetime_count }};
+    const receivedLast12MonthsCount = {{ received_last_12_months_count }};
+    const receivedPercentage = {{ received_percentage }};
+    const RgivenLifetimeCount = {{ Rgiven_lifetime_count }};
+    const RgivenLast12MonthsCount = {{ Rgiven_last_12_months_count }};
+    const RgivenPercentage = {{ Rgiven_percentage }};
+    const RreceivedLifetimeCount = {{ Rreceived_lifetime_count }};
+    const RreceivedLast12MonthsCount = {{ Rreceived_last_12_months_count }};
+    const RreceivedPercentage = {{ Rreceived_percentage }};
+
+    const chartsConfig = [
+        {
+            id: 'groupCountChart',
+            type: 'doughnut',
+            data: {
+                labels: ['Group Count'],
+                datasets: [{
+                    data: [groupCount],
+                    backgroundColor: ['#4CAF50']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        },
+        {
+            id: 'connectionCountChart',
+            type: 'doughnut',
+            data: {
+                labels: ['Connection Count'],
+                datasets: [{
+                    data: [connectionCount],
+                    backgroundColor: ['#FF9800']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        },
+        {
+            id: 'oneMeetingsChart',
+            type: 'bar',
+            data: {
+                labels: ['Lifetime', 'Last 12 Months'],
+                datasets: [{
+                    label: 'One-to-One Meetings',
+                    data: [onelifetimeCount, onelast12MonthsCount],
+                    backgroundColor: ['#3b82f6', '#6366f1']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        },
+        {
+            id: 'ecuMeetingsChart',
+            type: 'bar',
+            data: {
+                labels: ['Lifetime', 'Last 12 Months'],
+                datasets: [{
+                    label: 'CEU Meetings',
+                    data: [eculifetimeCount, eculast12MonthsCount],
+                    backgroundColor: ['#8e44ad', '#3498db']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        },
+        {
+            id: 'tyfcbGivenChart',
+            type: 'line',
+            data: {
+                labels: ['Lifetime', 'Last 12 Months'],
+                datasets: [{
+                    label: 'TYFCB Given',
+                    data: [givenLifetimeCount, givenLast12MonthsCount],
+                    borderColor: '#ff6384',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        },
+        {
+            id: 'tyfcbReceivedChart',
+            type: 'line',
+            data: {
+                labels: ['Lifetime', 'Last 12 Months'],
+                datasets: [{
+                    label: 'TYFCB Received',
+                    data: [receivedLifetimeCount, receivedLast12MonthsCount],
+                    borderColor: '#36a2eb',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        },
+        {
+            id: 'referralsGivenChart',
+            type: 'pie',
+            data: {
+                labels: ['Lifetime', 'Last 12 Months'],
+                datasets: [{
+                    data: [RgivenLifetimeCount, RgivenLast12MonthsCount],
+                    backgroundColor: ['#ffcd56', '#4bc0c0']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        },
+        {
+            id: 'referralsReceivedChart',
+            type: 'pie',
+            data: {
+                labels: ['Lifetime', 'Last 12 Months'],
+                datasets: [{
+                    data: [RreceivedLifetimeCount, RreceivedLast12MonthsCount],
+                    backgroundColor: ['#9966ff', '#ff9f40']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        }
+    ];
+
+    chartsConfig.forEach(config => {
+        const ctx = document.getElementById(config.id).getContext('2d');
+        new Chart(ctx, config);
+    });
+});
+</script>
+{% endblock content %}
+

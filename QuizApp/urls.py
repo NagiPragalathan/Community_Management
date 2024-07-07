@@ -33,6 +33,7 @@ urlpatterns = []
 
 common = [
     path('dashboard', dashboard, name='dashboard'),
+    path('chart_dashboard', chart_dashboard, name='chart_dashboard'),
     path('', index, name='index'),
     path('add_city', add_city, name="add_city")
 ]

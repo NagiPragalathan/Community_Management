@@ -119,6 +119,75 @@ def dashboard(request):
     }
     return render(request, 'dashboard.html', context)
 
+@login_required(login_url='/login/')
+def chart_dashboard(request):
+    user = request.user
+    group_count = Group.objects.filter(creator=user).count()
+    connection_count = Connection.objects.filter(
+        Q(user=request.user) | Q(connection=request.user), 
+        status='accepted'
+    ).count()
+    onelifetime_count, onelast_12_months_count, onepercentage = calculate_meeting_counts(request.user)
+    eculifetime_count, eculast_12_months_count, ecupercentage = calculate_ceu_counts(request.user)
+    
+    today = timezone.now().date()
+    one_year_ago = today - timedelta(days=365)
+
+    # Lifetime counts
+    given_lifetime_count = TYFCB.objects.filter(user=user).count()
+    received_lifetime_count = TYFCB.objects.filter(thank_you_to=user).count()
+
+    # Last 12 months counts
+    given_last_12_months_count = TYFCB.objects.filter(user=user, start_date__gte=one_year_ago).count()
+    received_last_12_months_count = TYFCB.objects.filter(thank_you_to=user, start_date__gte=one_year_ago).count()
+
+    # Calculate percentages
+    given_percentage = (given_last_12_months_count / given_lifetime_count * 100) if given_lifetime_count > 0 else 0
+    received_percentage = (received_last_12_months_count / received_lifetime_count * 100) if received_lifetime_count > 0 else 0
+    
+     # Lifetime counts
+    Rgiven_lifetime_count = ReferralSlip.objects.filter(from_user=user).count()
+    Rreceived_lifetime_count = ReferralSlip.objects.filter(to_member=user).count()
+
+    # Last 12 months counts
+    Rgiven_last_12_months_count = ReferralSlip.objects.filter(from_user=user, date__gte=one_year_ago).count()
+    Rreceived_last_12_months_count = ReferralSlip.objects.filter(to_member=user, date__gte=one_year_ago).count()
+
+    # Calculate percentages
+    Rgiven_percentage = (Rgiven_last_12_months_count / Rgiven_lifetime_count * 100) if Rgiven_lifetime_count > 0 else 0
+    Rreceived_percentage = (Rreceived_last_12_months_count / Rreceived_lifetime_count * 100) if Rreceived_lifetime_count > 0 else 0
+    
+    context = {
+        'group_count': group_count,
+        'connection_count': connection_count,
+        
+        "onelifetime_count": onelifetime_count,
+        "onelast_12_months_count":onelast_12_months_count,
+        "onepercentage":onepercentage,
+        
+        "eculifetime_count":eculifetime_count,
+        "eculast_12_months_count": eculast_12_months_count,
+        "ecupercentage": ecupercentage,
+        
+        "given_lifetime_count":given_lifetime_count,
+        "given_last_12_months_count":given_last_12_months_count, 
+        "given_percentage": given_percentage,
+        
+        "received_lifetime_count":received_lifetime_count,
+        "received_last_12_months_count": received_last_12_months_count,
+        "received_percentage": received_percentage,
+        
+        'Rgiven_lifetime_count': Rgiven_lifetime_count,
+        'Rgiven_last_12_months_count': Rgiven_last_12_months_count,
+        'Rgiven_percentage': Rgiven_percentage,
+        
+        'Rreceived_lifetime_count': Rreceived_lifetime_count,
+        'Rreceived_last_12_months_count': Rreceived_last_12_months_count,
+        'Rreceived_percentage': Rreceived_percentage,
+        
+    }
+    return render(request, 'chart_dashboard.html', context)
+
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Country >>>>>>>>>>>>>>>>>>>>>>>>
 
 

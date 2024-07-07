@@ -604,21 +604,6 @@ class Visitor(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-<<<<<<< HEAD
-    
-class ContactFormSubmission(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=15)
-    country = models.CharField(max_length=2)
-    message = models.TextField()
-    submitted_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name} - {self.email}"
-=======
 
 class Visitor(models.Model):
     TITLE_CHOICES = [
@@ -644,4 +629,17 @@ class Visitor(models.Model):
         self.invitation_sent = True
         self.date_sent = models.DateTimeField(auto_now_add=True)
         self.save()
->>>>>>> 0648f94de226e5063c9737f198305b0bf5b0bf2c
+
+  
+class ContactFormSubmission(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
+    country = models.CharField(max_length=2)
+    message = models.TextField()
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.email}"
