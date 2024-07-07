@@ -136,6 +136,7 @@ group_chat = [
 group = [
     path('groups/', list_groups, name='list_groups'),
     path('mygroups/', my_list_groups, name='my_list_groups'),
+    path('joined_groups/', joined_groups, name='joined_groups'),
     path('groups/new/', group_crud, name='group_crud_new'),
     path('groups/<uuid:pk>/', group_crud, name='group_crud'),
     path('join/<uuid:group_id>/', join_group, name='join_group'),

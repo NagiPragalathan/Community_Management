@@ -108,7 +108,7 @@ def signup(request):
                 'title': "Not Updated",
                 'first_name': "",
                 'last_name': "Not Updated",
-                'suffix': "Not Updated",
+                'suffix': "",
                 'display_name': "Not Updated",
                 'gender': "Not Updated",
                 'company_name': "Not Updated",

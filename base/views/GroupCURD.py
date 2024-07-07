@@ -119,3 +119,9 @@ def get_messages(request, room_name):
     messages = Message.objects.filter(room=room).order_by('timestamp')
     messages_data = [{'user': message.user.username, 'message': message.content, 'timestamp': message.timestamp} for message in messages]
     return JsonResponse({'messages': messages_data})
+
+@login_required
+def joined_groups(request):
+    user = request.user
+    groups = Group.objects.filter(members=user).distinct()
+    return render(request, 'Group/joined_groups.html', {'groups': groups})

@@ -5,6 +5,7 @@ from base.models import oneToOneMessage
 from django.http import JsonResponse
 from django.db.models import Q
 from operator import attrgetter
+from collections import defaultdict
 
 @login_required
 def chat_view(request, receiver_id):
@@ -55,12 +56,16 @@ def one_to_one_get_messages(request, receiver_id):
     except User.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Receiver not found'})
 
+@login_required
 def unseen_messages(request):
     current_user = request.user
-    unseen_messages_per_user = {}
-    for user in User.objects.exclude(id=current_user.id):
-        unseen_messages = oneToOneMessage.objects.filter(receiver=current_user, sender=user, seen=False)
-        unseen_messages_per_user[user] = unseen_messages
-    print("working..!")
-    return render(request, 'chat/unseen_messages.html', {'unseen_messages_per_user': unseen_messages_per_user})
+    
+    # Fetch all unseen messages for the current user
+    unseen_messages = oneToOneMessage.objects.filter(receiver=current_user, seen=False)
+    
+    # Group messages by sender
+    unseen_messages_per_user = defaultdict(list)
+    for message in unseen_messages:
+        unseen_messages_per_user[message.sender].append(message)
 
+    return render(request, 'chat/unseen_messages.html', {'unseen_messages_per_user': dict(unseen_messages_per_user)})
