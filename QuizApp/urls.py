@@ -163,7 +163,7 @@ Operations = [
     path('view_palms_summary/', view_palms_summary, name='view_palms_summary'),
     path('view_chapter_goals/', view_chapter_goals, name='view_chapter_goals'),
     path('email_my_chapter/', email_my_chapter, name='email_my_chapter'),
-    path('email_visitor_invitation/', email_visitor_invitation, name='email_visitor_invitation'),
+    path('email_visitor_invitation/', send_invitation_view, name='send_invitation'),
     path('email_chapter_visitors/', email_chapter_visitors, name='email_chapter_visitors'),
     path('manage_news/', manage_news, name='manage_news'),
     path('operations/operations', operations, name='operations'),
@@ -175,6 +175,7 @@ contact = [
     path('contact', contact_form, name='contact_form'),
 
 ]
+
 
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
