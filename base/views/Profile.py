@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 
+def profile_management(request):
+    return render(request, 'profile/profile_management.html')
+
 def add_profile(request):
     if request.method == 'POST':
         user = request.user

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold text-center mb-6">Profile Management</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Add Profile -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-blue-600">Add Profile</h2>
+                <p class="text-gray-600">Start by creating your user profile.</p>
+                <a href="{% url 'add_profile' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Add Profile</a>
+            </div>
+        </div>
+
+        <!-- Add Contact Details -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-blue-600">Add Contact Details</h2>
+                <p class="text-gray-600">Update your contact information here.</p>
+                <a href="{% url 'add_contact_details' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Add Contact Details</a>
+            </div>
+        </div>
+
+        <!-- Edit User Profile -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-blue-600">Edit User Profile</h2>
+                <p class="text-gray-600">Modify your personal profile details.</p>
+                <a href="{% url 'add_edit_user_profile' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Edit Profile</a>
+            </div>
+        </div>
+
+        <!-- Edit Address -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-blue-600">Edit Address</h2>
+                <p class="text-gray-600">Change your current address details.</p>
+                <a href="{% url 'add_or_edit_address' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Edit Address</a>
+            </div>
+        </div>
+
+        <!-- Edit Bio -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-blue-600">Edit Bio</h2>
+                <p class="text-gray-600">Update your biography for your profile.</p>
+                <a href="{% url 'add_or_edit_bio' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Edit Bio</a>
+            </div>
+        </div>
+
+        <!-- Delete Image -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-blue-600">Delete Image</h2>
+                <p class="text-gray-600">Remove images from your profile or gallery.</p>
+                <a href="{% url 'delete_image' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Delete Image</a>
+            </div>
+        </div>
+
+        <!-- Add Gallery -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-blue-600">Add Gallery</h2>
+                <p class="text-gray-600">Upload images to your profile gallery.</p>
+                <a href="{% url 'add_gallery' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Add Gallery</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

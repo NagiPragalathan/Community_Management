@@ -62,6 +62,7 @@ auth = [
 
 
 profile =[
+    path('profile/profile_management', profile_management, name='profile_management'),
     path('add_profile', add_profile, name='add_profile'),
     path('add_contact_details', add_contact_details, name='add_contact_details'),
     path('add_edit_user_profile', add_edit_user_profile, name='add_edit_user_profile'),
