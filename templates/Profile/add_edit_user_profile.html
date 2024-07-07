@@ -24,7 +24,7 @@
                     <label for="profile_image" class="block text-sm font-medium text-gray-700">Profile Image:</label>
                     <div style="background: #e8e8e8; padding: 10px; border-radius: 8px;"> 
                         <h3>Old Profile image</h3>
-                        {% if user_profile.profile_image %}
+                        {% if user_profile.profile_image and user_profile and user_profile.profile_image %}
                             <img src="{{ user_profile.profile_image.url }}"/>
                         {% else %}
                             <p>No image are updated Yet.</p>
@@ -37,7 +37,7 @@
                     <label for="company_logo" class="block text-sm font-medium text-gray-700">Company Logo:</label>
                     <div style="background: #e8e8e8; padding: 10px; border-radius: 8px;"> 
                         <h3>Old Profile image</h3>
-                        {% if user_profile.profile_image %}
+                        {% if user_profile.profile_image and user_profile and user_profile.company_logo %}
                             <img src="{{ user_profile.company_logo.url }}"/>
                         {% else %}
                             <p>No image are updated Yet.</p>

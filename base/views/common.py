@@ -51,6 +51,11 @@ def common_data(request):
         current_user = request.user
         usr_name = current_user.username
         profile = MainProfile.objects.get(user=current_user)
+        try:
+            usr_img = UserProfile.objects.get(user=current_user).profile_image
+        except:
+            usr_img = "none"
+        
         unseen_messages = oneToOneMessage.objects.filter(receiver=current_user, seen=False)
         unseen_messages_count = unseen_messages.count()
 
@@ -84,6 +89,7 @@ def common_data(request):
             'unseen_messages': unseen_messages_list,
             'renewal_message': renewal_message,  # Add renewal message to context
             'days_left_for_renewal': days_left_for_renewal,  # Add days left to context
+            'usr_img':usr_img
         })
     else:
         context.update({
@@ -92,6 +98,7 @@ def common_data(request):
             'unseen_messages': [],
             'renewal_message': 0,  # No renewal message for unauthenticated users
             'days_left_for_renewal': 0,  # No days left calculation for unauthenticated users
+            'usr_img': 'none'
         })
 
     return context
