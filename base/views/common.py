@@ -1,11 +1,33 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
-from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, UserProfile
+from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile
 from base.form.forms import CityDataForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.utils import timezone
+from datetime import timedelta
+
+
+def calculate_meeting_counts(user):
+    # Lifetime count of meetings invited by the user
+    lifetime_count = Meeting.objects.filter(invited_by=user).count()
+
+    # Calculate the date 12 months ago from today
+    twelve_months_ago = timezone.now() - timedelta(days=365)
+
+    # Count of meetings invited by the user in the last 12 months
+    last_12_months_count = Meeting.objects.filter(invited_by=user, date__gte=twelve_months_ago).count()
+
+    # Calculate percentage
+    if lifetime_count > 0:
+        percentage = (last_12_months_count / lifetime_count) * 100
+    else:
+        percentage = 0
+
+    return lifetime_count, last_12_months_count, percentage
+
+
 
 def index(request):
     if request.user.is_authenticated:
@@ -20,10 +42,17 @@ def dashboard(request):
         Q(user=request.user) | Q(connection=request.user), 
         status='accepted'
     ).count()
+    onelifetime_count, onelast_12_months_count, onepercentage = calculate_meeting_counts(request.user)
     
     context = {
         'group_count': group_count,
         'connection_count': connection_count,
+        
+        "onelifetime_count": onelifetime_count,
+        "onelast_12_months_count":onelast_12_months_count,
+        "onepercentage":onepercentage,
+        
+        
     }
     return render(request, 'dashboard.html', context)
 

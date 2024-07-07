@@ -399,11 +399,6 @@ class ChapterMemberPosition(models.Model):
     def __str__(self):
         return f'{self.user} - {self.position}'
     
-from django.db import models
-from django.contrib.auth.models import User
-import uuid
-from django.utils import timezone
-
 class Group(models.Model):
     OPEN = 'Open'
     INVITE_ONLY = 'Invite Only'
@@ -515,7 +510,7 @@ class Meeting(models.Model):
     def __str__(self):
         return f"{self.get_meeting_type_display()} on {self.date} at {self.location}"
 
-    
+
 
 class ChapterEducationUnit(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ceus')
