@@ -6,6 +6,9 @@ from .models import (
 )
 from django import forms
 from django.contrib.auth.models import User
+from django.utils import timezone
+from datetime import timedelta
+
 
 class ChapterMemberPositionInline(admin.TabularInline):
     model = ChapterMemberPosition
@@ -42,35 +45,6 @@ class ChapterForm(forms.ModelForm):
         if not chapter_members.exists():
             raise ValidationError("You need at least one Chapter member to create a Chapter.")
         return chapter_members
-
-@admin.register(MainProfile)
-class MainProfileAdmin(admin.ModelAdmin):
-    list_display = ('uuid', 'user', 'first_name', 'last_name', 'membership_status', 'RenewalDueDate')
-    search_fields = ('first_name', 'last_name', 'user__username')
-    list_filter = ('membership_status', 'gender', 'industry')
-    autocomplete_fields = ['user', 'Chapter']
-    readonly_fields = ['uuid']
-    # filter_horizontal = ['']
-
-    fieldsets = (
-        (None, {
-            'fields': ('uuid', 'user', 'title', 'first_name', 'last_name', 'suffix', 'display_name', 'gender')
-        }),
-        ('Company Info', {
-            'fields': ('company_name', 'product_service_description', 'gst_registered_state', 'gst_identification_number_or_pan', 'industry', 'classification')
-        }),
-        ('Membership Info', {
-            'fields': ('requested_speciality', 'membership_status', 'RenewalDueDate', 'Chapter')
-        }),
-        ('Additional Info', {
-            'fields': ('my_business', 'keywords')
-        }),
-    )
-
-    def save_model(self, request, obj, form, change):
-        if not obj.first_name or not obj.last_name:
-            raise ValidationError("First name and last name are required.")
-        super().save_model(request, obj, form, change)
 
 @admin.register(Chapter)
 class ChapterAdmin(admin.ModelAdmin):
@@ -150,3 +124,43 @@ class GroupAdmin(admin.ModelAdmin):
             'fields': ('name', 'creator', 'group_type', 'access_type', 'language', 'logo', 'invite_connections', 'description')
         }),
     )
+    
+    
+    
+    
+@admin.action(description='Reactivate selected memberships')
+def reactivate_memberships(modeladmin, request, queryset):
+    for profile in queryset:
+        if profile.membership_status == 'Not Active':
+            profile.membership_status = 'Active'
+            profile.renewal_due_date = timezone.now().date() + timedelta(days=365)
+            profile.active_until = None
+            profile.save()
+
+@admin.register(MainProfile)
+class MainProfileAdmin(admin.ModelAdmin):
+    list_display = ('uuid', 'user', 'first_name', 'last_name', 'membership_status', 'renewal_due_date')
+    search_fields = ('first_name', 'last_name', 'user__username')
+    list_filter = ('membership_status', 'gender', 'industry')
+    autocomplete_fields = ['user', 'Chapter']
+    readonly_fields = ['uuid']
+
+    fieldsets = (
+        (None, {
+            'fields': ('uuid', 'user', 'title', 'first_name', 'last_name', 'suffix', 'display_name', 'gender')
+        }),
+        ('Company Info', {
+            'fields': ('company_name', 'product_service_description', 'gst_registered_state', 'gst_identification_number_or_pan', 'industry', 'classification')
+        }),
+        ('Membership Info', {
+            'fields': ('requested_speciality', 'membership_status', 'renewal_due_date', 'Chapter')
+        }),
+        ('Additional Info', {
+            'fields': ('my_business', 'keywords')
+        }),
+    )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.first_name or not obj.last_name:
+            raise ValidationError("First name and last name are required.")
+        super().save_model(request, obj, form, change)

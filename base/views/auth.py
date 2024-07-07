@@ -28,6 +28,10 @@ from django.utils.encoding import force_bytes
 
 from base.models  import MainProfile
 
+from django.utils import timezone
+from datetime import timedelta
+
+
 
 def generate_otp():
     # Generate a 6-digit OTP (you can adjust the length as needed)
@@ -102,6 +106,7 @@ def signup(request):
         email = request.POST['email']
         # Create user
         user = User.objects.create_user(username=username, password=password, email=email)
+        renewal_due_date = timezone.now().date() + timedelta(days=365)
         MainProfile.objects.update_or_create(
             user=user,
             defaults={
@@ -118,9 +123,9 @@ def signup(request):
                 'industry': "Not Updated",
                 'classification': "Not Updated",
                 'requested_speciality': "Not Updated",
-                'membership_status': 'Not Updated',
-                'RenewalDueDate': "Not Updated",
-                # 'Chapter': chapter,
+                'membership_status': 'Active',  # Assuming new members are active by default
+                'renewal_due_date': renewal_due_date,  # Set the renewal due date
+                # 'Chapter': chapter,  # Uncomment and set appropriately if needed
                 'my_business': "Not Updated",
                 'keywords': "Not Updated"
             }
@@ -128,7 +133,6 @@ def signup(request):
 
         return redirect('login')
     return render(request, 'auth/signup_new.html')
-
 
 def user_login(request):
     if request.method == 'POST':
