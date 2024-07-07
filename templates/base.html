@@ -1798,8 +1798,21 @@ video {
         }
         // end: Chart
 
+      let check_usr = {{ renewal_message }};
+      document.addEventListener("DOMContentLoaded", function() {
+          // Check if the renewal date is set\
+          console.log("onload", check_usr)
+          if (check_usr == 1) {
+              window.location.href = "/";
+            } else {
+              console.log("valied use...!");
+          }
+      });
+
         
     </script>
+]
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
     <!-- Select2 JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
