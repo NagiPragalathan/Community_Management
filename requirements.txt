@@ -4,3 +4,4 @@ django-cors-headers
 pillow
 django-jazzmin
 django-select2
+channels

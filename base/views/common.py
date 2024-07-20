@@ -211,12 +211,14 @@ def common_data(request):
     if request.user.is_authenticated:
         current_user = request.user
         usr_name = current_user.username
-        profile = MainProfile.objects.get(user=current_user)
+        print(usr_name)
         try:
+            profile = MainProfile.objects.get(user=current_user)
             usr_img = UserProfile.objects.get(user=current_user).profile_image
         except:
             usr_img = "none"
-        
+            profile = {}
+            
         unseen_messages = oneToOneMessage.objects.filter(receiver=current_user, seen=False)
         unseen_messages_count = unseen_messages.count()
 
@@ -233,15 +235,18 @@ def common_data(request):
         # Check if the renewal date is expired and calculate days left
         renewal_message = 0
         days_left_for_renewal = 0
-        if profile.renewal_due_date:
-            current_date = timezone.now().date()
-            renewal_date = profile.renewal_due_date
+        try:
+            if profile.renewal_due_date:
+                current_date = timezone.now().date()
+                renewal_date = profile.renewal_due_date
 
-            if current_date > renewal_date:
-                renewal_message = 1
-                days_left_for_renewal = (current_date - renewal_date).days * -1  # Negative days to indicate expiration
-            else:
-                days_left_for_renewal = (renewal_date - current_date).days
+                if current_date > renewal_date:
+                    renewal_message = 1
+                    days_left_for_renewal = (current_date - renewal_date).days * -1  # Negative days to indicate expiration
+                else:
+                    days_left_for_renewal = (renewal_date - current_date).days
+        except:
+            profile={}
 
         context.update({
             'usr_profile': profile,
