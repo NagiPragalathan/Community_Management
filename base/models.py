@@ -585,51 +585,6 @@ class oneToOneMessage(models.Model):
         self.seen = True
         self.save()
 
-class Visitor(models.Model):
-    title = models.CharField(max_length=10, blank=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    suffix = models.CharField(max_length=10, blank=True)
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=15)
-    company_name = models.CharField(max_length=100, blank=True)
-    address_line_1 = models.CharField(max_length=255, blank=True)
-    address_line_2 = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=100, blank=True)
-    state = models.CharField(max_length=100, blank=True)
-    post_code = models.CharField(max_length=10, blank=True)
-    category = models.CharField(max_length=100)
-    visitor_type = models.CharField(max_length=50)
-    visit_date = models.DateField()
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-class Visitor(models.Model):
-    TITLE_CHOICES = [
-        ('Mr.', 'Mr.'),
-        ('Ms.', 'Ms.'),
-        ('Mrs.', 'Mrs.'),
-    ]
-    
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    title = models.CharField(max_length=10, choices=TITLE_CHOICES, blank=True)
-    email = models.EmailField()
-    company_name = models.CharField(max_length=100, blank=True)
-    personal_message = models.TextField(blank=True)
-    invitation_sent = models.BooleanField(default=False)
-    date_sent = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.title} {self.first_name} {self.last_name}"
-
-    def send_invitation(self):
-        # Placeholder for sending email logic
-        self.invitation_sent = True
-        self.date_sent = models.DateTimeField(auto_now_add=True)
-        self.save()
-
   
 class ContactFormSubmission(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -643,3 +598,24 @@ class ContactFormSubmission(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.email}"
+    
+    
+class Visitor(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=10, blank=True, null=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    suffix = models.CharField(max_length=10, blank=True, null=True)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
+    company_name = models.CharField(max_length=100, blank=True, null=True)
+    address_line_1 = models.CharField(max_length=100, blank=True, null=True)
+    address_line_2 = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    state_country_province = models.CharField(max_length=50, blank=True, null=True)
+    post_code = models.CharField(max_length=20, blank=True, null=True)
+    category = models.CharField(max_length=50)
+    visitor_type = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

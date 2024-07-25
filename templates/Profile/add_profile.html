@@ -90,8 +90,8 @@
             <div>
                 <label for="chapter" class="block text-sm font-medium text-gray-700">Chapter:</label>
                 <select name="chapter" id="chapter" class="mt-1 border p-2 block w-full rounded-md focus:ring focus:ring-indigo-200">
-                    {% for chapter in chapters %}
-                        <option value="{{ chapter.id }}">{{ chapter.name }}</option>
+                    {% for chapter in chapter %}
+                        <option value="{{ chapter.id }}">{{ chapter.chapter_name }}</option>
                     {% endfor %}
                 </select>
             </div>

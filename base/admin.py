@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
 
+from django.contrib import messages
+from django.shortcuts import redirect
+
 
 class ChapterMemberPositionInline(admin.TabularInline):
     model = ChapterMemberPosition
@@ -55,12 +58,17 @@ class ChapterAdmin(admin.ModelAdmin):
     exclude = ['member_positions', 'chapter_members']
     autocomplete_fields = ['region', 'country', 'city', 'chapter_members']
     filter_horizontal = ['chapter_members']
-    
 
     def save_model(self, request, obj, form, change):
         if MainProfile.objects.count() < 5:
-            raise ValidationError("You need at least 5 MainProfile instances to create a Chapter.")
-        super().save_model(request, obj, form, change)
+            storage = messages.get_messages(request)
+            for _ in storage:
+                pass  # Clear existing messages
+                print(_)
+            messages.error(request, "You need at least 5 MainProfile instances to create a Chapter.")
+        else:
+            super().save_model(request, obj, form, change)        
+        
 @admin.register(CountryData)
 class CountryDataAdmin(admin.ModelAdmin):
     list_display = ('country_name', 'last_updated_date')

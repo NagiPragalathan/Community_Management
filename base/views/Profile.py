@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from base.models import MainProfile, ContactDetails, UserProfile, Address, BillingAddress, Bio, Gallery, ChapterName
+from base.models import MainProfile, ContactDetails, UserProfile, Address, BillingAddress, Bio, Gallery, ChapterName, Chapter
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -27,9 +27,13 @@ def add_profile(request):
         requested_speciality = request.POST.get('requested_speciality', 'requested_speciality')
         membership_status = request.POST.get('membership_status', 'membership_status')
         renewal_due_date = request.POST.get('renewal_due_date', 'renewal_due_date')
-        chapter = request.POST.get('chapter'), 'chapter'
+        # chapter = get_object_or_404(Chapter, id=request.POST.get('chapter', 'chapter'))
         my_business = request.POST.get('my_business', 'my_business')
         keywords = request.POST.get('keywords', 'keywords')
+        
+        chapter_name_value = request.POST.get('chapter', 'chapter')
+        chapter_name_instance = get_object_or_404(ChapterName, id=chapter_name_value)
+        chapter_instance = get_object_or_404(Chapter, name=chapter_name_instance)
         
         userName = User.objects.get(id=request.user.id)
         userName.first_name = first_name
@@ -54,7 +58,7 @@ def add_profile(request):
                 'requested_speciality': requested_speciality,
                 'membership_status': membership_status,
                 'RenewalDueDate': renewal_due_date,
-                'Chapter': chapter,
+                'Chapter': chapter_name_instance,
                 'my_business': my_business,
                 'keywords': keywords
             }
@@ -65,6 +69,9 @@ def add_profile(request):
     try:
         profile = MainProfile.objects.get(user=request.user)
         chapter = ChapterName.objects.all()
+        print(chapter)
+        for i in chapter:
+            print(i.id, i.chapter_name)
         return render(request, 'profile/add_profile.html', {'data':profile, 'chapter':chapter})
     except:
         return render(request, 'profile/add_profile.html')

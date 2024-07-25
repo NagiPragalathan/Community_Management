@@ -168,12 +168,15 @@ Operations = [
     path('email_chapter_visitors/', email_chapter_visitors, name='email_chapter_visitors'),
     path('manage_news/', manage_news, name='manage_news'),
     path('operations/operations', operations, name='operations'),
+    path('user_chapter_emails', user_chapter_emails, name='user_chapter_emails'),
+    
     # Add other URL configurations
 ]
 
 contact = [
     
     path('contact', contact_form, name='contact_form'),
+    path('register', register_visitor, name='register_visitor'),
 
 ]
 
