@@ -60,7 +60,7 @@ class ChapterAdmin(admin.ModelAdmin):
     filter_horizontal = ['chapter_members']
 
     def save_model(self, request, obj, form, change):
-        if MainProfile.objects.count() < 5:
+        if MainProfile.objects.count() < 1:
             storage = messages.get_messages(request)
             for _ in storage:
                 pass  # Clear existing messages

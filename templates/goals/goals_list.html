@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-10 rounded-lg shadow-lg max-w-4xl w-full">
+        <h2 class="text-3xl font-bold mb-10 text-center text-gray-800">Goals List</h2>
+        <div class="space-y-6">
+            {% for goal in goals %}
+                <div class="border-b border-gray-200 pb-4">
+                    <h3 class="text-xl font-semibold text-gray-800">{{ goal.chapter.name }} - {{ goal.date_of_month }}</h3>
+                    <p><strong>Attendance Percentage:</strong> {{ goal.attendance_percentage }}%</p>
+                    <p><strong>Total Number of 1 to 1s:</strong> {{ goal.total_number_of_1_to_1s }}</p>
+                    <p><strong>CEUs:</strong> {{ goal.ceus }}</p>
+                    <p><strong>Visitors:</strong> {{ goal.visitors }}</p>
+                    <p><strong>New Memberships:</strong> {{ goal.new_memberships }}</p>
+                    <p><strong>Number of Members in Chapter:</strong> {{ goal.number_of_members_in_chapter }}</p>
+                    <p><strong>Number of Referrals:</strong> {{ goal.number_of_referrals }}</p>
+                    <p><strong>Thank You for Closed Business:</strong> {{ goal.thank_you_for_closed_business }}</p>
+                    <p><strong>Updated Date:</strong> {{ goal.updated_date }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

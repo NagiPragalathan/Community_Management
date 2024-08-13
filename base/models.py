@@ -619,3 +619,31 @@ class Visitor(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+class ChapterGoles(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    attendance_percentage = models.FloatField()
+    total_number_of_1_to_1s = models.IntegerField()
+    ceus = models.FloatField()
+    visitors = models.IntegerField()
+    new_memberships = models.IntegerField()
+    number_of_members_in_chapter = models.IntegerField()
+    number_of_referrals = models.IntegerField()
+    thank_you_for_closed_business = models.FloatField()
+    date_of_month = models.DateField()
+    updated_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.chapter.name.chapter_name} Goals"
+
+        
+class TrainingSession(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    training_name = models.CharField(max_length=255)
+    date = models.DateField()
+    chapter = models.ForeignKey(Chapter, related_name='training_sessions', on_delete=models.CASCADE)
+    attendees = models.ManyToManyField(User, related_name='training_sessions', blank=True)
+
+    def __str__(self):
+        return f'{self.training_name} on {self.date}'

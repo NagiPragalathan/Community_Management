@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Training Session</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chapterField = document.querySelector('#chapter');
+            const attendeesField = document.querySelector('#attendees');
+
+            chapterField.addEventListener('change', function () {
+                const chapterId = this.value;
+
+                if (chapterId) {
+                    fetch(`/get_chapter_users/?chapter_id=${chapterId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            attendeesField.innerHTML = '';
+                            data.users.forEach(user => {
+                                const option = document.createElement('option');
+                                option.value = user.id;
+                                option.textContent = user.username;
+                                attendeesField.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching users:', error);
+                        });
+                } else {
+                    attendeesField.innerHTML = '';
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Add Training Session</h1>
+    <form method="post" action="{% url 'add_training_session' %}">
+        {% csrf_token %}
+        <label for="training_name">Training Name:</label>
+        <input type="text" id="training_name" name="training_name" required><br>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br>
+
+        <label for="chapter">Chapter:</label>
+        <select id="chapter" name="chapter" required>
+            <option value="">Select a Chapter</option>
+            <option value="all">All Chapters</option>
+            {% for chapter in chapters %}
+            <option value="{{ chapter.id }}">{{ chapter.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="attendees">Attendees:</label>
+        <select id="attendees" name="attendees" multiple required>
+            <!-- Options will be populated by JavaScript -->
+        </select><br>
+
+        <button type="submit">Add Training Session</button>
+    </form>
+</body>
+</html>

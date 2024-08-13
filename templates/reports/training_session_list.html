@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Training Sessions</title>
+</head>
+<body>
+    <h1>Training Sessions</h1>
+    <a href="{% url 'add_training_session' %}">Add Training Session</a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Training Name</th>
+            <th>Date</th>
+            <th>Chapter</th>
+            <th>Attendees</th>
+        </tr>
+        {% for session in sessions %}
+        <tr>
+            <td>{{ session.id }}</td>
+            <td>{{ session.training_name }}</td>
+            <td>{{ session.date }}</td>
+            <td>{{ session.chapter.name if session.chapter else "All Chapters" }}</td>
+            <td>
+                {% for attendee in session.attendees.all %}
+                {{ attendee.username }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

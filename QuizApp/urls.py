@@ -20,8 +20,8 @@ from base.views.referrals import *
 from base.views.onetoone import *
 from base.views.ceu import *
 from base.views.weeklyslips import *
-from base.views.visitor import *
 from base.views.operations import *
+from base.views.reports import *
 from base.views.contact import *
 
 
@@ -176,10 +176,19 @@ Operations = [
 contact = [
     
     path('contact', contact_form, name='contact_form'),
-    path('register', register_visitor, name='register_visitor'),
 
 ]
 
+goals = [
+    path('set_goals', set_goals, name='set_goals'),
+    path('goals_list', goals_list, name='goals_list'),
+]
+
+reports_url = [
+    path('training_sessions/',training_session_list, name='training_session_list'),
+    path('add_training_session/',add_training_session, name='add_training_session'),
+    path('get_chapter_users/',get_chapter_users, name='get_chapter_users'),
+]
 
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
@@ -200,6 +209,9 @@ urlpatterns+=group_chat
 urlpatterns+=visitor
 urlpatterns+=contact
 urlpatterns+=Operations
+urlpatterns+=goals
+urlpatterns+=reports_url
+
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
