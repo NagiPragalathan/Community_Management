@@ -41,3 +41,43 @@ create the form for "Summary PALMS Report"
 - Manage Goals
 	
 - Create Email
+
+
+
+write the code django view and html template without using django forms... i eed operations like create edit and delete, list.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+chapter roster
+
+chapter performance = PAS, name , 1-2-1, tq Slips, visitors counts, sponsor, 
+
+sponsor need to add into Mainprofile = null true
+
+Region Performance report = sum of chapter 
+
+Chapter Performance report = sum of peoples
+
+
+
+
+
+
+
+
+
+
+
+

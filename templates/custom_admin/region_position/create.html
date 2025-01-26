@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Region Position</title>
+</head>
+<body>
+    <h1>Create Region Position</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="RegionpositionName">Name:</label>
+        <input type="text" id="RegionpositionName" name="RegionpositionName" required><br>
+        <label for="isRegion">Is Region:</label>
+        <input type="checkbox" id="isRegion" name="isRegion"><br>
+        <button type="submit">Create</button>
+    </form>
+    <a href="{% url 'list_region_positions' %}">Back to List</a>
+</body>
+</html>

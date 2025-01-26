@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ operation }} Country</title>
+</head>
+<body>
+    <h1>{{ operation }} Country</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="country_name">Country Name:</label>
+        <input type="text" id="country_name" name="country_name" value="{{ country.country_name|default:'' }}" required>
+        <button type="submit">{{ operation }}</button>
+    </form>
+    <a href="{% url 'country_list' %}">Back to List</a>
+</body>
+</html>

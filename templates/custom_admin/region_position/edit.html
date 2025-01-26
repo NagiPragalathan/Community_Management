@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Region Position</title>
+</head>
+<body>
+    <h1>Edit Region Position</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="RegionpositionName">Name:</label>
+        <input type="text" id="RegionpositionName" name="RegionpositionName" value="{{ position.RegionpositionName }}" required><br>
+        <label for="isRegion">Is Region:</label>
+        <input type="checkbox" id="isRegion" name="isRegion" {% if position.isRegion %}checked{% endif %}><br>
+        <button type="submit">Update</button>
+    </form>
+    <a href="{% url 'list_region_positions' %}">Back to List</a>
+</body>
+</html>

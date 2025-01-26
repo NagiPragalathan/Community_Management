@@ -24,7 +24,10 @@ from base.views.operations import *
 from base.views.reports import *
 from base.views.contact import *
 from base.admin_views.region import *
-from base.admin_views.region_member_position import *
+from base.admin_views.country_data import *
+from base.admin_views.state_data import *
+from base.admin_views.city_data import *
+from base.admin_views.region_position import *
 
 from django.contrib.auth.views import PasswordResetConfirmView
 
@@ -191,6 +194,8 @@ reports_url = [
     path('get_chapter_users/',get_chapter_users, name='get_chapter_users'),
 ]
 
+# start custom admin
+
 admin_region = [
     path("regions/", region_list, name="region_list"),
     path("regions/create/", create_region, name="create_region"),
@@ -198,12 +203,33 @@ admin_region = [
     path("regions/<uuid:region_id>/delete/", delete_region, name="delete_region"),  # Updated to <uuid:region_id>
 ]
 
-admin_region_member_position = [
-    path('manage-member-positions/', manage_member_positions, name='manage_member_positions'),
-    path('delete-member-position/<uuid:member_position_id>/', delete_member_position, name='delete_member_position'),
-    path('edit-member-position/<uuid:member_position_id>/', edit_member_position, name='edit_member_position'),
+admin_country = [
+    path('country/', country_list, name='country_list'),
+    path('country/create/', country_create, name='country_create'),
+    path('country/edit/<uuid:pk>/', country_edit, name='country_edit'),
+    path('country/delete/<uuid:pk>/', country_delete, name='country_delete'),
 ]
 
+admin_state = [
+    path('states/', state_list, name='state_list'),  # List all states
+    path('states/create/', state_create, name='state_create'),  # Create a state
+    path('states/edit/<uuid:state_id>/', state_edit, name='state_edit'),  # Edit a state
+    path('states/delete/<uuid:state_id>/', state_delete, name='state_delete'),  # Delete a state
+]
+
+admin_city = [
+    path('cities/', city_list, name='city_list'),
+    path('cities/create/', city_create, name='city_create'),
+    path('cities/edit/<uuid:city_id>/', city_edit, name='city_edit'),
+    path('cities/delete/<uuid:city_id>/', city_delete, name='city_delete'),
+]
+
+admin_region_position = [
+    path('region_positions/', list_region_positions, name='list_region_positions'),
+    path('region_positions/create/', create_region_position, name='create_region_position'),
+    path('region_positions/edit/<uuid:id>/', edit_region_position, name='edit_region_position'),
+    path('region_positions/delete/<uuid:id>/', delete_region_position, name='delete_region_position'),
+]
 
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
@@ -227,7 +253,10 @@ urlpatterns+=Operations
 urlpatterns+=goals
 urlpatterns+=reports_url
 urlpatterns+=admin_region
-urlpatterns+=admin_region_member_position
+urlpatterns+=admin_country
+urlpatterns+=admin_state
+urlpatterns+=admin_city
+urlpatterns+=admin_region_position
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
