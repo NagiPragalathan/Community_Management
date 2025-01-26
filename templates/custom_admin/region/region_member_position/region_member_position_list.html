@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Region Member Positions</title>
+</head>
+<body>
+    <h1>Region Member Positions</h1>
+    <a href="{% url 'region_member_position_create' %}">Create New</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Position</th>
+                <th>Region</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for position in positions %}
+            <tr>
+                <td>{{ position.id }}</td>
+                <td>{{ position.user }}</td>
+                <td>{{ position.position }}</td>
+                <td>{{ position.region }}</td>
+                <td>
+                    <a href="{% url 'region_member_position_edit' position.id %}">Edit</a>
+                    <a href="{% url 'region_member_position_delete' position.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

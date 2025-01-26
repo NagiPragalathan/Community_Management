@@ -356,19 +356,6 @@ class RegionPosition(models.Model):
         return self.RegionpositionName
 
 
-class RegionMemberPosition(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(
-        User, related_name='member_positions', on_delete=models.CASCADE
-    )
-    position = models.ForeignKey(
-        RegionPosition, related_name='member_positions', on_delete=models.CASCADE
-    )
-
-    def __str__(self):
-        return f'{self.user} - {self.position}'
-
-
 class Region(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     region_name = models.CharField(max_length=255)
@@ -382,12 +369,25 @@ class Region(models.Model):
         CityData, related_name='regions', on_delete=models.CASCADE
     )
     last_updated_date = models.DateField(auto_now=True)
-    member_positions = models.ManyToManyField(
-        RegionMemberPosition, related_name='regions', blank=True
-    )
 
     def __str__(self):
         return f'{self.region_name} in {self.city.city_name}, {self.country.country_name}'
+
+class RegionMemberPosition(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(
+        User, related_name='member_positions', on_delete=models.CASCADE
+    )
+    position = models.ForeignKey(
+        RegionPosition, related_name='member_positions', on_delete=models.CASCADE
+    )
+    region = models.ForeignKey(
+        Region, related_name='member_positions', on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f'{self.user} - {self.position}'
+
 
 class Chapter(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

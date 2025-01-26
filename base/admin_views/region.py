@@ -8,7 +8,7 @@ def region_list(request):
     regions = Region.objects.all()  # Fetch all regions from the database
     return render(
         request,
-        "custom_admin/region/region_list.html",  # Replace with your actual template
+        "custom_admin/region/region/region_list.html",  # Replace with your actual template
         {"regions": regions},
     )
 
@@ -40,7 +40,7 @@ def create_region(request):
     cities = CityData.objects.all()
     return render(
         request,
-        "custom_admin/region/create_region.html",  # Replace with your actual template
+        "custom_admin/region/region/create_region.html",  # Replace with your actual template
         {
             "states": states,
             "countries": countries,
@@ -71,7 +71,7 @@ def update_region(request, region_id):
 
     return render(
         request,
-        "custom_admin/region/update_region.html",
+        "custom_admin/region/region/update_region.html",
         {
             "region": region,
             "states": states,
@@ -91,6 +91,6 @@ def delete_region(request, region_id):
 
     return render(
         request,
-        "custom_admin/region/delete_region.html",  # Replace with your actual template
+        "custom_admin/region/region/delete_region.html",  # Replace with your actual template
         {"region": region},
     )

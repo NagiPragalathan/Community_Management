@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Region Member Position</title>
+</head>
+<body>
+    <h1>Are you sure you want to delete this position?</h1>
+    <p>User: {{ position.user }}</p>
+    <p>Position: {{ position.position }}</p>
+    <p>Region: {{ position.region }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+    </form>
+    <a href="{% url 'region_member_position_list' %}">Cancel</a>
+</body>
+</html>

@@ -28,6 +28,7 @@ from base.admin_views.country_data import *
 from base.admin_views.state_data import *
 from base.admin_views.city_data import *
 from base.admin_views.region_position import *
+from base.admin_views.region_member_position import *
 
 from django.contrib.auth.views import PasswordResetConfirmView
 
@@ -231,6 +232,13 @@ admin_region_position = [
     path('region_positions/delete/<uuid:id>/', delete_region_position, name='delete_region_position'),
 ]
 
+admin_region_member_position = [
+    path('region_member_positions/', region_member_position_list, name='region_member_position_list'),
+    path('region_member_positions/create/', region_member_position_create, name='region_member_position_create'),
+    path('region_member_positions/edit/<uuid:id>/', region_member_position_edit, name='region_member_position_edit'),
+    path('region_member_positions/delete/<uuid:id>/', region_member_position_delete, name='region_member_position_delete'),
+]
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -257,6 +265,6 @@ urlpatterns+=admin_country
 urlpatterns+=admin_state
 urlpatterns+=admin_city
 urlpatterns+=admin_region_position
-
+urlpatterns+=admin_region_member_position
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

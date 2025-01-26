@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ operation }} Region Member Position</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        // Initialize Select2 on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Apply Select2 to the user dropdown
+            $('#user').select2({
+                placeholder: "Search and select a user",
+                allowClear: true
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>{{ operation }} Region Member Position</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="user">User:</label>
+        <select name="user" id="user" required>
+            <option></option> <!-- Placeholder for Select2 -->
+            {% for user in users %}
+            <option value="{{ user.id }}" {% if position and position.user.id == user.id %}selected{% endif %}>
+                {{ user.first_name }} {{ user.last_name }} ({{ user.email }})
+            </option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="position">Position:</label>
+        <select name="position" id="position" required>
+            {% for pos in positions %}
+            <option value="{{ pos.id }}" {% if position and position.position.id == pos.id %}selected{% endif %}>
+                {{ pos.RegionpositionName }}
+            </option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="region">Region:</label>
+        <select name="region" id="region" required>
+            {% for reg in regions %}
+            <option value="{{ reg.id }}" {% if position and position.region.id == reg.id %}selected{% endif %}>
+                {{ reg.region_name }} in {{ reg.city.city_name }}, {{ reg.country.country_name }}
+            </option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">{{ operation }}</button>
+    </form>
+    <a href="{% url 'region_member_position_list' %}">Back to List</a>
+</body>
+</html>

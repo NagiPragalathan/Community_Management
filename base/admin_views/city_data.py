@@ -4,7 +4,7 @@ from base.models import CityData, CountryData, StateData
 # List View
 def city_list(request):
     cities = CityData.objects.all()
-    return render(request, 'custom_admin/city_data/city_list.html', {'cities': cities})
+    return render(request, 'custom_admin/region/city_data/city_list.html', {'cities': cities})
 
 # Create View
 def city_create(request):
@@ -20,7 +20,7 @@ def city_create(request):
         return redirect('city_list')
     countries = CountryData.objects.all()
     states = StateData.objects.all()
-    return render(request, 'custom_admin/city_data/city_form.html', {'countries': countries, 'states': states})
+    return render(request, 'custom_admin/region/city_data/city_form.html', {'countries': countries, 'states': states})
 
 # Edit View
 def city_edit(request, city_id):
@@ -36,7 +36,7 @@ def city_edit(request, city_id):
         return redirect('city_list')
     countries = CountryData.objects.all()
     states = StateData.objects.all()
-    return render(request, 'custom_admin/city_data/city_form.html', {'city': city, 'countries': countries, 'states': states})
+    return render(request, 'custom_admin/region/city_data/city_form.html', {'city': city, 'countries': countries, 'states': states})
 
 # Delete View
 def city_delete(request, city_id):

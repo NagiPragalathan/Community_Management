@@ -1,63 +1,57 @@
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from base.models import User, RegionPosition, RegionMemberPosition
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from base.models import RegionMemberPosition, User, RegionPosition, Region
 
-# Edit RegionMemberPosition
-def edit_member_position(request, member_position_id):
-    if request.method == "POST":
-        member_position = get_object_or_404(RegionMemberPosition, id=member_position_id)
-        user_id = request.POST.get("user_id")
-        position_id = request.POST.get("position_id")
+def region_member_position_list(request):
+    positions = RegionMemberPosition.objects.all()
+    return render(request, 'custom_admin/region/region_member_position/region_member_position_list.html', {'positions': positions})
 
-        # Update the RegionMemberPosition
-        user = get_object_or_404(User, id=user_id)
-        position = get_object_or_404(RegionPosition, id=position_id)
-        member_position.user = user
-        member_position.position = position
-        member_position.save()
+def region_member_position_create(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user')
+        position_id = request.POST.get('position')
+        region_id = request.POST.get('region')
 
-        return JsonResponse({
-            "id": member_position.id,
-            "user": str(user),
-            "position": str(position)
-        })
+        user = User.objects.get(id=user_id)
+        position = RegionPosition.objects.get(id=position_id)
+        region = Region.objects.get(id=region_id)
 
-    return JsonResponse({"error": "Invalid request"}, status=400)
+        RegionMemberPosition.objects.create(user=user, position=position, region=region)
+        return redirect('region_member_position_list')
 
-
-def manage_member_positions(request):
-    if request.method == "POST":
-        try:
-            # Retrieve user and position from POST data
-            user_id = request.POST.get("user_id")
-            position_id = request.POST.get("position_id")
-
-            # Fetch the user and position objects
-            user = get_object_or_404(User, id=user_id)
-            position = get_object_or_404(RegionPosition, id=position_id)
-
-            # Create a new RegionMemberPosition
-            member_position = RegionMemberPosition.objects.create(user=user, position=position)
-            
-            print(member_position.position)
-
-            # Respond with success and the created data
-            return JsonResponse({
-                "id": str(member_position.id),
-                "user": user.username,
-                "position": position.RegionpositionName
-            })
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-
-    return JsonResponse({"error": "Invalid request method"}, status=400)
+    users = User.objects.all()
+    positions = RegionPosition.objects.all()
+    regions = Region.objects.all()
+    return render(request, 'custom_admin/region/region_member_position/region_member_position_form.html', {
+        'users': users, 'positions': positions, 'regions': regions, 'operation': 'Create'
+    })
 
 
-# Delete RegionMemberPosition
-def delete_member_position(request, member_position_id):
-    if request.method == "POST":
-        member_position = get_object_or_404(RegionMemberPosition, id=member_position_id)
-        member_position.delete()
-        return JsonResponse({"success": True})
+def region_member_position_edit(request, id):
+    position = RegionMemberPosition.objects.get(id=id)
+    if request.method == 'POST':
+        user_id = request.POST.get('user')
+        position_id = request.POST.get('position')
+        region_id = request.POST.get('region')
 
-    return JsonResponse({"error": "Invalid request"}, status=400)
+        position.user = User.objects.get(id=user_id)
+        position.position = RegionPosition.objects.get(id=position_id)
+        position.region = Region.objects.get(id=region_id)
+        position.save()
+        return redirect('region_member_position_list')
+
+    users = User.objects.all()
+    positions = RegionPosition.objects.all()
+    regions = Region.objects.all()
+    return render(request, 'custom_admin/region/region_member_position/region_member_position_form.html', {
+        'users': users, 'positions': positions, 'regions': regions,
+        'operation': 'Edit', 'position': position
+    })
+
+
+def region_member_position_delete(request, id):
+    position = RegionMemberPosition.objects.get(id=id)
+    if request.method == 'POST':
+        position.delete()
+        return redirect('region_member_position_list')
+    return render(request, 'custom_admin/region/region_member_position/region_member_position_confirm_delete.html', {'position': position})
