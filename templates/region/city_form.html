@@ -1,20 +1,42 @@
-{% extends 'base.html%}
+{% extends 'base.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add/Update City</title>
-</head>
-<body>
-    <h1>Add/Update City</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-    {% for i in city %}
-        <li>{{ i }}</li>
-    {% endfor %}
-</body>
-</html>
+<div class="bg-gray-100 min-h-screen py-8">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Add/Update City</h1>
+        
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-4">
+                    <label for="{{ field.id_for_label }}" class="block text-lg font-medium text-gray-700 mb-2">
+                        {{ field.label }}
+                    </label>
+                    {{ field|addclass:"w-full px-4 py-2 rounded-lg border-2 border-gray-300 focus:border-violet-600 focus:ring focus:ring-violet-500 focus:ring-opacity-50" }}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out">
+                Save City
+            </button>
+        </form>
+
+        {% if city %}
+            <div class="mt-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Cities List</h2>
+                <ul class="space-y-2">
+                    {% for item in city %}
+                        <li class="bg-gray-50 p-3 rounded-lg shadow-sm hover:bg-gray-100 transition-colors">
+                            {{ item }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock content %}

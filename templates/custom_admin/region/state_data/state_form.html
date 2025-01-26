@@ -1,28 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ operation }} State</title>
-</head>
-<body>
-    <h1>{{ operation }} State</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="state_name">State Name:</label>
-        <input type="text" id="state_name" name="state_name" value="{{ state.state_name|default:'' }}" required>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8 px-4">
+    <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-blue-800 mb-6">{{ operation }} State</h1>
         
-        <label for="country_id">Country:</label>
-        <select id="country_id" name="country_id" required>
-            {% for country in countries %}
-            <option value="{{ country.id }}" {% if state and state.country.id == country.id %}selected{% endif %}>
-                {{ country.country_name }}
-            </option>
-            {% endfor %}
-        </select>
-        
-        <button type="submit">{{ operation }}</button>
-    </form>
-    <a href="{% url 'state_list' %}">Back to List</a>
-</body>
-</html>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="space-y-2">
+                <label for="state_name" class="block text-sm font-medium text-gray-700">State Name:</label>
+                <input type="text" 
+                       id="state_name" 
+                       name="state_name"
+                       value="{{ state.state_name|default:'' }}"
+                       required
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div class="space-y-2">
+                <label for="country_id" class="block text-sm font-medium text-gray-700">Country:</label>
+                <select id="country_id" 
+                        name="country_id"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                    {% for country in countries %}
+                    <option value="{{ country.id }}" {% if state and state.country.id == country.id %}selected{% endif %}>
+                        {{ country.country_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" 
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                {{ operation }}
+            </button>
+        </form>
+
+        <div class="mt-4">
+            <a href="{% url 'state_list' %}" 
+               class="text-blue-600 hover:text-blue-800 font-medium">
+                Back to List
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

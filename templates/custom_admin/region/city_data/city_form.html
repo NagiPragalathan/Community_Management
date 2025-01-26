@@ -1,33 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{% if city %}Edit City{% else %}Create City{% endif %}</title>
-</head>
-<body>
-    <h1>{% if city %}Edit City{% else %}Create City{% endif %}</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="city_name">City Name:</label>
-        <input type="text" id="city_name" name="city_name" value="{% if city %}{{ city.city_name }}{% endif %}" required><br>
+{% extends 'base.html' %}
 
-        <label for="country">Country:</label>
-        <select id="country" name="country" required>
-            <option value="">Select Country</option>
-            {% for country in countries %}
-            <option value="{{ country.id }}" {% if city and city.country.id == country.id %}selected{% endif %}>{{ country }}</option>
-            {% endfor %}
-        </select><br>
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="relative px-4 py-8 bg-white shadow rounded-3xl sm:p-10 lg:p-12">
+            <div class="max-w-3xl mx-auto">
+                <div class="flex items-center space-x-5 mb-6">
+                    <div class="block font-semibold text-xl sm:text-2xl text-gray-700">
+                        <h2 class="leading-relaxed">{% if city %}Edit{% else %}Create{% endif %} City</h2>
+                    </div>
+                </div>
 
-        <label for="state">State:</label>
-        <select id="state" name="state" required>
-            <option value="">Select State</option>
-            {% for state in states %}
-            <option value="{{ state.id }}" {% if city and city.state.id == state.id %}selected{% endif %}>{{ state }}</option>
-            {% endfor %}
-        </select><br>
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    <div class="flex flex-col">
+                        <label for="city_name" class="text-sm font-medium text-gray-700">City Name</label>
+                        <input type="text" id="city_name" name="city_name" value="{% if city %}{{ city.city_name }}{% endif %}" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
 
-        <button type="submit">{% if city %}Update{% else %}Create{% endif %}</button>
-    </form>
-    <a href="{% url 'city_list' %}">Back to City List</a>
-</body>
-</html>
+                    <div class="flex flex-col">
+                        <label for="country" class="text-sm font-medium text-gray-700">Country</label>
+                        <select id="country" name="country" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Select Country</option>
+                            {% for country in countries %}
+                            <option value="{{ country.id }}" {% if city and city.country.id == country.id %}selected{% endif %}>{{ country }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label for="state" class="text-sm font-medium text-gray-700">State</label>
+                        <select id="state" name="state" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Select State</option>
+                            {% for state in states %}
+                            <option value="{{ state.id }}" {% if city and city.state.id == state.id %}selected{% endif %}>{{ state }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <button type="submit" 
+                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            {% if city %}Update{% else %}Create{% endif %}
+                        </button>
+                        <a href="{% url 'city_list' %}" 
+                            class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Back to List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
