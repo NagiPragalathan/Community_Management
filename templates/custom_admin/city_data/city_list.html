@@ -1,37 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>City List</title>
-</head>
-<body>
-    <h1>City List</h1>
-    <a href="{% url 'city_create' %}">Add New City</a>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>City Name</th>
-                <th>Country</th>
-                <th>State</th>
-                <th>Last Updated</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for city in cities %}
-            <tr>
-                <td>{{ city.id }}</td>
-                <td>{{ city.city_name }}</td>
-                <td>{{ city.country }}</td>
-                <td>{{ city.state }}</td>
-                <td>{{ city.last_updated_date }}</td>
-                <td>
-                    <a href="{% url 'city_edit' city.id %}">Edit</a> |
-                    <a href="{% url 'city_delete' city.id %}">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+                <h1 class="text-2xl font-semibold text-gray-900">Cities</h1>
+                <a href="{% url 'city_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Add New City
+                </a>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">City Name</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">State</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for city in cities %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ city.id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ city.city_name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ city.country }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ city.state }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ city.last_updated_date }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-3">
+                                        <a href="{% url 'city_edit' city.id %}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                        <a href="{% url 'city_delete' city.id %}" class="text-red-600 hover:text-red-900">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

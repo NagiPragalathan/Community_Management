@@ -1,20 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter Members' Emails</title>
-</head>
-<body>
-    <h1>Emails of Members in Chapter: {{ chapter_name }}</h1>
-    <ul>
+{% extends "base.html" %}
+
+{% block title %}Chapter Members' Emails{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">
+            Emails of Members in Chapter: {{ chapter_name }}
+        </h1>
+
         {% if emails %}
-            {% for email in emails %}
-                <li>{{ email }}</li>
-            {% endfor %}
+            <div class="space-y-4">
+                {% for email in emails %}
+                    <div class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition duration-150">
+                        <svg class="w-6 h-6 text-gray-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-gray-700">{{ email }}</span>
+                    </div>
+                {% endfor %}
+            </div>
         {% else %}
-            <li>No members found in this chapter.</li>
+            <div class="bg-gray-50 rounded-lg p-8 text-center">
+                <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                </svg>
+                <p class="text-gray-600 text-lg">No members found in this chapter.</p>
+            </div>
         {% endif %}
-    </ul>
-</body>
-</html>
+    </div>
+</div>
+{% endblock %}

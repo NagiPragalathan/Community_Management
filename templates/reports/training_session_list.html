@@ -1,32 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Training Sessions</title>
-</head>
-<body>
-    <h1>Training Sessions</h1>
-    <a href="{% url 'add_training_session' %}">Add Training Session</a>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Training Name</th>
-            <th>Date</th>
-            <th>Chapter</th>
-            <th>Attendees</th>
-        </tr>
-        {% for session in sessions %}
-        <tr>
-            <td>{{ session.id }}</td>
-            <td>{{ session.training_name }}</td>
-            <td>{{ session.date }}</td>
-            <td>{{ session.chapter.name if session.chapter else "All Chapters" }}</td>
-            <td>
-                {% for attendee in session.attendees.all %}
-                {{ attendee.username }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+            <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+                <h1 class="text-2xl font-semibold text-gray-900">Training Sessions</h1>
+                <a href="{% url 'add_training_session' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Add Training Session
+                </a>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Training Name</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chapter</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attendees</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for session in sessions %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ session.id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ session.training_name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ session.date }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ session.chapter.name if session.chapter else "All Chapters" }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {% for attendee in session.attendees.all %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        {{ attendee.username }}
+                                    </span>
+                                    {% if not forloop.last %} {% endif %}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
