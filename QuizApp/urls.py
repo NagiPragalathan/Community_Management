@@ -23,7 +23,8 @@ from base.views.weeklyslips import *
 from base.views.operations import *
 from base.views.reports import *
 from base.views.contact import *
-
+from base.admin_views.region import *
+from base.admin_views.region_member_position import *
 
 from django.contrib.auth.views import PasswordResetConfirmView
 
@@ -190,6 +191,20 @@ reports_url = [
     path('get_chapter_users/',get_chapter_users, name='get_chapter_users'),
 ]
 
+admin_region = [
+    path("regions/", region_list, name="region_list"),
+    path("regions/create/", create_region, name="create_region"),
+    path("regions/<uuid:region_id>/update/", update_region, name="update_region"),  # Updated to <uuid:region_id>
+    path("regions/<uuid:region_id>/delete/", delete_region, name="delete_region"),  # Updated to <uuid:region_id>
+]
+
+admin_region_member_position = [
+    path('manage-member-positions/', manage_member_positions, name='manage_member_positions'),
+    path('delete-member-position/<uuid:member_position_id>/', delete_member_position, name='delete_member_position'),
+    path('edit-member-position/<uuid:member_position_id>/', edit_member_position, name='edit_member_position'),
+]
+
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -211,7 +226,8 @@ urlpatterns+=contact
 urlpatterns+=Operations
 urlpatterns+=goals
 urlpatterns+=reports_url
-
+urlpatterns+=admin_region
+urlpatterns+=admin_region_member_position
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

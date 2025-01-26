@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.core.exceptions import ValidationError
 from .models import (
     CountryData, CityData, Region, RegionPosition, RegionMemberPosition, Group,
-    Chapter, ChapterMemberPosition, ChapterPosition, MainProfile, ChapterName
+    Chapter, ChapterMemberPosition, ChapterPosition, MainProfile, ChapterName, StateData
 )
 from django import forms
 from django.contrib.auth.models import User
@@ -11,6 +11,10 @@ from datetime import timedelta
 
 from django.contrib import messages
 from django.shortcuts import redirect
+
+from django.core.exceptions import ValidationError
+from django.forms import ModelForm
+    
 
 
 class ChapterMemberPositionInline(admin.TabularInline):
@@ -38,17 +42,6 @@ class MainProfileInline(admin.TabularInline):
         formset.__init__ = formset_init
         return formset
 
-class ChapterForm(forms.ModelForm):
-    class Meta:
-        model = Chapter
-        exclude = ['member_positions']
-
-    def clean_chapter_members(self):
-        chapter_members = self.cleaned_data.get('chapter_members')
-        if not chapter_members.exists():
-            raise ValidationError("You need at least one Chapter member to create a Chapter.")
-        return chapter_members
-
 @admin.register(Chapter)
 class ChapterAdmin(admin.ModelAdmin):
     list_display = ('name', 'region', 'country', 'city', 'type', 'day', 'last_updated_date')
@@ -60,14 +53,14 @@ class ChapterAdmin(admin.ModelAdmin):
     filter_horizontal = ['chapter_members']
 
     def save_model(self, request, obj, form, change):
-        if MainProfile.objects.count() < 1:
-            storage = messages.get_messages(request)
-            for _ in storage:
-                pass  # Clear existing messages
-                print(_)
-            messages.error(request, "You need at least 5 MainProfile instances to create a Chapter.")
-        else:
-            super().save_model(request, obj, form, change)        
+        # if MainProfile.objects.count() < 1:
+        #     storage = messages.get_messages(request)
+        #     for _ in storage:
+        #         pass  # Clear existing messages
+        #         print(_)
+        #     messages.error(request, "You need at least 5 MainProfile instances to create a Chapter.")
+        # else:
+        super().save_model(request, obj, form, change)        
         
 @admin.register(CountryData)
 class CountryDataAdmin(admin.ModelAdmin):
@@ -82,6 +75,13 @@ class CityDataAdmin(admin.ModelAdmin):
     list_filter = ('country', 'last_updated_date')
     autocomplete_fields = ['country']
 
+@admin.register(StateData)
+class StateDataAdmin(admin.ModelAdmin):
+    list_display = ('state_name', 'country', 'last_updated_date')
+    search_fields = ('state_name', 'country__country_name')
+    list_filter = ('country', 'last_updated_date')
+    autocomplete_fields = ['country']
+
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
     list_display = ('region_name', 'country', 'city', 'last_updated_date')
@@ -91,9 +91,10 @@ class RegionAdmin(admin.ModelAdmin):
 
 @admin.register(RegionPosition)
 class RegionPositionAdmin(admin.ModelAdmin):
-    list_display = ('RegionpositionName', 'lastupdateddate', 'isRegion')
+    # list_display = ('RegionpositionName', 'lastupdateddate', 'isRegion')
+    list_display = ('RegionpositionName', 'isRegion')
     search_fields = ('RegionpositionName',)
-    list_filter = ('isRegion', 'lastupdateddate')
+    list_filter = ('isRegion',)
 
 @admin.register(RegionMemberPosition)
 class MemberPositionAdmin(admin.ModelAdmin):
@@ -133,8 +134,7 @@ class GroupAdmin(admin.ModelAdmin):
         }),
     )
     
-    
-    
+
     
 @admin.action(description='Reactivate selected memberships')
 def reactivate_memberships(modeladmin, request, queryset):
@@ -145,8 +145,20 @@ def reactivate_memberships(modeladmin, request, queryset):
             profile.active_until = None
             profile.save()
 
+class MainProfileForm(ModelForm):
+    def clean(self):
+        cleaned_data = super().clean()
+        first_name = cleaned_data.get('first_name')
+        last_name = cleaned_data.get('last_name')
+
+        if not first_name or not last_name:
+            raise ValidationError("Both 'first name' and 'last name' are required.")
+        
+        return cleaned_data
+
 @admin.register(MainProfile)
 class MainProfileAdmin(admin.ModelAdmin):
+    form = MainProfileForm  # Use the custom form
     list_display = ('uuid', 'user', 'first_name', 'last_name', 'membership_status', 'renewal_due_date')
     search_fields = ('first_name', 'last_name', 'user__username')
     list_filter = ('membership_status', 'gender', 'industry')
@@ -169,6 +181,14 @@ class MainProfileAdmin(admin.ModelAdmin):
     )
 
     def save_model(self, request, obj, form, change):
+        if form.is_valid():
+            super().save_model(request, obj, form, change)
+        else:
+            # Display error message if form is invalid
+            messages.error(request, "The form contains errors. Please correct them before saving.")
+    def save_model(self, request, obj, form, change):
         if not obj.first_name or not obj.last_name:
-            raise ValidationError("First name and last name are required.")
-        super().save_model(request, obj, form, change)
+            # Display an error message instead of raising an exception
+            messages.error(request, "First name and last name are required. The changes were not saved.")
+        else:
+            super().save_model(request, obj, form, change)

@@ -54,8 +54,8 @@ class MainProfile(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=5, choices=TITLE_CHOICES, blank=True, null=True)
-    first_name = models.CharField(max_length=100, blank=True, null=True)
-    last_name = models.CharField(max_length=100, blank=True, null=True)
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
     suffix = models.CharField(max_length=100, blank=True, null=True)
     display_name = models.CharField(max_length=100, blank=True, null=True)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
@@ -312,49 +312,82 @@ class Gallery(models.Model):
 
 class CountryData(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    country_name = models.CharField(max_length=255)
+    country_name = models.CharField(max_length=255, unique=True)
     last_updated_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.country_name
 
+
+class StateData(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    state_name = models.CharField(max_length=255, unique=True)
+    country = models.ForeignKey(
+        CountryData, related_name='states', on_delete=models.CASCADE
+    )
+    last_updated_date = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.state_name
+
+
 class CityData(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     city_name = models.CharField(max_length=255)
-    country = models.ForeignKey(CountryData, related_name='cities', on_delete=models.CASCADE)
+    country = models.ForeignKey(
+        CountryData, related_name='cities', on_delete=models.CASCADE
+    )  # Fixed reference
+    state = models.ForeignKey(
+        StateData, related_name='cities', on_delete=models.CASCADE
+    )
     last_updated_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.city_name
 
-class Region(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    country = models.ForeignKey(CountryData, related_name='regions', on_delete=models.CASCADE)
-    city = models.ForeignKey(CityData, related_name='regions', on_delete=models.CASCADE)
-    region_name = models.CharField(max_length=255)
-    last_updated_date = models.DateField(auto_now=True)
-    member_positions = models.ManyToManyField('RegionMemberPosition', related_name='regions', blank=True)
-
-    def __str__(self):
-        return f'{self.region_name} in {self.city}, {self.country}'
 
 class RegionPosition(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     RegionpositionName = models.CharField(max_length=255)
-    lastupdateddate = models.DateTimeField(default=timezone.now)
-    isRegion = models.BooleanField(default=False)  # New boolean field
+    lastupdateddate = models.DateTimeField(auto_now=True)
+    isRegion = models.BooleanField(default=False)
 
     def __str__(self):
         return self.RegionpositionName
 
+
 class RegionMemberPosition(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, related_name='member_positions', on_delete=models.CASCADE)
-    position = models.ForeignKey(RegionPosition, related_name='member_positions', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, related_name='member_positions', on_delete=models.CASCADE
+    )
+    position = models.ForeignKey(
+        RegionPosition, related_name='member_positions', on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return f'{self.user} - {self.position}'
 
+
+class Region(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    region_name = models.CharField(max_length=255)
+    state = models.ForeignKey(
+        StateData, related_name='regions', on_delete=models.CASCADE
+    )
+    country = models.ForeignKey(
+        CountryData, related_name='regions', on_delete=models.CASCADE
+    )
+    city = models.ForeignKey(
+        CityData, related_name='regions', on_delete=models.CASCADE
+    )
+    last_updated_date = models.DateField(auto_now=True)
+    member_positions = models.ManyToManyField(
+        RegionMemberPosition, related_name='regions', blank=True
+    )
+
+    def __str__(self):
+        return f'{self.region_name} in {self.city.city_name}, {self.country.country_name}'
 
 class Chapter(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

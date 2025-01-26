@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Region</title>
+</head>
+<body>
+    <h1>Create New Region</h1>
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Region Name -->
+        <label for="region_name">Region Name:</label>
+        <input 
+            type="text" 
+            name="region_name" 
+            id="region_name" 
+            placeholder="Enter region name" 
+            required><br><br>
+
+        <!-- State -->
+        <label for="state">State:</label>
+        <select name="state" id="state" required>
+            <option value="" disabled selected>-- Select State --</option>
+            {% for state in states %}
+                <option value="{{ state.id }}">{{ state.state_name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <!-- Country -->
+        <label for="country">Country:</label>
+        <select name="country" id="country" required>
+            <option value="" disabled selected>-- Select Country --</option>
+            {% for country in countries %}
+                <option value="{{ country.id }}">{{ country.country_name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <!-- City -->
+        <label for="city">City:</label>
+        <select name="city" id="city" required>
+            <option value="" disabled selected>-- Select City --</option>
+            {% for city in cities %}
+                <option value="{{ city.id }}">{{ city.city_name }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Create Region</button>
+    </form>
+
+    <!-- Back Link -->
+    <a href="{% url 'region_list' %}">Back to Region List</a>
+</body>
+</html>

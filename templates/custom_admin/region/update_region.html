@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Region</title>
+</head>
+<body>
+    <h1>Update Region</h1>
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Region Name -->
+        <label for="region_name">Region Name:</label>
+        <input 
+            type="text" 
+            name="region_name" 
+            id="region_name" 
+            value="{{ region.region_name }}" 
+            required><br><br>
+
+        <!-- State -->
+        <label for="state">State:</label>
+        <select name="state" id="state" required>
+            {% for state in states %}
+                <option value="{{ state.id }}" {% if state.id == region.state.id %}selected{% endif %}>
+                    {{ state.state_name }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <!-- Country -->
+        <label for="country">Country:</label>
+        <select name="country" id="country" required>
+            {% for country in countries %}
+                <option value="{{ country.id }}" {% if country.id == region.country.id %}selected{% endif %}>
+                    {{ country.country_name }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <!-- City -->
+        <label for="city">City:</label>
+        <select name="city" id="city" required>
+            {% for city in cities %}
+                <option value="{{ city.id }}" {% if city.id == region.city.id %}selected{% endif %}>
+                    {{ city.city_name }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Update Region</button>
+    </form>
+
+    <!-- Back Link -->
+    <a href="{% url 'region_list' %}">Back to Region List</a>
+</body>
+</html>
