@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State List</title>
+</head>
+<body>
+    <h1>State List</h1>
+    <a href="{% url 'state_create' %}">Add New State</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>State Name</th>
+                <th>Country</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for state in states %}
+            <tr>
+                <td>{{ state.id }}</td>
+                <td>{{ state.state_name }}</td>
+                <td>{{ state.country.country_name }}</td>
+                <td>{{ state.last_updated_date }}</td>
+                <td>
+                    <a href="{% url 'state_edit' state.id %}">Edit</a>
+                    <form action="{% url 'state_delete' state.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>City List</title>
+</head>
+<body>
+    <h1>City List</h1>
+    <a href="{% url 'city_create' %}">Add New City</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>City Name</th>
+                <th>Country</th>
+                <th>State</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for city in cities %}
+            <tr>
+                <td>{{ city.id }}</td>
+                <td>{{ city.city_name }}</td>
+                <td>{{ city.country }}</td>
+                <td>{{ city.state }}</td>
+                <td>{{ city.last_updated_date }}</td>
+                <td>
+                    <a href="{% url 'city_edit' city.id %}">Edit</a> |
+                    <a href="{% url 'city_delete' city.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

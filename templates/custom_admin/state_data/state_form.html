@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ operation }} State</title>
+</head>
+<body>
+    <h1>{{ operation }} State</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="state_name">State Name:</label>
+        <input type="text" id="state_name" name="state_name" value="{{ state.state_name|default:'' }}" required>
+        
+        <label for="country_id">Country:</label>
+        <select id="country_id" name="country_id" required>
+            {% for country in countries %}
+            <option value="{{ country.id }}" {% if state and state.country.id == country.id %}selected{% endif %}>
+                {{ country.country_name }}
+            </option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit">{{ operation }}</button>
+    </form>
+    <a href="{% url 'state_list' %}">Back to List</a>
+</body>
+</html>

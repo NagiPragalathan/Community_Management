@@ -41,3 +41,7 @@ create the form for "Summary PALMS Report"
 - Manage Goals
 	
 - Create Email
+
+
+
+write the code django view and html template without using django forms... i eed operations like create edit and delete, list.

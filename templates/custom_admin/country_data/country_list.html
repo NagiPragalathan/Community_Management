@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country List</title>
+</head>
+<body>
+    <h1>Country List</h1>
+    <a href="{% url 'country_create' %}">Add New Country</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Country Name</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for country in countries %}
+            <tr>
+                <td>{{ country.id }}</td>
+                <td>{{ country.country_name }}</td>
+                <td>{{ country.last_updated_date }}</td>
+                <td>
+                    <a href="{% url 'country_edit' country.id %}">Edit</a>
+                    <form action="{% url 'country_delete' country.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

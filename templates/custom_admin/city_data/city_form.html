@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if city %}Edit City{% else %}Create City{% endif %}</title>
+</head>
+<body>
+    <h1>{% if city %}Edit City{% else %}Create City{% endif %}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="city_name">City Name:</label>
+        <input type="text" id="city_name" name="city_name" value="{% if city %}{{ city.city_name }}{% endif %}" required><br>
+
+        <label for="country">Country:</label>
+        <select id="country" name="country" required>
+            <option value="">Select Country</option>
+            {% for country in countries %}
+            <option value="{{ country.id }}" {% if city and city.country.id == country.id %}selected{% endif %}>{{ country }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="state">State:</label>
+        <select id="state" name="state" required>
+            <option value="">Select State</option>
+            {% for state in states %}
+            <option value="{{ state.id }}" {% if city and city.state.id == state.id %}selected{% endif %}>{{ state }}</option>
+            {% endfor %}
+        </select><br>
+
+        <button type="submit">{% if city %}Update{% else %}Create{% endif %}</button>
+    </form>
+    <a href="{% url 'city_list' %}">Back to City List</a>
+</body>
+</html>
