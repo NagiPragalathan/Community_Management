@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chapter Position List</title>
+</head>
+<body>
+    <h1>Chapter Positions</h1>
+    <a href="{% url 'chapter_position_create' %}">Create New Chapter Position</a>
+    <table border="1">
+        <tr>
+            <th>Chapter Position</th>
+            <th>Is Chapter</th>
+            <th>Last Updated Date</th>
+            <th>Actions</th>
+        </tr>
+        {% for chapter in chapter_positions %}
+        <tr>
+            <td>{{ chapter.Chapterposition }}</td>
+            <td>{{ chapter.is_chapter }}</td>
+            <td>{{ chapter.lastupdateddate }}</td>
+            <td>
+                <a href="{% url 'chapter_position_edit' chapter.id %}">Edit</a> |
+                <a href="{% url 'chapter_position_delete' chapter.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

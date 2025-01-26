@@ -44,7 +44,7 @@ create the form for "Summary PALMS Report"
 
 
 
-write the code django view and html template without using django forms... i eed operations like create edit and delete, list.
+write the code django view and html template without using django forms... i need operations like create edit and delete, list.
 
 
 

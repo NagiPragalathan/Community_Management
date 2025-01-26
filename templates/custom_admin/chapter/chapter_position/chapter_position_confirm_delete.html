@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Chapter Position</title>
+</head>
+<body>
+    <h1>Delete Chapter Position</h1>
+    <p>Are you sure you want to delete "{{ chapter_position.Chapterposition }}"?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+        <a href="{% url 'chapter_position_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

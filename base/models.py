@@ -395,7 +395,6 @@ class Chapter(models.Model):
     region = models.ForeignKey('Region', related_name='chapters', on_delete=models.CASCADE)
     country = models.ForeignKey('CountryData', related_name='chapters', on_delete=models.CASCADE)
     city = models.ForeignKey('CityData', related_name='chapters', on_delete=models.CASCADE)
-    member_positions = models.ManyToManyField('ChapterMemberPosition', related_name='chapters', blank=True)
     last_updated_date = models.DateField(auto_now=True)
     type = models.CharField(max_length=255, choices=[('online', 'Online'), ('offline', 'Offline')])
     day = models.CharField(

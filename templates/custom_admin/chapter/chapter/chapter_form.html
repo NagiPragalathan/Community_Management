@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if chapter %}Edit Chapter{% else %}Create Chapter{% endif %}</title>
+</head>
+<body>
+    <h1>{% if chapter %}Edit Chapter{% else %}Create Chapter{% endif %}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <select id="name" name="name" required>
+            <option value="">Select a Name</option>
+            {% for name in names %}
+                <option value="{{ name.id }}" {% if chapter and chapter.name.id == name.id %}selected{% endif %}>
+                    {{ name.chapter_name }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="region">Region:</label>
+        <select id="region" name="region" required>
+            <option value="">Select a Region</option>
+            {% for region in regions %}
+                <option value="{{ region.id }}" {% if chapter and chapter.region.id == region.id %}selected{% endif %}>
+                    {{ region.region_name }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="country">Country:</label>
+        <select id="country" name="country" required>
+            <option value="">Select a Country</option>
+            {% for country in countries %}
+                <option value="{{ country.id }}" {% if chapter and chapter.country.id == country.id %}selected{% endif %}>
+                    {{ country.country_name }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="city">City:</label>
+        <select id="city" name="city" required>
+            <option value="">Select a City</option>
+            {% for city in cities %}
+                <option value="{{ city.id }}" {% if chapter and chapter.city.id == city.id %}selected{% endif %}>
+                    {{ city.city_name }}
+                </option>
+            {% endfor %}
+        </select><br>
+
+        <label for="type">Type:</label>
+        <select id="type" name="type" required>
+            <option value="online" {% if chapter and chapter.type == 'online' %}selected{% endif %}>Online</option>
+            <option value="offline" {% if chapter and chapter.type == 'offline' %}selected{% endif %}>Offline</option>
+        </select><br>
+
+        <label for="day">Day:</label>
+        <select id="day" name="day" required>
+            <option value="Monday" {% if chapter and chapter.day == 'Monday' %}selected{% endif %}>Monday</option>
+            <option value="Tuesday" {% if chapter and chapter.day == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+            <option value="Wednesday" {% if chapter and chapter.day == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+            <option value="Thursday" {% if chapter and chapter.day == 'Thursday' %}selected{% endif %}>Thursday</option>
+            <option value="Friday" {% if chapter and chapter.day == 'Friday' %}selected{% endif %}>Friday</option>
+            <option value="Saturday" {% if chapter and chapter.day == 'Saturday' %}selected{% endif %}>Saturday</option>
+        </select><br>
+
+        <button type="submit">{% if chapter %}Update{% else %}Create{% endif %}</button>
+        <a href="{% url 'chapter_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

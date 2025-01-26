@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chapter List</title>
+</head>
+<body>
+    <h1>Chapter List</h1>
+    <a href="{% url 'chapter_create' %}">Create New Chapter</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Region</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Type</th>
+                <th>Day</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for chapter in chapters %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ chapter.name.chapter_name }}</td>
+                    <td>{{ chapter.region.region_name }}</td>
+                    <td>{{ chapter.country.country_name }}</td>
+                    <td>{{ chapter.city.city_name }}</td>
+                    <td>{{ chapter.type }}</td>
+                    <td>{{ chapter.day }}</td>
+                    <td>
+                        <a href="{% url 'chapter_edit' chapter.id %}">Edit</a>
+                        <a href="{% url 'chapter_delete' chapter.id %}" onclick="return confirm('Are you sure you want to delete this chapter?')">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="8">No chapters found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

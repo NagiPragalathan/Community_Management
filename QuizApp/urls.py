@@ -23,12 +23,16 @@ from base.views.weeklyslips import *
 from base.views.operations import *
 from base.views.reports import *
 from base.views.contact import *
-from base.admin_views.region import *
-from base.admin_views.country_data import *
-from base.admin_views.state_data import *
-from base.admin_views.city_data import *
-from base.admin_views.region_position import *
-from base.admin_views.region_member_position import *
+from base.admin_views.region.region import *
+from base.admin_views.region.country_data import *
+from base.admin_views.region.state_data import *
+from base.admin_views.region.city_data import *
+from base.admin_views.region.region_position import *
+from base.admin_views.region.region_member_position import *
+from base.admin_views.chapter.chapter_name import *
+from base.admin_views.chapter.chapter_position import *
+from base.admin_views.chapter.chapter_member_positions import *
+from base.admin_views.chapter.chapter import *
 
 from django.contrib.auth.views import PasswordResetConfirmView
 
@@ -239,6 +243,37 @@ admin_region_member_position = [
     path('region_member_positions/delete/<uuid:id>/', region_member_position_delete, name='region_member_position_delete'),
 ]
 
+# chapter Urls
+
+admin_chapter_name = [
+    path('chapter_name/', chapter_name_list, name='chapter_name_list'),
+    path('chapter_name/create/', chapter_name_create, name='chapter_name_create'),
+    path('chapter_name/edit/<uuid:pk>/', chapter_name_edit, name='chapter_name_edit'),
+    path('chapter_name/delete/<uuid:pk>/', chapter_name_delete, name='chapter_name_delete'),
+]
+
+admin_chapter_position = [
+    path('chapter_position/', chapter_position_list, name='chapter_position_list'),
+    path('chapter_position/create/', chapter_position_create, name='chapter_position_create'),
+    path('chapter_position/edit/<uuid:pk>/', chapter_position_edit, name='chapter_position_edit'),
+    path('chapter_position/delete/<uuid:pk>/', chapter_position_delete, name='chapter_position_delete'),
+]
+
+
+admin_chapter_member_position = [
+    path('chapter_member_positions/', list_chapter_member_positions, name='list_chapter_member_positions'),
+    path('chapter_member_positions/create/', create_chapter_member_position, name='create_chapter_member_position'),
+    path('chapter_member_positions/edit/<uuid:id>/', edit_chapter_member_position, name='edit_chapter_member_position'),
+    path('chapter_member_positions/delete/<uuid:id>/', delete_chapter_member_position, name='delete_chapter_member_position'),
+]
+
+admin_chapter = [
+    path('chapter/', chapter_list, name='chapter_list'),
+    path('chapter/create/', chapter_create, name='chapter_create'),
+    path('chapter/<uuid:pk>/edit/', chapter_edit, name='chapter_edit'),
+    path('chapter/<uuid:pk>/delete/', chapter_delete, name='chapter_delete'),
+]
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -266,5 +301,10 @@ urlpatterns+=admin_state
 urlpatterns+=admin_city
 urlpatterns+=admin_region_position
 urlpatterns+=admin_region_member_position
+urlpatterns+=admin_chapter_name
+urlpatterns+=admin_chapter_position
+urlpatterns+=admin_chapter_member_position
+urlpatterns+=admin_chapter
+
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

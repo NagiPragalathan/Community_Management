@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Chapter</title>
+</head>
+<body>
+    <h1>Create New Chapter</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="chapter_name">Chapter Name:</label>
+        <input type="text" name="chapter_name" id="chapter_name" required>
+        <button type="submit">Create</button>
+    </form>
+    <a href="{% url 'chapter_list' %}">Back to List</a>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Chapter Member Position</title>
+</head>
+<body>
+    <h1>Create Chapter Member Position</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="user">User:</label>
+        <select name="user" id="user">
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="position">Position:</label>
+        <select name="position" id="position">
+            {% for position in positions %}
+                <option value="{{ position.id }}">{{ position.Chapterposition }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="chapter">Chapter:</label>
+        <select name="chapter" id="chapter">
+            {% for chapter in chapters %}
+                <option value="{{ chapter.id }}">{{ chapter.name }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Create</button>
+    </form>
+    <a href="{% url 'list_chapter_member_positions' %}">Back to List</a>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chapter List</title>
+</head>
+<body>
+    <h1>Chapters</h1>
+    <a href="{% url 'chapter_create' %}">Create New Chapter</a>
+    <ul>
+        {% for chapter in chapters %}
+            <li>
+                {{ chapter.chapter_name }} 
+                <a href="{% url 'chapter_edit' chapter.id %}">Edit</a> 
+                <a href="{% url 'chapter_delete' chapter.id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

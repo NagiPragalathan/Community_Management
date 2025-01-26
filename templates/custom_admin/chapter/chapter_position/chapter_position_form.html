@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if chapter_position %}Edit{% else %}Create{% endif %} Chapter Position</title>
+</head>
+<body>
+    <h1>{% if chapter_position %}Edit{% else %}Create{% endif %} Chapter Position</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="Chapterposition">Chapter Position:</label>
+        <input type="text" name="Chapterposition" id="Chapterposition" 
+               value="{{ chapter_position.Chapterposition|default:'' }}">
+        <br>
+        <label for="is_chapter">Is Chapter:</label>
+        <input type="checkbox" name="is_chapter" id="is_chapter" 
+               {% if chapter_position and chapter_position.is_chapter %}checked{% endif %}>
+        <br>
+        <button type="submit">Save</button>
+        <a href="{% url 'chapter_position_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chapter Member Positions</title>
+</head>
+<body>
+    <h1>Chapter Member Positions</h1>
+    <a href="{% url 'create_chapter_member_position' %}">Create New Chapter Member Position</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Position</th>
+                <th>Chapter</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cmp in chapter_member_positions %}
+                <tr>
+                    <td>{{ cmp.user }}</td>
+                    <td>{{ cmp.position }}</td>
+                    <td>{{ cmp.chapter }}</td>
+                    <td>
+                        <a href="{% url 'edit_chapter_member_position' cmp.id %}">Edit</a>
+                        <a href="{% url 'delete_chapter_member_position' cmp.id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

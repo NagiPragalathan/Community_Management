@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Chapter</title>
+</head>
+<body>
+    <h1>Delete Chapter</h1>
+    <p>Are you sure you want to delete "{{ chapter.chapter_name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+    <a href="{% url 'chapter_list' %}">Cancel</a>
+</body>
+</html>
