@@ -1,41 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Chapter Member Position</title>
-</head>
-<body>
-    <h1>Edit Chapter Member Position</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="user">User:</label>
-        <select name="user" id="user">
-            {% for user in users %}
-                <option value="{{ user.id }}" {% if user == chapter_member_position.user %}selected{% endif %}>
-                    {{ user.username }}
-                </option>
-            {% endfor %}
-        </select>
-        <br><br>
-        <label for="position">Position:</label>
-        <select name="position" id="position">
-            {% for position in positions %}
-                <option value="{{ position.id }}" {% if position == chapter_member_position.position %}selected{% endif %}>
-                    {{ position.Chapterposition }}
-                </option>
-            {% endfor %}
-        </select>
-        <br><br>
-        <label for="chapter">Chapter:</label>
-        <select name="chapter" id="chapter">
-            {% for chapter in chapters %}
-                <option value="{{ chapter.id }}" {% if chapter == chapter_member_position.chapter %}selected{% endif %}>
-                    {{ chapter.name }}
-                </option>
-            {% endfor %}
-        </select>
-        <br><br>
-        <button type="submit">Update</button>
-    </form>
-    <a href="{% url 'list_chapter_member_positions' %}">Back to List</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg">
+        <div class="px-8 py-6 border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900">Edit Chapter Member Position</h2>
+        </div>
+
+        <form method="POST" class="px-8 py-6 space-y-6">
+            {% csrf_token %}
+
+            <div class="space-y-4">
+                <div>
+                    <label for="user" class="block text-sm font-medium text-gray-700">User</label>
+                    <select id="user" name="user" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        {% for user in users %}
+                            <option value="{{ user.id }}" {% if user == chapter_member_position.user %}selected{% endif %}>
+                                {{ user.username }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
+                    <select id="position" name="position" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        {% for position in positions %}
+                            <option value="{{ position.id }}" {% if position == chapter_member_position.position %}selected{% endif %}>
+                                {{ position.Chapterposition }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="chapter" class="block text-sm font-medium text-gray-700">Chapter</label>
+                    <select id="chapter" name="chapter" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        {% for chapter in chapters %}
+                            <option value="{{ chapter.id }}" {% if chapter == chapter_member_position.chapter %}selected{% endif %}>
+                                {{ chapter.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-4 pt-6">
+                <a href="{% url 'list_chapter_member_positions' %}" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Back to List
+                </a>
+                <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

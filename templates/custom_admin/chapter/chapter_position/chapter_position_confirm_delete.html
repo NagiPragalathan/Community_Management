@@ -1,15 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Delete Chapter Position</title>
-</head>
-<body>
-    <h1>Delete Chapter Position</h1>
-    <p>Are you sure you want to delete "{{ chapter_position.Chapterposition }}"?</p>
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-        <a href="{% url 'chapter_position_list' %}">Cancel</a>
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center sm:py-12">
+    <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+        <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+            <div class="max-w-md mx-auto">
+                <div class="divide-y divide-gray-200">
+                    <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                        <h1 class="text-3xl font-bold text-blue-600 mb-8">Delete Chapter Position</h1>
+                        <p class="text-gray-600 mb-8">Are you sure you want to delete "{{ chapter_position.Chapterposition }}"?</p>
+                        <form method="POST" class="space-y-4">
+                            {% csrf_token %}
+                            <div class="flex items-center space-x-4">
+                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                                    Delete
+                                </button>
+                                <a href="{% url 'chapter_position_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
