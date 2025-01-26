@@ -33,6 +33,7 @@ from base.admin_views.chapter.chapter_name import *
 from base.admin_views.chapter.chapter_position import *
 from base.admin_views.chapter.chapter_member_positions import *
 from base.admin_views.chapter.chapter import *
+from base.admin_views.chapter.profile import *
 
 from django.contrib.auth.views import PasswordResetConfirmView
 
@@ -274,6 +275,17 @@ admin_chapter = [
     path('chapter/<uuid:pk>/delete/', chapter_delete, name='chapter_delete'),
 ]
 
+admin_profile = [
+    # URL for creating a new profile
+    path('profile/create/', profile_view, name='profile-create'),
+
+    # URL for editing an existing profile
+    path('profile/edit/<int:pk>/', profile_view, name='profile-edit'),
+
+    # Optional: URL for viewing a profile
+    path('profile/view/<int:pk>/', profile_view, name='profile-view'),
+]
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -305,6 +317,7 @@ urlpatterns+=admin_chapter_name
 urlpatterns+=admin_chapter_position
 urlpatterns+=admin_chapter_member_position
 urlpatterns+=admin_chapter
+urlpatterns+=admin_profile
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
