@@ -72,6 +72,14 @@ class MainProfile(models.Model):
     Chapter = models.ForeignKey('ChapterName', related_name='members', on_delete=models.SET_NULL, blank=True, null=True)
     my_business = models.TextField(blank=True, null=True)
     keywords = models.CharField(max_length=255, blank=True, null=True)
+    sponsor = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        unique=False,
+        related_name='mainprofile_sponsor'
+    )
 
     def __str__(self):
         return f"{self.title} {self.first_name} {self.last_name}"

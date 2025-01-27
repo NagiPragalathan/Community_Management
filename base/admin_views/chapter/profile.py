@@ -6,7 +6,7 @@ from datetime import datetime
 def profile_view(request, pk=None):
     profile = None
     if pk:
-        profile = get_object_or_404(MainProfile, pk=pk)
+        profile = get_object_or_404(MainProfile, user=pk)
 
     if request.method == "POST":
         data = request.POST
@@ -41,6 +41,11 @@ def profile_view(request, pk=None):
 
         profile.my_business = data.get("my_business")
         profile.keywords = data.get("keywords")
+
+        # Assign the sponsor field
+        sponsor_id = data.get("sponsor")
+        if sponsor_id:
+            profile.sponsor = User.objects.get(id=sponsor_id)
 
         profile.save()
         return redirect("profile-edit", pk=profile.pk)
