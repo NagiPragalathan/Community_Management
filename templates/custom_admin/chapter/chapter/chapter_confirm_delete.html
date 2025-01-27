@@ -1,17 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Confirm Delete</title>
-</head>
-<body>
-    <h1>Confirm Delete</h1>
-    <p>Are you sure you want to delete the chapter: <strong>{{ chapter.name.chapter_name }}</strong>?</p>
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit">Yes, Delete</button>
-        <a href="{% url 'chapter_list' %}">Cancel</a>
-    </form>
-</body>
-</html>
- 
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg">
+        <div class="px-6 py-8">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Confirm Delete</h2>
+                <div class="mb-6">
+                    <i class="ri-error-warning-line text-5xl text-red-500"></i>
+                </div>
+                <p class="text-gray-600 mb-6">
+                    Are you sure you want to delete the chapter: 
+                    <strong class="text-gray-900">{{ chapter.name.chapter_name }}</strong>?
+                </p>
+            </div>
+            
+            <form method="POST" class="mt-6 space-y-4">
+                {% csrf_token %}
+                <div class="flex justify-center space-x-4">
+                    <button type="submit" 
+                            class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors">
+                        Yes, Delete
+                    </button>
+                    <a href="{% url 'chapter_list' %}" 
+                       class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
