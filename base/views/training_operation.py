@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from base.models import Chapter, MainProfile, TrainingSession, TrainingSessionProfile
 from datetime import datetime
+from django.urls import reverse
+from urllib.parse import urlencode
 
 def chapter_profiles_view(request):
     # Get all chapters
@@ -99,4 +101,78 @@ def chapter_profiles_view(request):
         'selected_profiles_ids': selected_profiles_ids,
         'selected_dates': selected_dates,
         'training_sessions': training_sessions,
+    })
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from base.models import Chapter, MainProfile, TrainingSession, TrainingSessionProfile
+from datetime import datetime
+
+def edit_training_session_view(request):
+    # Fetch available training sessions and chapters
+    training_sessions = TrainingSession.objects.all()
+    chapters = Chapter.objects.all()
+
+    # Get selected values
+    selected_training_id = request.GET.get('training_session')
+    selected_date = request.GET.get('date')
+    selected_chapter_id = request.GET.get('chapter')
+
+    profiles = []
+    all_profiles = []
+
+    # Ensure we have selected a training session and date
+    if selected_training_id and selected_date:
+        training_session = get_object_or_404(TrainingSession, id=selected_training_id)
+        profiles = TrainingSessionProfile.objects.filter(training_session=training_session, selected_date=selected_date)
+
+        # Filter available profiles based on chapter
+        if selected_chapter_id:
+            selected_chapter = get_object_or_404(Chapter, id=selected_chapter_id)
+            all_profiles = MainProfile.objects.filter(Chapter=selected_chapter.name).exclude(
+                id__in=profiles.values_list('user__id', flat=True)
+            )
+        elif selected_chapter_id != None:
+            print(selected_chapter_id)
+            all_profiles = MainProfile.objects.exclude(id__in=profiles.values_list('user__id', flat=True))
+
+    if request.method == 'POST':
+        if 'add_profiles' in request.POST:
+            new_selected_profiles_ids = request.POST.getlist('selected_profiles')
+
+            for profile_id in new_selected_profiles_ids:
+                profile = get_object_or_404(MainProfile, id=profile_id)
+
+                # Prevent duplicate entries
+                if not TrainingSessionProfile.objects.filter(training_session=training_session, selected_date=selected_date, user=profile).exists():
+                    TrainingSessionProfile.objects.create(
+                        user=profile,
+                        training_session=training_session,
+                        selected_date=selected_date
+                    )
+
+        if 'delete_profile' in request.POST:
+            profile_id_to_remove = request.POST.get('delete_profile')
+            TrainingSessionProfile.objects.filter(id=profile_id_to_remove).delete()
+
+        if 'clear_all' in request.POST:
+            profiles.delete()
+
+        # After adding or deleting profiles, retain selected values
+        base_url = reverse('edit_training_session')
+        query_params = {
+            'training_session': selected_training_id,
+            'date': selected_date,
+            'chapter': selected_chapter_id
+        }
+        return redirect(f"{base_url}?{urlencode(query_params)}")
+
+    return render(request, 'training_sessions/edit_training_session.html', {
+        'training_sessions': training_sessions,
+        'chapters': chapters,
+        'selected_training_id': selected_training_id,
+        'selected_date': selected_date,
+        'selected_chapter_id': selected_chapter_id,
+        'profiles': profiles,
+        'all_profiles': all_profiles
     })

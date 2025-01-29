@@ -294,7 +294,9 @@ training_sessions = [
     path('training_sessions/edit/<uuid:pk>/', edit_training_session, name='edit_training_session'),
     path('training_sessions/delete/<uuid:pk>/', delete_training_session, name='delete_training_session'),
     
-    path('chapter-profiles/', chapter_profiles_view, name='chapter_profiles')
+    path('chapter-profiles/', chapter_profiles_view, name='chapter_profiles'),
+    path('edit_training_session/', edit_training_session_view, name='edit_training_session'),
+
 
 ]
 
