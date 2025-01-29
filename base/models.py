@@ -687,4 +687,11 @@ class TrainingSession(models.Model):
     def __str__(self):
         return f'{self.training_name} on {self.date}'
     
+class TrainingSessionProfile(models.Model):
+    user = models.ForeignKey(MainProfile, on_delete=models.CASCADE)
+    training_session = models.ForeignKey(TrainingSession, on_delete=models.CASCADE)
+    selected_date = models.DateField()
+    updated_date = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name} - {self.training_session.training_name} on {self.selected_date}'

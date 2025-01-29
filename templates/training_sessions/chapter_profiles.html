@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Profiles</title>
+    <style>
+        table {
+            margin: 10px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <h1>View Chapter Profiles</h1>
+
+    <!-- Form for selecting a chapter -->
+    <form method="POST">
+        {% csrf_token %}
+        <label for="chapter">Select a Chapter:</label>
+        <select name="chapter" id="chapter">
+            <option value="">--Select Chapter--</option>
+            {% for chapter in chapters %}
+                <option value="{{ chapter.id }}" {% if chapter.id == request.POST.chapter %}selected{% endif %}>{{ chapter.name.chapter_name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Show Profiles</button>
+    </form>
+
+    <!-- Container for the two tables -->
+    <div class="container">
+        <!-- Left Table for available profiles -->
+        <div>
+            <h2>Profiles in Selected Chapter</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="chapter" value="{{ request.POST.chapter }}">
+                <table id="profilesTable" border="1">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Title</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for profile in profiles %}
+                            <tr>
+                                <td><input type="checkbox" name="selected_profiles" value="{{ profile.id }}" class="profile-checkbox" {% if profile.id in selected_profiles_ids %}checked{% endif %}></td>
+                                <td>{{ profile.title }}</td>
+                                <td>{{ profile.first_name }} {{ profile.last_name }}</td>
+                                <td>{{ profile.user.email }}</td>
+                                <td>{{ profile.company_name }}</td>
+                                <td>{{ profile.membership_status }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="submit" name="add_profiles">Add Selected</button>
+            </form>
+        </div>
+
+        <!-- Right Table for selected profiles -->
+        <div>
+            <h2>Selected Profiles</h2>
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Date input for all profiles (at the top of the table) -->
+                <label for="date_all">Set Date for All Profiles:</label>
+                <input type="date" name="date_all" value="{{ selected_dates|default:'' }}">
+
+                <!-- Training Session Dropdown -->
+                <label for="training_session">Select Training Session:</label>
+                <select name="training_session" id="training_session">
+                    <option value="">--Select Training--</option>
+                    {% for session in training_sessions %}
+                        <option value="{{ session.id }}">{{ session.training_name }} on {{ session.date }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit" name="update_dates">Update Dates</button>
+                <button type="submit" name="clear_all">Clear All</button>
+                
+                <table id="selectedProfilesTable" border="1">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Company</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for profile in selected_profiles %}
+                            <tr>
+                                <td>{{ profile.title }}</td>
+                                <td>{{ profile.first_name }} {{ profile.last_name }}</td>
+                                <td>{{ profile.user.email }}</td>
+                                <td>{{ profile.company_name }}</td>
+                                <td>{{ profile.membership_status }}</td>
+                                <td>
+                                    <!-- Clear button for each row -->
+                                    <button type="submit" name="clear_profile" value="{{ profile.id }}">Clear</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

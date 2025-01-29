@@ -15,6 +15,7 @@ from base.views.chat import *
 from base.views.Testimonials import *
 from base.views.GroupCURD import *
 from base.views.AccountSettings import *
+from base.views.training_operation import *
 from base.views.tyfcb import *
 from base.views.referrals import *
 from base.views.onetoone import *
@@ -292,6 +293,9 @@ training_sessions = [
     path('training_sessions/create/', create_training_session, name='create_training_session'),
     path('training_sessions/edit/<uuid:pk>/', edit_training_session, name='edit_training_session'),
     path('training_sessions/delete/<uuid:pk>/', delete_training_session, name='delete_training_session'),
+    
+    path('chapter-profiles/', chapter_profiles_view, name='chapter_profiles')
+
 ]
 
 urlpatterns.extend(auth)
