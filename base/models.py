@@ -683,7 +683,8 @@ class TrainingSession(models.Model):
     training_name = models.CharField(max_length=255)
     date = models.DateField()
     chapter = models.ForeignKey(Chapter, related_name='training_sessions', on_delete=models.CASCADE)
-    attendees = models.ManyToManyField(User, related_name='training_sessions', blank=True)
 
     def __str__(self):
         return f'{self.training_name} on {self.date}'
+    
+

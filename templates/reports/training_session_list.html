@@ -28,7 +28,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ session.id }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ session.training_name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ session.date }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ session.chapter.name if session.chapter else "All Chapters" }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
                                 <td class="px-6 py-4 text-sm text-gray-500">
                                     {% for attendee in session.attendees.all %}
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">

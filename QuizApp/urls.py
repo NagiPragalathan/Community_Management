@@ -23,6 +23,7 @@ from base.views.weeklyslips import *
 from base.views.operations import *
 from base.views.reports import *
 from base.views.contact import *
+from base.views.training import *
 from base.admin_views.region.region import *
 from base.admin_views.region.country_data import *
 from base.admin_views.region.state_data import *
@@ -195,7 +196,7 @@ goals = [
 ]
 
 reports_url = [
-    path('training_sessions/',training_session_list, name='training_session_list'),
+    # path('training_sessions/',training_session_list, name='training_session_list'),
     path('add_training_session/',add_training_session, name='add_training_session'),
     path('get_chapter_users/',get_chapter_users, name='get_chapter_users'),
 ]
@@ -286,6 +287,13 @@ admin_profile = [
     path('profile/view/<int:pk>/', profile_view, name='profile-view'),
 ]
 
+training_sessions = [
+    path('training_sessions/', list_training_sessions, name='list_training_sessions'),
+    path('training_sessions/create/', create_training_session, name='create_training_session'),
+    path('training_sessions/edit/<uuid:pk>/', edit_training_session, name='edit_training_session'),
+    path('training_sessions/delete/<uuid:pk>/', delete_training_session, name='delete_training_session'),
+]
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -318,6 +326,7 @@ urlpatterns+=admin_chapter_position
 urlpatterns+=admin_chapter_member_position
 urlpatterns+=admin_chapter
 urlpatterns+=admin_profile
+urlpatterns+=training_sessions
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

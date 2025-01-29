@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Sessions</title>
+</head>
+<body>
+    <h1>Training Sessions</h1>
+    <a href="{% url 'create_training_session' %}">Create New Training Session</a>
+    <ul>
+        {% for session in sessions %}
+            <li>
+                {{ session.training_name }} on {{ session.date }} 
+                (Chapter: {{ session.chapter }})
+                <a href="{% url 'edit_training_session' session.id %}">Edit</a>
+                <a href="{% url 'delete_training_session' session.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
