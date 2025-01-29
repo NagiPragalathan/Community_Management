@@ -70,6 +70,9 @@
         </table>
 
         <button type="submit" name="clear_all" onclick="return confirm('Are you sure you want to clear all profiles?');">Clear All</button>
+
+        <!-- Save Changes Button -->
+        <button type="submit" name="save_changes">Save Changes</button>
     </form>
     {% else %}
         <p>No profiles found for the selected training session and date.</p>
@@ -91,6 +94,7 @@
                 </option>
             {% endfor %}
         </select>
+        
 
         <button type="submit">Filter Profiles</button>
     </form>

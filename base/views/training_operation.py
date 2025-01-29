@@ -105,8 +105,9 @@ def chapter_profiles_view(request):
 
 
 from django.shortcuts import render, redirect, get_object_or_404
-from base.models import Chapter, MainProfile, TrainingSession, TrainingSessionProfile
-from datetime import datetime
+from django.urls import reverse
+from urllib.parse import urlencode
+from base.models import TrainingSession, Chapter, MainProfile, TrainingSessionProfile
 
 def edit_training_session_view(request):
     # Fetch available training sessions and chapters
@@ -117,6 +118,10 @@ def edit_training_session_view(request):
     selected_training_id = request.GET.get('training_session')
     selected_date = request.GET.get('date')
     selected_chapter_id = request.GET.get('chapter')
+
+    # Convert 'None' string to actual None value
+    if selected_chapter_id == 'None':
+        selected_chapter_id = None
 
     profiles = []
     all_profiles = []
@@ -133,7 +138,6 @@ def edit_training_session_view(request):
                 id__in=profiles.values_list('user__id', flat=True)
             )
         elif selected_chapter_id != None:
-            print(selected_chapter_id)
             all_profiles = MainProfile.objects.exclude(id__in=profiles.values_list('user__id', flat=True))
 
     if request.method == 'POST':
@@ -158,14 +162,15 @@ def edit_training_session_view(request):
         if 'clear_all' in request.POST:
             profiles.delete()
 
-        # After adding or deleting profiles, retain selected values
-        base_url = reverse('edit_training_session')
-        query_params = {
-            'training_session': selected_training_id,
-            'date': selected_date,
-            'chapter': selected_chapter_id
-        }
-        return redirect(f"{base_url}?{urlencode(query_params)}")
+        if 'save_changes' in request.POST:  # Save the changes
+            # After saving the changes, you can redirect or stay on the page
+            base_url = reverse('edit_training_session')
+            query_params = {
+                'training_session': selected_training_id,
+                'date': selected_date,
+                'chapter': selected_chapter_id if selected_chapter_id else ''
+            }
+            return redirect(f"{base_url}?{urlencode(query_params)}")
 
     return render(request, 'training_sessions/edit_training_session.html', {
         'training_sessions': training_sessions,
