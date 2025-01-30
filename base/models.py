@@ -695,3 +695,15 @@ class TrainingSessionProfile(models.Model):
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name} - {self.training_session.training_name} on {self.selected_date}'
+
+
+class PAS(models.Model):
+    user = models.ForeignKey(MainProfile, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    date = models.DateField()
+    present = models.BooleanField(default=False)
+    absent = models.BooleanField(default=False)
+    updated_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username} - {self.chapter.name.chapter_name} - {self.date}'

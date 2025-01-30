@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Members</title>
+</head>
+<body>
+
+    <h1>Select a Chapter and Manage Attendance</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Chapter Dropdown -->
+        <label for="chapter">Select Chapter: </label>
+        <select name="chapter" id="chapter">
+            <option value="">-- Choose a chapter --</option>
+            {% for chapter in chapters %}
+                <option value="{{ chapter.id }}" {% if chapter.id == selected_chapter.id %}selected{% endif %}>{{ chapter.name.chapter_name }}</option>
+            {% endfor %}
+        </select>
+        <label for="date">Select Date: </label>
+        <input type="date" name="date" id="date" value="{{ selected_date|default:'' }}" required>
+        <button type="submit">Submit</button>
+           
+        <br><br>
+        
+        
+    </form>
+
+    {% if selected_chapter %}
+        <h2>Members in {{ selected_chapter.name.chapter_name }} on {{ selected_date }}</h2>
+
+        <form method="POST" action="{% url 'update_attendance' %}" id="attendance-form">
+            {% csrf_token %}
+            <input type="hidden" name="chapter_id" value="{{ selected_chapter.id }}"> 
+                    <label for="date">Select Date: </label>
+        <input type="date" name="date" id="date" value="{{ selected_date|default:'' }}" readonly required>
+            
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Attendance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in members %}
+                        <tr>
+                            <td>{{ member.first_name }}</td>
+                            <td>{{ member.last_name }}</td>
+                            <td>{{ member.user.email }}</td>
+                            <td>
+                                <input type="radio" name="attendance_{{ member.id }}" value="present" {% if member.attendance_records.present %}checked{% endif %} /> Present
+                                <input type="radio" name="attendance_{{ member.id }}" value="absent" {% if member.attendance_records.absent %}checked{% endif %} /> Absent
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit">Submit Attendance</button>
+        </form>
+
+    {% endif %}
+
+</body>
+</html>

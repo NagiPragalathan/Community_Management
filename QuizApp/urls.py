@@ -15,6 +15,7 @@ from base.views.chat import *
 from base.views.Testimonials import *
 from base.views.GroupCURD import *
 from base.views.AccountSettings import *
+from base.views.pas import *
 from base.views.training_operation import *
 from base.views.tyfcb import *
 from base.views.referrals import *
@@ -44,7 +45,7 @@ urlpatterns = []
 
 
 common = [
-    path('dashboard', dashboard, name='dashboard'),
+    path('dashboard/', dashboard, name='dashboard'),
     path('chart_dashboard', chart_dashboard, name='chart_dashboard'),
     path('', index, name='index'),
     path('add_city', add_city, name="add_city")
@@ -296,8 +297,11 @@ training_sessions = [
     
     path('chapter-profiles/', chapter_profiles_view, name='chapter_profiles'),
     path('edit_training_session/', edit_training_session_view, name='edit_training_session'),
+]
 
-
+pas = urlpatterns = [
+    path('chapter-members/', chapter_members, name='chapter_members'),
+    path('update-attendance/', update_attendance, name='update_attendance'),
 ]
 
 urlpatterns.extend(auth)
