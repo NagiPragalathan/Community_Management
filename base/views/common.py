@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
-from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile, ChapterEducationUnit, TYFCB, ReferralSlip
+from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile, ChapterEducationUnit, TYFCB, ReferralSlip, Visitor
 from base.form.forms import CityDataForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -88,6 +88,10 @@ def dashboard(request):
     Rgiven_percentage = (Rgiven_last_12_months_count / Rgiven_lifetime_count * 100) if Rgiven_lifetime_count > 0 else 0
     Rreceived_percentage = (Rreceived_last_12_months_count / Rreceived_lifetime_count * 100) if Rreceived_lifetime_count > 0 else 0
     
+    visitor_count = Visitor.objects.filter(user=user).count()
+    visitor_last_12_months_count = Visitor.objects.filter(user=user, date__gte=one_year_ago).count()
+    visitor_percentage = (visitor_last_12_months_count / visitor_count * 100) if visitor_count > 0 else 0
+    
     context = {
         'group_count': group_count,
         'connection_count': connection_count,
@@ -115,6 +119,10 @@ def dashboard(request):
         'Rreceived_lifetime_count': Rreceived_lifetime_count,
         'Rreceived_last_12_months_count': Rreceived_last_12_months_count,
         'Rreceived_percentage': Rreceived_percentage,
+        
+        'visitor_count': visitor_count,
+        'visitor_last_12_months_count': visitor_last_12_months_count,
+        'visitor_percentage': visitor_percentage,
         
     }
     return render(request, 'dashboard.html', context)

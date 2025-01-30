@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-blue-900 mb-8 text-center">Chapter Performance Report</h1>
+
+        <!-- Report Generation Form -->
+        <div class="bg-white shadow-lg rounded-lg p-8 mb-8 border border-gray-200">
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div>
+                        <label for="from_date" class="block text-sm font-medium text-gray-700 mb-2">From Date:</label>
+                        <input type="date" id="from_date" name="from_date" value="{{ selected_from_date }}"
+                            class="mt-1 block w-full rounded-md border-2 border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white" required>
+                    </div>
+                    <div>
+                        <label for="to_date" class="block text-sm font-medium text-gray-700 mb-2">To Date:</label>
+                        <input type="date" id="to_date" name="to_date" value="{{ selected_to_date }}"
+                            class="mt-1 block w-full rounded-md border-2 border-gray-300 px-4 py-2.5 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white" required>
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full transition duration-150 ease-in-out">
+                            Generate Report
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% if chapter_data %}
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Chapter Name</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">One-to-One Meetings</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">CEU</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Visitors</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">TYFCB</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">TYFCB Received</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">TYFCB Given</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Referrals Received</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Referrals Given</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for data in chapter_data %}
+                        <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ data.chapter_name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ data.one_to_one_count }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ data.ceu_count }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ data.visitor_count }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ data.tyfcb_count }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ data.tyfcb_received_count }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ data.tyfcb_given_count }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ data.referral_received_count }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ data.referral_given_count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="bg-white shadow-lg rounded-lg p-8 text-center border border-gray-200">
+            <p class="text-gray-500 italic">No data available for the selected date range.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

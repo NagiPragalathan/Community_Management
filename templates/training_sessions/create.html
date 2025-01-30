@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white shadow-lg rounded-lg border border-gray-200">
+            <div class="border-b border-gray-200 px-8 py-6">
+                <h1 class="text-2xl font-semibold text-gray-900">Create New Training Session</h1>
+                <p class="mt-2 text-sm text-gray-600">Please fill in the training session details below.</p>
+            </div>
+
+            <form method="POST" class="px-8 py-6">
+                {% csrf_token %}
+                
+                <div class="space-y-6">
+                    <div>
+                        <label for="training_name" class="block text-sm font-medium text-gray-700">Training Name</label>
+                        <input type="text" id="training_name" name="training_name" required
+                            class="mt-2 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-gray-700">Session Date</label>
+                        <input type="date" id="date" name="date" required
+                            class="mt-2 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+
+                    <div>
+                        <label for="chapter" class="block text-sm font-medium text-gray-700">Select Chapter</label>
+                        <select name="chapter" id="chapter" required
+                            class="mt-2 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <option value="">Choose a chapter</option>
+                            {% for chapter in chapters %}
+                                <option value="{{ chapter.id }}">{{ chapter.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between">
+                    <a href="{% url 'list_training_sessions' %}" 
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        <i class="ri-arrow-left-line mr-2"></i>
+                        Back to List
+                    </a>
+                    
+                    <button type="submit"
+                        class="inline-flex items-center px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="ri-save-line mr-2"></i>
+                        Create Session
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

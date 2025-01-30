@@ -656,7 +656,8 @@ class Visitor(models.Model):
     post_code = models.CharField(max_length=20, blank=True, null=True)
     category = models.CharField(max_length=50)
     visitor_type = models.CharField(max_length=20)
-
+    date = models.DateField(default=timezone.now)
+    
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
@@ -683,7 +684,27 @@ class TrainingSession(models.Model):
     training_name = models.CharField(max_length=255)
     date = models.DateField()
     chapter = models.ForeignKey(Chapter, related_name='training_sessions', on_delete=models.CASCADE)
-    attendees = models.ManyToManyField(User, related_name='training_sessions', blank=True)
 
     def __str__(self):
         return f'{self.training_name} on {self.date}'
+    
+class TrainingSessionProfile(models.Model):
+    user = models.ForeignKey(MainProfile, on_delete=models.CASCADE)
+    training_session = models.ForeignKey(TrainingSession, on_delete=models.CASCADE)
+    selected_date = models.DateField()
+    updated_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name} - {self.training_session.training_name} on {self.selected_date}'
+
+
+class PAS(models.Model):
+    user = models.ForeignKey(MainProfile, on_delete=models.CASCADE)
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
+    date = models.DateField()
+    present = models.BooleanField(default=False)
+    absent = models.BooleanField(default=False)
+    updated_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username} - {self.chapter.name.chapter_name} - {self.date}'
