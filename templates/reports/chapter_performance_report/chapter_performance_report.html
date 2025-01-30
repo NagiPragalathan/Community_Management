@@ -1,0 +1,59 @@
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Chapter Performance Report</h2>
+
+    <!-- Form to select date range -->
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <label for="from_date" class="form-label">From Date:</label>
+                <input type="date" id="from_date" name="from_date" class="form-control" value="{{ selected_from_date }}" required>
+            </div>
+            <div class="col-md-4">
+                <label for="to_date" class="form-label">To Date:</label>
+                <input type="date" id="to_date" name="to_date" class="form-control" value="{{ selected_to_date }}" required>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Generate Report</button>
+            </div>
+        </div>
+    </form>
+
+    {% if chapter_data %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Chapter Name</th>
+                    <th>One-to-One Meetings</th>
+                    <th>CEU</th>
+                    <th>Visitors</th>
+                    <th>TYFCB</th>
+                    <th>TYFCB Received</th>
+                    <th>TYFCB Given</th>
+                    <th>Referrals Received</th>
+                    <th>Referrals Given</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in chapter_data %}
+                <tr>
+                    <td>{{ data.chapter_name }}</td>
+                    <td>{{ data.one_to_one_count }}</td>
+                    <td>{{ data.ceu_count }}</td>
+                    <td>{{ data.visitor_count }}</td>
+                    <td>{{ data.tyfcb_count }}</td>
+                    <td>{{ data.tyfcb_received_count }}</td>
+                    <td>{{ data.tyfcb_given_count }}</td>
+                    <td>{{ data.referral_received_count }}</td>
+                    <td>{{ data.referral_given_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center mt-4">No data available for the selected date range.</p>
+    {% endif %}
+</div>

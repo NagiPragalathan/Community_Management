@@ -38,6 +38,10 @@ from base.admin_views.chapter.chapter_member_positions import *
 from base.admin_views.chapter.chapter import *
 from base.admin_views.chapter.profile import *
 
+from base.views.reports_collection.chapter_meeting_report import *
+from base.views.reports_collection.member_performance_report import *
+from base.views.reports_collection.chapter_performance_report import *
+
 from django.contrib.auth.views import PasswordResetConfirmView
 
 urlpatterns = []
@@ -304,6 +308,18 @@ pas = urlpatterns = [
     path('update-attendance/', update_attendance, name='update_attendance'),
 ]
 
+member_performance_report_url = [
+    path('member-performance-report/', member_performance_report, name='member_performance_report'),
+]
+
+chapter_meeting_report_url = [
+    path('chapter-meeting-report/', chapter_meeting_report, name='chapter_meeting_report'),
+]
+
+chapter_performance_report_url = [
+    path('chapter-performance-report/', chapter_performance_report, name='chapter_performance_report'),
+]
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -338,5 +354,9 @@ urlpatterns+=admin_chapter
 urlpatterns+=admin_profile
 urlpatterns+=training_sessions
 
+# reports
+urlpatterns+=member_performance_report_url
+urlpatterns+=chapter_meeting_report_url
+urlpatterns+=chapter_performance_report_url
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

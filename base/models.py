@@ -656,7 +656,8 @@ class Visitor(models.Model):
     post_code = models.CharField(max_length=20, blank=True, null=True)
     category = models.CharField(max_length=50)
     visitor_type = models.CharField(max_length=20)
-
+    date = models.DateField(default=timezone.now)
+    
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
