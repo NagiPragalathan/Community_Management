@@ -50,6 +50,7 @@ from django.contrib.auth.views import PasswordResetConfirmView
 urlpatterns = []
 
 common = [
+    path('admin/', admin.site.urls, name='django_admin'),
     path('dashboard/', dashboard, name='dashboard'),
     path('chart_dashboard', chart_dashboard, name='chart_dashboard'),
     path('', index, name='index'),
@@ -60,15 +61,6 @@ external_url = [
     path('select2/', include('django_select2.urls')),
 ]
 
-
-admin_ = [
-    path('admin/', admin.site.urls, name='admin'),
-]
-
-admin_ += i18n_patterns(
-    path('admin/', admin.site.urls),
-    path('i18n/', include('django.conf.urls.i18n')),
-)
 
 auth = [
     path('accounts/', include('django.contrib.auth.urls')),  # Use built-in authentication views
@@ -286,12 +278,10 @@ admin_chapter = [
 admin_profile = [
     # URL for creating a new profile
     path('profile/create/', profile_view, name='profile-create'),
-
+    path('profile/list/', profile_list_view, name='profile-list'),
     # URL for editing an existing profile
     path('profile/edit/<int:pk>/', profile_view, name='profile-edit'),
 
-    # Optional: URL for viewing a profile
-    path('profile/view/<int:pk>/', profile_view, name='profile-view'),
 ]
 
 training_sessions = [
@@ -335,7 +325,6 @@ training_sessions_report_url = [
 
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
-urlpatterns.extend(admin_)
 urlpatterns.extend(group)
 urlpatterns.extend(common)
 urlpatterns.extend(profile)

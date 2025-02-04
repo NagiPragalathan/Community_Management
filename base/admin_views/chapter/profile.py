@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
-from base.models import MainProfile, ChapterName
+from base.models import MainProfile, ChapterName, Region, Chapter
+from django.db.models import Q
 from datetime import datetime
 
 def profile_view(request, pk=None):
@@ -58,4 +59,36 @@ def profile_view(request, pk=None):
         "profile": profile,
         "users": users,
         "chapters": chapters,
+    })
+
+def profile_list_view(request):
+    profiles = MainProfile.objects.all()  # Default: get all profiles
+    chapters = ChapterName.objects.all()
+    regions = Region.objects.all()
+    chapters = Chapter.objects.all()
+
+    chapter_filter = request.GET.get('chapter', None)
+    region_filter = request.GET.get('region', None)
+    search_query = request.GET.get('search', '').strip()
+
+    if chapter_filter:
+        profiles = profiles.filter(Chapter__id=chapter_filter)
+    
+    if region_filter:
+        profiles = profiles.filter(Chapter__region__id=region_filter)  # Filter by region via Chapter
+    
+    if search_query:
+        profiles = profiles.filter(
+            Q(display_name__icontains=search_query) |
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query)
+        )
+
+    return render(request, "custom_admin/chapter/profile/profile_list.html", {
+        "profiles": profiles,
+        "chapters": chapters,
+        "regions": regions,
+        "search_query": search_query,
+        "chapter_filter": chapter_filter,
+        "region_filter": region_filter,
     })

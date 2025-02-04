@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Training Session</title>
-</head>
-<body>
-    <h1>Create New Training Session</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="training_name">Training Name:</label>
-        <input type="text" id="training_name" name="training_name" required>
-        <br>
-        <label for="date">Date:</label>
-        <input type="date" id="date" name="date" required>
-        <br>
-        <button type="submit">Create</button>
-    </form>
-    <a href="{% url 'list_training_sessions' %}">Back to list</a>
-</body>
-</html>
-=======
 {% extends 'base.html' %}
 
 {% block content %}
@@ -48,17 +24,6 @@
                         <input type="date" id="date" name="date" required
                             class="mt-2 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
-
-                    <div>
-                        <label for="chapter" class="block text-sm font-medium text-gray-700">Select Chapter</label>
-                        <select name="chapter" id="chapter" required
-                            class="mt-2 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <option value="">Choose a chapter</option>
-                            {% for chapter in chapters %}
-                                <option value="{{ chapter.id }}">{{ chapter.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
                 </div>
 
                 <div class="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between">
@@ -79,4 +44,3 @@
     </div>
 </div>
 {% endblock %}
->>>>>>> 7326ebc90f55ebbab1c9954672758cda51e27194
