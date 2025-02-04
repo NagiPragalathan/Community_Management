@@ -1,127 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter Profiles</title>
-    <style>
-        table {
-            margin: 10px;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            border: 1px solid #ddd;
-        }
-        .container {
-            display: flex;
-            justify-content: space-between;
-        }
-    </style>
-</head>
-<body>
-    <h1>View Chapter Profiles</h1>
+{% extends 'base.html' %}
 
-    <!-- Form for selecting a chapter -->
-    <form method="POST">
-        {% csrf_token %}
-        <label for="chapter">Select a Chapter:</label>
-        <select name="chapter" id="chapter">
-            <option value="">--Select Chapter--</option>
-            {% for chapter in chapters %}
-                <option value="{{ chapter.id }}" {% if chapter.id == request.POST.chapter %}selected{% endif %}>{{ chapter.name.chapter_name }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Show Profiles</button>
-    </form>
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-blue-900 mb-8">View Chapter Profiles</h1>
 
-    <!-- Container for the two tables -->
-    <div class="container">
-        <!-- Left Table for available profiles -->
-        <div>
-            <h2>Profiles in Selected Chapter</h2>
-            <form method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="chapter" value="{{ request.POST.chapter }}">
-                <table id="profilesTable" border="1">
-                    <thead>
-                        <tr>
-                            <th>Select</th>
-                            <th>Title</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Company</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for profile in profiles %}
-                            <tr>
-                                <td><input type="checkbox" name="selected_profiles" value="{{ profile.id }}" class="profile-checkbox" {% if profile.id in selected_profiles_ids %}checked{% endif %}></td>
-                                <td>{{ profile.title }}</td>
-                                <td>{{ profile.first_name }} {{ profile.last_name }}</td>
-                                <td>{{ profile.user.email }}</td>
-                                <td>{{ profile.company_name }}</td>
-                                <td>{{ profile.membership_status }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <button type="submit" name="add_profiles">Add Selected</button>
-            </form>
-        </div>
-
-        <!-- Right Table for selected profiles -->
-        <div>
-            <h2>Selected Profiles</h2>
-            <form method="POST">
-                {% csrf_token %}
-
-                <!-- Date input for all profiles (at the top of the table) -->
-                <label for="date_all">Set Date for All Profiles:</label>
-                <input type="date" name="date_all" value="{{ selected_dates|default:'' }}">
-
-                <!-- Training Session Dropdown -->
-                <label for="training_session">Select Training Session:</label>
-                <select name="training_session" id="training_session">
-                    <option value="">--Select Training--</option>
-                    {% for session in training_sessions %}
-                        <option value="{{ session.id }}">{{ session.training_name }} on {{ session.date }}</option>
+        <!-- Form for selecting a chapter -->
+        <form method="POST" class="mb-8">
+            {% csrf_token %}
+            <div class="flex items-center gap-4">
+                <label for="chapter" class="block text-sm font-medium text-blue-900">Select a Chapter:</label>
+                <select name="chapter" id="chapter" class="mt-1 block w-64 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <option value="">--Select Chapter--</option>
+                    {% for chapter in chapters %}
+                        <option value="{{ chapter.id }}" {% if chapter.id == request.POST.chapter %}selected{% endif %}>{{ chapter.name.chapter_name }}</option>
                     {% endfor %}
                 </select>
-                
-                <button type="submit" name="update_dates">Update Dates</button>
-                <button type="submit" name="clear_all">Clear All</button>
-                
-                <table id="selectedProfilesTable" border="1">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Company</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for profile in selected_profiles %}
-                            <tr>
-                                <td>{{ profile.title }}</td>
-                                <td>{{ profile.first_name }} {{ profile.last_name }}</td>
-                                <td>{{ profile.user.email }}</td>
-                                <td>{{ profile.company_name }}</td>
-                                <td>{{ profile.membership_status }}</td>
-                                <td>
-                                    <!-- Clear button for each row -->
-                                    <button type="submit" name="clear_profile" value="{{ profile.id }}">Clear</button>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </form>
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Show Profiles
+                </button>
+            </div>
+        </form>
+
+        <!-- Container for the two tables -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left Table for available profiles -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-blue-900 mb-4">Profiles in Selected Chapter</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="chapter" value="{{ request.POST.chapter }}">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-blue-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Select</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Title</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Email</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Company</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                {% for profile in profiles %}
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <input type="checkbox" name="selected_profiles" value="{{ profile.id }}" class="profile-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" {% if profile.id in selected_profiles_ids %}checked{% endif %}>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.title }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.first_name }} {{ profile.last_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.user.email }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.company_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.membership_status }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" name="add_profiles" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Add Selected
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Table for selected profiles -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-blue-900 mb-4">Selected Profiles</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="space-y-4 mb-4">
+                        <div class="flex items-center gap-4">
+                            <label for="date_all" class="block text-sm font-medium text-blue-900">Set Date for All Profiles:</label>
+                            <input type="date" name="date_all" value="{{ selected_dates|default:'' }}" class="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <label for="training_session" class="block text-sm font-medium text-blue-900">Select Training Session:</label>
+                            <select name="training_session" id="training_session" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">--Select Training--</option>
+                                {% for session in training_sessions %}
+                                    <option value="{{ session.id }}">{{ session.training_name }} on {{ session.date }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <button type="submit" name="update_dates" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Update Dates
+                            </button>
+                            <button type="submit" name="clear_all" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-blue-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Clear All
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-blue-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Title</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Email</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Company</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                {% for profile in selected_profiles %}
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.title }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.first_name }} {{ profile.last_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.user.email }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.company_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ profile.membership_status }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button type="submit" name="clear_profile" value="{{ profile.id }}" class="text-blue-600 hover:text-blue-900">Clear</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
