@@ -41,12 +41,13 @@ from base.admin_views.chapter.profile import *
 from base.views.reports_collection.chapter_meeting_report import *
 from base.views.reports_collection.member_performance_report import *
 from base.views.reports_collection.chapter_performance_report import *
+from base.views.reports_collection.region_performance_report import *
+from base.views.reports_collection.chapter_roster_report import *
+from base.views.reports_collection.training_sessions_report import *
 
 from django.contrib.auth.views import PasswordResetConfirmView
 
 urlpatterns = []
-
-
 
 common = [
     path('dashboard/', dashboard, name='dashboard'),
@@ -203,8 +204,8 @@ goals = [
 
 reports_url = [
     # path('training_sessions/',training_session_list, name='training_session_list'),
-    path('add_training_session/',add_training_session, name='add_training_session'),
-    path('get_chapter_users/',get_chapter_users, name='get_chapter_users'),
+    # path('add_training_session/',add_training_session, name='add_training_session'),
+    # path('get_chapter_users/',get_chapter_users, name='get_chapter_users'),
 ]
 
 # start custom admin
@@ -233,7 +234,7 @@ admin_state = [
 admin_city = [
     path('cities/', city_list, name='city_list'),
     path('cities/create/', city_create, name='city_create'),
-    path('cities/edit/<uuid:city_id>/', city_edit, name='city_edit'),
+    path('cities/edit/<uuid:city_id>/', city_edit, name='city_edit'),  
     path('cities/delete/<uuid:city_id>/', city_delete, name='city_delete'),
 ]
 
@@ -303,7 +304,7 @@ training_sessions = [
     path('edit_training_session/', edit_training_session_view, name='edit_training_session'),
 ]
 
-pas = urlpatterns = [
+pas = [
     path('chapter-members/', chapter_members, name='chapter_members'),
     path('update-attendance/', update_attendance, name='update_attendance'),
 ]
@@ -320,6 +321,18 @@ chapter_performance_report_url = [
     path('chapter-performance-report/', chapter_performance_report, name='chapter_performance_report'),
 ]
 
+region_performance_report_url = [
+    path('region-performance-report/', region_performance_report, name='region_performance_report'),
+]
+
+chapter_roster_report_url = [
+    path('chapter-roster-report/', chapter_roster_report, name='chapter_roster_report'),
+]
+
+training_sessions_report_url = [
+    path('training-sessions-report/', training_sessions_report, name='training_sessions_report'),
+]
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(admin_)
@@ -334,6 +347,7 @@ urlpatterns.extend(referrals)
 urlpatterns.extend(onetoone)
 urlpatterns.extend(weeklyslips)
 urlpatterns+=ceu
+urlpatterns+=pas
 urlpatterns+=external_url
 urlpatterns+=group_chat
 urlpatterns+=visitor
@@ -358,5 +372,9 @@ urlpatterns+=training_sessions
 urlpatterns+=member_performance_report_url
 urlpatterns+=chapter_meeting_report_url
 urlpatterns+=chapter_performance_report_url
+urlpatterns+=region_performance_report_url
+urlpatterns+=chapter_roster_report_url
+urlpatterns+=training_sessions_report_url
+
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,48 +1,30 @@
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Chapter Performance Report</h2>
+    <h2 class="text-center mb-4">Region Performance Report</h2>
 
-    <!-- Form to select date range and region -->
+    <!-- Form to select date range -->
     <form method="POST" class="mb-4">
         {% csrf_token %}
         <div class="row">
-            <!-- Region selection -->
-            <div class="col-md-4">
-                <label for="region" class="form-label">Select Region:</label>
-                <select id="region" name="region" class="form-control" required>
-                    <option value="">Select a Region</option>
-                    {% for region in regions %}
-                        <option value="{{ region.id }}" {% if region.id == selected_region %}selected{% endif %}>
-                            {{ region.region_name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <!-- From Date -->
             <div class="col-md-4">
                 <label for="from_date" class="form-label">From Date:</label>
                 <input type="date" id="from_date" name="from_date" class="form-control" value="{{ selected_from_date }}" required>
             </div>
-
-            <!-- To Date -->
             <div class="col-md-4">
                 <label for="to_date" class="form-label">To Date:</label>
                 <input type="date" id="to_date" name="to_date" class="form-control" value="{{ selected_to_date }}" required>
             </div>
-
-            <!-- Submit Button -->
             <div class="col-md-4 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-100">Generate Report</button>
             </div>
         </div>
     </form>
 
-    {% if chapter_data %}
+    {% if region_data %}
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th>Chapter Name</th>
+                    <th>Region Name</th>
                     <th>One-to-One Meetings</th>
                     <th>CEU</th>
                     <th>Visitors</th>
@@ -54,9 +36,9 @@
                 </tr>
             </thead>
             <tbody>
-                {% for data in chapter_data %}
+                {% for data in region_data %}
                 <tr>
-                    <td>{{ data.chapter_name }}</td>
+                    <td>{{ data.region_name }}</td>
                     <td>{{ data.one_to_one_count }}</td>
                     <td>{{ data.ceu_count }}</td>
                     <td>{{ data.visitor_count }}</td>
@@ -71,6 +53,6 @@
         </table>
     </div>
     {% else %}
-    <p class="text-center mt-4">No data available for the selected date range and region.</p>
+    <p class="text-center mt-4">No data available for the selected date range.</p>
     {% endif %}
 </div>

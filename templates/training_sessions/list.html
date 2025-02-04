@@ -11,8 +11,7 @@
     <ul>
         {% for session in sessions %}
             <li>
-                {{ session.training_name }} on {{ session.date }} 
-                (Chapter: {{ session.chapter }})
+                {{ session.training_name }} on {{ session.date }}
                 <a href="{% url 'edit_training_session' session.id %}">Edit</a>
                 <a href="{% url 'delete_training_session' session.id %}" onclick="return confirm('Are you sure?')">Delete</a>
             </li>

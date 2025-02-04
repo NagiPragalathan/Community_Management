@@ -3,134 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Training Session Profiles</title>
-    <style>
-        table {
-            margin: 10px;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            border: 1px solid #ddd;
-        }
-    </style>
+    <title>Edit Training Session</title>
 </head>
 <body>
-    <h1>Edit Training Session Profiles</h1>
-
-    <!-- Form to select training session and date -->
-    <form method="GET">
-        <label for="training_session">Select Training Session:</label>
-        <select name="training_session" id="training_session">
-            <option value="">--Select Training--</option>
-            {% for session in training_sessions %}
-                <option value="{{ session.id }}" {% if session.id|stringformat:"s" == selected_training_id %}selected{% endif %}>
-                    {{ session.training_name }} on {{ session.date }}
-                </option>
-            {% endfor %}
-        </select>
-
-        <label for="date">Select Date:</label>
-        <input type="date" name="date" value="{{ selected_date }}">
-
-        <button type="submit">Filter Profiles</button>
-    </form>
-
-    {% if profiles %}
-    <h2>Profiles in Selected Training Session</h2>
-
+    <h1>Edit Training Session</h1>
     <form method="POST">
         {% csrf_token %}
-        
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Company</th>
-                    <th>Membership Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entry in profiles %}
-                    <tr>
-                        <td>{{ entry.user.title }}</td>
-                        <td>{{ entry.user.first_name }} {{ entry.user.last_name }}</td>
-                        <td>{{ entry.user.user.email }}</td>
-                        <td>{{ entry.user.company_name }}</td>
-                        <td>{{ entry.user.membership_status }}</td>
-                        <td>
-                            <button type="submit" name="delete_profile" value="{{ entry.id }}" onclick="return confirm('Remove this profile?');">Remove</button>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <button type="submit" name="clear_all" onclick="return confirm('Are you sure you want to clear all profiles?');">Clear All</button>
-
-        <!-- Save Changes Button -->
-        <button type="submit" name="save_changes">Save Changes</button>
+        <label for="training_name">Training Name:</label>
+        <input type="text" id="training_name" name="training_name" value="{{ session.training_name }}" required>
+        <br>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" value="{{ session.date }}" required>
+        <br>
+        <button type="submit">Save Changes</button>
     </form>
-    {% else %}
-        <p>No profiles found for the selected training session and date.</p>
-    {% endif %}
-
-    <h2>Add More Profiles to Training Session</h2>
-    
-    <!-- Form to select chapter to filter profiles -->
-    <form method="GET">
-        <input type="hidden" name="training_session" value="{{ selected_training_id }}">
-        <input type="hidden" name="date" value="{{ selected_date }}">
-
-        <label for="chapter">Select Chapter:</label>
-        <select name="chapter" id="chapter">
-            <option value="">--Select Chapter--</option>
-            {% for chapter in chapters %}
-                <option value="{{ chapter.id }}" {% if chapter.id|stringformat:"s" == selected_chapter_id %}selected{% endif %}>
-                    {{ chapter.name.chapter_name }}
-                </option>
-            {% endfor %}
-        </select>
-        
-
-        <button type="submit">Filter Profiles</button>
-    </form>
-
-    {% if all_profiles %}
-    <form method="POST">
-        {% csrf_token %}
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Select</th>
-                    <th>Title</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Company</th>
-                    <th>Membership Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for profile in all_profiles %}
-                    <tr>
-                        <td><input type="checkbox" name="selected_profiles" value="{{ profile.id }}"></td>
-                        <td>{{ profile.title }}</td>
-                        <td>{{ profile.first_name }} {{ profile.last_name }}</td>
-                        <td>{{ profile.user.email }}</td>
-                        <td>{{ profile.company_name }}</td>
-                        <td>{{ profile.membership_status }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <button type="submit" name="add_profiles">Add Selected</button>
-    </form>
-    {% else %}
-        <p>No profiles available for the selected chapter.</p>
-    {% endif %}
+    <a href="{% url 'list_training_sessions' %}">Back to list</a>
 </body>
 </html>

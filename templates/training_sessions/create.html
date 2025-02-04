@@ -15,13 +15,6 @@
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required>
         <br>
-        <label for="chapter">Chapter:</label>
-        <select name="chapter" id="chapter" required>
-            {% for chapter in chapters %}
-                <option value="{{ chapter.id }}">{{ chapter.name }}</option>
-            {% endfor %}
-        </select>
-        <br>
         <button type="submit">Create</button>
     </form>
     <a href="{% url 'list_training_sessions' %}">Back to list</a>

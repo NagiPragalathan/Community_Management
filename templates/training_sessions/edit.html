@@ -13,19 +13,10 @@
         <input type="text" id="training_name" name="training_name" value="{{ session.training_name }}" required>
         <br>
         <label for="date">Date:</label>
-        <input type="date" id="date" name="date" value="{{ session.date }}" required>
+        <input type="date" id="date" name="date" value="{{ session.date|date:'Y-m-d' }}" required>
         <br>
-        <label for="chapter">Chapter:</label>
-        <select name="chapter" id="chapter" required>
-            {% for chapter in chapters %}
-                <option value="{{ chapter.id }}" {% if chapter.id == session.chapter.id %}selected{% endif %}>
-                    {{ chapter.name }}
-                </option>
-            {% endfor %}
-        </select>
-        <br>
-        <button type="submit">Save</button>
+        <button type="submit">Save Changes</button>
     </form>
-    <a href="{% url 'training_sessions:list' %}">Back to list</a>
+    <a href="{% url 'list_training_sessions' %}">Back to list</a>
 </body>
 </html>
