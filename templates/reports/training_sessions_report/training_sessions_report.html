@@ -1,0 +1,70 @@
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Training Sessions Report</h2>
+
+    <!-- Form to select filters -->
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <label for="from_date" class="form-label">From Date:</label>
+                <input type="date" id="from_date" name="from_date" class="form-control" value="{{ selected_from_date }}">
+            </div>
+            <div class="col-md-4">
+                <label for="to_date" class="form-label">To Date:</label>
+                <input type="date" id="to_date" name="to_date" class="form-control" value="{{ selected_to_date }}">
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <label for="training_types" class="form-label">Select Training Types:</label>
+                <select id="training_types" name="training_types" class="form-select" multiple>
+                    {% for session in training_sessions %}
+                        <option value="{{ session.training_name }}" {% if session.training_name in selected_training_types %}selected{% endif %}>
+                            {{ session.training_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Show Members</button>
+            </div>
+        </div>
+    </form>
+
+    {% if members_data %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Member Name</th>
+                    <th>Event Date</th>
+                    <th>Event Type</th>
+                    <th>Role</th>
+                    <th>Join Date</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members_data %}
+                <tr>
+                    <td>{{ member.member_name }}</td>
+                    <td>{{ member.event_date }}</td>
+                    <td>{{ member.event_type }}</td>
+                    <td>{{ member.role }}</td>
+                    <td>{{ member.join_date }}</td>
+                    <td>{{ member.phone }}</td>
+                    <td>{{ member.email }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center mt-4">No data available for the selected filters.</p>
+    {% endif %}
+</div>

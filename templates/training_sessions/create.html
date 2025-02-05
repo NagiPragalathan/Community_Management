@@ -24,17 +24,6 @@
                         <input type="date" id="date" name="date" required
                             class="mt-2 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
-
-                    <div>
-                        <label for="chapter" class="block text-sm font-medium text-gray-700">Select Chapter</label>
-                        <select name="chapter" id="chapter" required
-                            class="mt-2 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                            <option value="">Choose a chapter</option>
-                            {% for chapter in chapters %}
-                                <option value="{{ chapter.id }}">{{ chapter.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
                 </div>
 
                 <div class="mt-8 pt-6 border-t border-gray-200 flex items-center justify-between">

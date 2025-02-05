@@ -30,8 +30,6 @@ class ChapterName(models.Model):
     def __str__(self):
         return self.chapter_name
 
-
-
 class MainProfile(models.Model):
     TITLE_CHOICES = [
         ('Mr.', 'Mr.'),
@@ -80,6 +78,12 @@ class MainProfile(models.Model):
         unique=False,
         related_name='mainprofile_sponsor'
     )
+    joining_date = models.DateField(blank=True, null=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.id:  # if the instance is being created
+            self.joining_date = timezone.now().date()  # Assign current date to joining_date
+        super(MainProfile, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.title} {self.first_name} {self.last_name}"
@@ -683,7 +687,7 @@ class TrainingSession(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     training_name = models.CharField(max_length=255)
     date = models.DateField()
-    chapter = models.ForeignKey(Chapter, related_name='training_sessions', on_delete=models.CASCADE)
+    last_updated_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.training_name} on {self.date}'
