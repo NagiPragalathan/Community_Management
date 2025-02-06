@@ -32,6 +32,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no root@147.93.102.113 << 'EOF'
           cd /var/www/Community_Management  # Navigate to your Django project directory
+          fuser -k 8000/tcp
           python3 -m venv venv
           source venv/bin/activate
           git pull origin main  # Pull the latest code from GitHub
