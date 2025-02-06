@@ -32,12 +32,24 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no root@147.93.102.113 << 'EOF'
           cd /var/www/Community_Management  # Navigate to your Django project directory
-          fuser -k 8000/tcp
+          
+          # Kill any process using port 8000 (development server port)
+          fuser -k 8000/tcp || true  # Ignore error if port isn't in use
+
+          # Set up virtual environment
           python3 -m venv venv
-          source venv/bin/activate
-          git pull origin main  # Pull the latest code from GitHub
-          source venv/bin/activate  # Activate your virtual environment (if you use one)
-          pip install -r requirements.txt  # Install dependencies
-          python manage.py migrate  # Run database migrations
-          nohup python manage.py runserver 0.0.0.0:8000 &  # Run the Django dev server in the background
+          source venv/bin/activate  # Activate virtual environment
+
+          # Pull the latest code from GitHub
+          git pull origin main
+
+          # Install the dependencies from the updated code
+          pip install -r requirements.txt
+
+          # Run database migrations
+          python manage.py migrate
+
+          # Run the Django development server in the background (not recommended for production)
+          nohup python manage.py runserver 0.0.0.0:8000 &
+
         EOF
