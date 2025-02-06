@@ -1,5 +1,5 @@
 ## Group
-- create group = admin..!
+- create group = admin..!  
 - group = Participants, Group Details, Chat
 
 ## Chapter
