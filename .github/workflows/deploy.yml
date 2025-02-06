@@ -50,6 +50,6 @@ jobs:
           python manage.py migrate
 
           # Run the Django development server in the background (not recommended for production)
-          nohup python manage.py runserver 0.0.0.0:8000 &
+          nohup python manage.py runserver 0.0.0.0:8000 > server.log 2>&1 &
 
         EOF
