@@ -33,8 +33,8 @@ jobs:
         ssh -o StrictHostKeyChecking=no root@147.93.102.113 << 'EOF'
           cd /var/www/Community_Management  # Navigate to your Django project directory
           
-          # Kill any process using port 8000 (development server port)
-          fuser -k 8000/tcp || true  # Ignore error if port isn't in use
+          # Kill any process using port 443 (development server port)
+          fuser -k 443/tcp || true  # Ignore error if port isn't in use
 
           # Set up virtual environment
           python3 -m venv venv
@@ -50,6 +50,6 @@ jobs:
           python manage.py migrate
 
           # Run the Django development server in the background (not recommended for production)
-          nohup python manage.py runserver 0.0.0.0:8000 > server.log 2>&1 &
+          nohup python manage.py runserver 0.0.0.0:443 > server.log 2>&1 &
 
         EOF
