@@ -36,14 +36,6 @@
                     <tr>
                         <th class="group px-6 py-3 text-left">
                             <div class="flex items-center gap-2">
-                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</span>
-                                <svg class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
-                                </svg>
-                            </div>
-                        </th>
-                        <th class="group px-6 py-3 text-left">
-                            <div class="flex items-center gap-2">
                                 <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">User</span>
                                 <svg class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
@@ -72,7 +64,6 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     {% for position in positions %}
                     <tr class="hover:bg-gray-50 transition-colors duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ position.id }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ position.user }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">

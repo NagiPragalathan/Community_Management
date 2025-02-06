@@ -18,7 +18,7 @@ def state_create(request):
 
 def state_edit(request, state_id):
     state = get_object_or_404(StateData, id=state_id)
-    countries = CountryData.objects.all()  # Provide countries for potential reassignment
+    countries = CountryData.objects.all()  # Provide countries for potential reassignment   
     if request.method == "POST":
         state_name = request.POST.get('state_name')
         country_id = request.POST.get('country_id')

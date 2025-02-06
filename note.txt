@@ -81,3 +81,4 @@ Chapter Performance report = sum of peoples
 
 
 
+before creating profile select the chapter and region

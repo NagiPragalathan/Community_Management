@@ -6,6 +6,8 @@ from base.models import Region, StateData, CountryData, CityData, RegionMemberPo
 # List all Regions
 def region_list(request):
     regions = Region.objects.all()  # Fetch all regions from the database
+    for i in regions:
+        print(i.region_name, i.state.state_name, i.country.country_name, i.city.city_name)
     return render(
         request,
         "custom_admin/region/region/region_list.html",  # Replace with your actual template

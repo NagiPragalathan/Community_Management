@@ -281,7 +281,6 @@ admin_profile = [
     path('profile/list/', profile_list_view, name='profile-list'),
     # URL for editing an existing profile
     path('profile/edit/<int:pk>/', profile_view, name='profile-edit'),
-
 ]
 
 training_sessions = [

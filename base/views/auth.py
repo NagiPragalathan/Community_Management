@@ -144,11 +144,15 @@ def user_login(request):
         print(user)
         if user is not None:
             login(request, user)
+            if user.is_staff:
+                return redirect('profile-list')
             return redirect('dashboard')
         else:
             return HttpResponse("Invalid login credentials")
     else:
         if request.user.is_authenticated:
+            if request.user.is_staff:
+                return redirect('profile-list')
             return redirect('dashboard')
         return render(request, 'auth/login.html')
 

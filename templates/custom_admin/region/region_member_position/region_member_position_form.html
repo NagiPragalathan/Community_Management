@@ -24,7 +24,7 @@
                                 <option></option>
                                 {% for user in users %}
                                 <option value="{{ user.id }}" {% if position and position.user.id == user.id %}selected{% endif %}>
-                                    {{ user.first_name }} {{ user.last_name }} ({{ user.email }})
+                                    {{ user.username }}
                                 </option>
                                 {% endfor %}
                             </select>

@@ -5,6 +5,13 @@ from django.utils import timezone
 from datetime import datetime
 
 
+def is_admin_user(user):
+    """
+    Check if the user is a superuser or has staff permissions
+    """
+    return user.is_superuser or user.is_staff
+
+
 def member_performance_report(request):
     chapters = Chapter.objects.all()
     selected_chapter = None
@@ -70,5 +77,6 @@ def member_performance_report(request):
         'selected_chapter': selected_chapter,
         'members': members,
         'selected_from_date': selected_from_date,
-        'selected_to_date': selected_to_date
+        'selected_to_date': selected_to_date,
+        'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html' 
     })
