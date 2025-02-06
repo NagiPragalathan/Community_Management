@@ -1,35 +1,120 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Region Member Positions</title>
-</head>
-<body>
-    <h1>Region Member Positions</h1>
-    <a href="{% url 'region_member_position_create' %}">Create New</a>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Position</th>
-                <th>Region</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for position in positions %}
-            <tr>
-                <td>{{ position.id }}</td>
-                <td>{{ position.user }}</td>
-                <td>{{ position.position }}</td>
-                <td>{{ position.region }}</td>
-                <td>
-                    <a href="{% url 'region_member_position_edit' position.id %}">Edit</a>
-                    <a href="{% url 'region_member_position_delete' position.id %}">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'admin_base.html' %}
+
+{% block content %}
+    <div class="bg-white rounded-lg shadow-lg p-6 m-10">
+        <!-- Header Section -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Region Member Positions</h1>
+                <p class="text-sm text-gray-600 mt-1">Manage positions and assignments</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Search Box -->
+                <div class="relative">
+                    <input type="text" 
+                           placeholder="Search positions..." 
+                           class="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <!-- Create Button -->
+                <a href="{% url 'region_member_position_create' %}" 
+                   class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg inline-flex items-center transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    Create New
+                </a>
+            </div>
+        </div>
+        
+        <!-- Table Section -->
+        <div class="overflow-x-auto rounded-lg border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="group px-6 py-3 text-left">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">ID</span>
+                                <svg class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                            </div>
+                        </th>
+                        <th class="group px-6 py-3 text-left">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">User</span>
+                                <svg class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                            </div>
+                        </th>
+                        <th class="group px-6 py-3 text-left">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Position</span>
+                                <svg class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                            </div>
+                        </th>
+                        <th class="group px-6 py-3 text-left">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Region</span>
+                                <svg class="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                </svg>
+                            </div>
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for position in positions %}
+                    <tr class="hover:bg-gray-50 transition-colors duration-150">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ position.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ position.user }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                {{ position.position }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ position.region }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div class="flex items-center gap-3">
+                                <a href="{% url 'region_member_position_edit' position.id %}" 
+                                   class="text-indigo-600 hover:text-indigo-900 inline-flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                    Edit
+                                </a>
+                                <a href="{% url 'region_member_position_delete' position.id %}" 
+                                   class="text-red-600 hover:text-red-900 inline-flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Section -->
+        <div class="mt-4 flex items-center justify-between">
+            <div class="text-sm text-gray-700">
+                Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium">20</span> results
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="px-3 py-1 border rounded-md hover:bg-gray-50">Previous</button>
+                <button class="px-3 py-1 border rounded-md bg-blue-500 text-white hover:bg-blue-600">1</button>
+                <button class="px-3 py-1 border rounded-md hover:bg-gray-50">2</button>
+                <button class="px-3 py-1 border rounded-md hover:bg-gray-50">Next</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

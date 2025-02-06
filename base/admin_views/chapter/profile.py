@@ -63,20 +63,46 @@ def profile_view(request, pk=None):
 
 def profile_list_view(request):
     profiles = MainProfile.objects.all()  # Default: get all profiles
-    chapters = ChapterName.objects.all()
-    regions = Region.objects.all()
     chapters = Chapter.objects.all()
+    regions = Region.objects.all()
+    chapter_names = ChapterName.objects.all()
 
     chapter_filter = request.GET.get('chapter', None)
     region_filter = request.GET.get('region', None)
     search_query = request.GET.get('search', '').strip()
 
+    # Apply chapter filter (manual filtering)
     if chapter_filter:
-        profiles = profiles.filter(Chapter__id=chapter_filter)
+        temp = []
+        for i in profiles:
+            try:
+                if str(i.Chapter.id) == str(chapter_filter):  # Comparing chapter id
+                    temp.append(i)
+            except Exception as e:
+                print(f"Error while filtering chapter: {e}")
+        profiles = temp
     
+    # Apply region filter (filter by the region of the chapter, manual filtering)
     if region_filter:
-        profiles = profiles.filter(Chapter__region__id=region_filter)  # Filter by region via Chapter
-    
+        temp = []
+        for profile in profiles:
+            # Check if the chapter's region matches the selected region_filter
+            try:
+                chapter_name = ChapterName.objects.get(id=profile.Chapter.id)
+                chapter = Chapter.objects.filter(name=chapter_name)
+                for i in chapter:
+                    if str(i.region.id) == str(region_filter):
+                        temp.append(profile)
+                        break
+            except Exception as e:
+                try:
+                    print(profile.Chapter.chapter_name)
+                    print(ChapterName.objects.get(id=profile.Chapter.id).chapter_name)
+                except Exception as e:
+                    print(f"Error while filtering region: {e}", profile)
+        profiles = temp
+
+    # Apply search query filter (Django ORM way)
     if search_query:
         profiles = profiles.filter(
             Q(display_name__icontains=search_query) |
@@ -84,9 +110,11 @@ def profile_list_view(request):
             Q(last_name__icontains=search_query)
         )
 
+    # Render the filtered profiles
     return render(request, "custom_admin/chapter/profile/profile_list.html", {
         "profiles": profiles,
         "chapters": chapters,
+        "chapter_names": chapter_names,
         "regions": regions,
         "search_query": search_query,
         "chapter_filter": chapter_filter,
