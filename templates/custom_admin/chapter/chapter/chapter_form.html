@@ -1,96 +1,103 @@
 {% extends 'admin_base.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg">
-        <div class="px-8 py-6 border-b border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-900">
-                {% if chapter %}Edit Chapter{% else %}Create Chapter{% endif %}
-            </h2>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl border-2 border-indigo-100 overflow-hidden transform transition-all hover:scale-[1.01] duration-300">
+            <div class="px-8 py-6 border-b-2 border-indigo-100 bg-gradient-to-r from-white to-indigo-50">
+                <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                    {% if chapter %}Edit{% else %}Create{% endif %} Chapter
+                </h2>
+                <p class="mt-2 text-sm text-gray-500">Enter the details for the chapter</p>
+            </div>
+
+            <form method="POST" class="px-8 py-8 space-y-8">
+                {% csrf_token %}
+
+                <div class="space-y-6">
+                    <!-- Name Dropdown -->
+                    <div class="space-y-2">
+                        <label for="name" class="block text-sm font-semibold text-gray-700">Chapter Name</label>
+                        <select id="name" name="name" required
+                            class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                            {% for name in names %}
+                                <option value="{{ name.id }}" {% if chapter and chapter.name.id == name.id %}selected{% endif %}>{{ name.chapter_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Region Dropdown -->
+                    <div class="space-y-2">
+                        <label for="region" class="block text-sm font-semibold text-gray-700">Region</label>
+                        <select id="region" name="region" required
+                            class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                            {% for region in regions %}
+                                <option value="{{ region.id }}" {% if chapter and chapter.region.id == region.id %}selected{% endif %}>{{ region.region_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Country & City Grid -->
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div class="space-y-2">
+                            <label for="country" class="block text-sm font-semibold text-gray-700">Country</label>
+                            <select id="country" name="country" required
+                                class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                                {% for country in countries %}
+                                    <option value="{{ country.id }}" {% if chapter and chapter.country.id == country.id %}selected{% endif %}>{{ country.country_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="city" class="block text-sm font-semibold text-gray-700">City</label>
+                            <select id="city" name="city" required
+                                class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                                {% for city in cities %}
+                                    <option value="{{ city.id }}" {% if chapter and chapter.city.id == city.id %}selected{% endif %}>{{ city.city_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Type & Day Grid -->
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div class="space-y-2">
+                            <label for="type" class="block text-sm font-semibold text-gray-700">Meeting Type</label>
+                            <select id="type" name="type" required
+                                class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                                <option value="online" {% if chapter and chapter.type == "online" %}selected{% endif %}>Online</option>
+                                <option value="offline" {% if chapter and chapter.type == "offline" %}selected{% endif %}>Offline</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="day" class="block text-sm font-semibold text-gray-700">Meeting Day</label>
+                            <select id="day" name="day" required
+                                class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                                <option value="Monday" {% if chapter and chapter.day == "Monday" %}selected{% endif %}>Monday</option>
+                                <option value="Tuesday" {% if chapter and chapter.day == "Tuesday" %}selected{% endif %}>Tuesday</option>
+                                <option value="Wednesday" {% if chapter and chapter.day == "Wednesday" %}selected{% endif %}>Wednesday</option>
+                                <option value="Thursday" {% if chapter and chapter.day == "Thursday" %}selected{% endif %}>Thursday</option>
+                                <option value="Friday" {% if chapter and chapter.day == "Friday" %}selected{% endif %}>Friday</option>
+                                <option value="Saturday" {% if chapter and chapter.day == "Saturday" %}selected{% endif %}>Saturday</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4 pt-8 border-t-2 border-indigo-50">
+                    <a href="{% url 'chapter_list' %}" 
+                       class="px-6 py-3 border-2 border-gray-200 rounded-xl shadow-sm text-sm font-medium text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                        Back to List
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-3 border-2 border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all duration-200 hover:scale-[1.02]">
+                        {% if chapter %}Update{% else %}Create{% endif %} Chapter
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <form method="POST" class="px-8 py-6 space-y-6">
-            {% csrf_token %}
-
-            <div class="space-y-6">
-                <!-- Name Dropdown -->
-                <div>
-                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-1">Name</label>
-                    <select id="name" name="name" required
-                        class="mt-1 px-4 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base">
-                        {% for name in names %}
-                            <option value="{{ name.id }}" {% if chapter and chapter.name.id == name.id %}selected{% endif %}>{{ name.chapter_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Region Dropdown -->
-                <div>
-                    <label for="region" class="block text-sm font-semibold text-gray-700 mb-1">Region</label>
-                    <select id="region" name="region" required
-                        class="mt-1 px-4 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base">
-                        {% for region in regions %}
-                            <option value="{{ region.id }}" {% if chapter and chapter.region.id == region.id %}selected{% endif %}>{{ region.region_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Country Dropdown -->
-                <div>
-                    <label for="country" class="block text-sm font-semibold text-gray-700 mb-1">Country</label>
-                    <select id="country" name="country" required
-                        class="mt-1 px-4 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base">
-                        {% for country in countries %}
-                            <option value="{{ country.id }}" {% if chapter and chapter.country.id == country.id %}selected{% endif %}>{{ country.country_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- City Dropdown -->
-                <div>
-                    <label for="city" class="block text-sm font-semibold text-gray-700 mb-1">City</label>
-                    <select id="city" name="city" required
-                        class="mt-1 px-4 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base">
-                        {% for city in cities %}
-                            <option value="{{ city.id }}" {% if chapter and chapter.city.id == city.id %}selected{% endif %}>{{ city.city_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Type Dropdown (Online / Offline) -->
-                <div>
-                    <label for="type" class="block text-sm font-semibold text-gray-700 mb-1">Type</label>
-                    <select id="type" name="type" required
-                        class="mt-1 px-4 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base">
-                        <option value="online" {% if chapter and chapter.type == "online" %}selected{% endif %}>Online</option>
-                        <option value="offline" {% if chapter and chapter.type == "offline" %}selected{% endif %}>Offline</option>
-                    </select>
-                </div>
-
-                <!-- Day Dropdown (Days of the week) -->
-                <div>
-                    <label for="day" class="block text-sm font-semibold text-gray-700 mb-1">Day</label>
-                    <select id="day" name="day" required
-                        class="mt-1 px-4 py-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base">
-                        <option value="Monday" {% if chapter and chapter.day == "Monday" %}selected{% endif %}>Monday</option>
-                        <option value="Tuesday" {% if chapter and chapter.day == "Tuesday" %}selected{% endif %}>Tuesday</option>
-                        <option value="Wednesday" {% if chapter and chapter.day == "Wednesday" %}selected{% endif %}>Wednesday</option>
-                        <option value="Thursday" {% if chapter and chapter.day == "Thursday" %}selected{% endif %}>Thursday</option>
-                        <option value="Friday" {% if chapter and chapter.day == "Friday" %}selected{% endif %}>Friday</option>
-                        <option value="Saturday" {% if chapter and chapter.day == "Saturday" %}selected{% endif %}>Saturday</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-4 pt-8">
-                <a href="{% url 'chapter_list' %}" class="px-6 py-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Cancel
-                </a>
-                <button type="submit" class="px-6 py-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    {% if chapter %}Update{% else %}Create{% endif %}
-                </button>
-            </div>
-        </form>
     </div>
 </div>
 {% endblock %}
