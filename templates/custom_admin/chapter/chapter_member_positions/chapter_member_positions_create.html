@@ -1,58 +1,66 @@
 {% extends 'admin_base.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg">
-        <div class="px-8 py-6 border-b border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-900">Create Chapter Member Position</h2>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl border-2 border-indigo-100 overflow-hidden transform transition-all hover:scale-[1.01] duration-300">
+            <div class="px-8 py-6 border-b-2 border-indigo-100 bg-gradient-to-r from-white to-indigo-50">
+                <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                    Create Chapter Member Position
+                </h2>
+                <p class="mt-2 text-sm text-gray-500">Assign a new position to a chapter member</p>
+            </div>
+
+            <form method="POST" class="px-8 py-8 space-y-8">
+                {% csrf_token %}
+
+                <div class="space-y-6">
+                    <div class="space-y-2">
+                        <label for="user" class="block text-sm font-semibold text-gray-700">Select User</label>
+                        <select id="user" name="user" required 
+                                class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                            <option value="">Choose a user...</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="position" class="block text-sm font-semibold text-gray-700">Select Position</label>
+                        <select id="position" name="position" required
+                                class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                            <option value="">Choose a position...</option>
+                            {% for position in positions %}
+                                <option value="{{ position.id }}">{{ position.Chapterposition }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="chapter" class="block text-sm font-semibold text-gray-700">Select Chapter</label>
+                        <select id="chapter" name="chapter" required
+                                class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
+                            <option value="">Choose a chapter...</option>
+                            {% for chapter in chapters %}
+                                <option value="{{ chapter.id }}">{{ chapter.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4 pt-8 border-t-2 border-indigo-50">
+                    <a href="{% url 'list_chapter_member_positions' %}" 
+                       class="px-6 py-3 border-2 border-gray-200 rounded-xl shadow-sm text-sm font-medium text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                        Back to List
+                    </a>
+                    <button type="submit" 
+                            class="px-6 py-3 border-2 border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all duration-200 hover:scale-[1.02]">
+                        Create Position
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <form method="POST" class="px-8 py-6 space-y-6">
-            {% csrf_token %}
-
-            <div class="space-y-4">
-                <div>
-                    <label for="user" class="block text-sm font-medium text-gray-700">User</label>
-                    <select id="user" name="user" required class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="">Select a User</option>
-                        {% for user in users %}
-                            <option value="{{ user.id }}">{{ user.username }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div>
-                    <label for="position" class="block text-sm font-medium text-gray-700">Position</label>
-                    <select id="position" name="position" required class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="">Select a Position</option>
-                        {% for position in positions %}
-                            <option value="{{ position.id }}">{{ position.Chapterposition }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div>
-                    <label for="chapter" class="block text-sm font-medium text-gray-700">Chapter</label>
-                    <select id="chapter" name="chapter" required class="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="">Select a Chapter</option>
-                        {% for chapter in chapters %}
-                            <option value="{{ chapter.id }}">{{ chapter.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-4 pt-6">
-                <a href="{% url 'list_chapter_member_positions' %}" 
-                   class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Cancel
-                </a>
-                <button type="submit" 
-                        class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Create Position
-                </button>
-            </div>
-        </form>
     </div>
 </div>
 {% endblock %}
