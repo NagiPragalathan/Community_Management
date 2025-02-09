@@ -1,60 +1,85 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold text-center mb-6">Profile Management</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Add Profile -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="p-6">
-                <h2 class="text-lg font-semibold text-blue-600">Add Profile</h2>
-                <p class="text-gray-600">Start by creating your user profile.</p>
-                <a href="{% url 'add_profile' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Add Profile</a>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-white p-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-t-2xl">
+                <h1 class="text-3xl font-extrabold text-white tracking-tight text-center">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
+                        Profile Management
+                    </span>
+                </h1>
             </div>
-        </div>
 
-        <!-- Add Contact Details -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="p-6">
-                <h2 class="text-lg font-semibold text-blue-600">Add Contact Details</h2>
-                <p class="text-gray-600">Update your contact information here.</p>
-                <a href="{% url 'add_contact_details' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Add Contact Details</a>
-            </div>
-        </div>
+            <div class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Add Profile -->
+                    <div class="bg-white rounded-xl shadow-md border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Add Profile</h2>
+                            <p class="text-gray-600 mb-6">Start by creating your user profile with personal details and preferences.</p>
+                            <a href="{% url 'add_profile' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                                Create Profile
+                            </a>
+                        </div>
+                    </div>
 
-        <!-- Edit User Profile -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="p-6">
-                <h2 class="text-lg font-semibold text-blue-600">Edit User Profile</h2>
-                <p class="text-gray-600">Modify your personal profile details.</p>
-                <a href="{% url 'add_edit_user_profile' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Edit Profile</a>
-            </div>
-        </div>
+                    <!-- Add Contact Details -->
+                    <div class="bg-white rounded-xl shadow-md border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Contact Details</h2>
+                            <p class="text-gray-600 mb-6">Add or update your contact information and communication preferences.</p>
+                            <a href="{% url 'add_contact_details' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                                Manage Contacts
+                            </a>
+                        </div>
+                    </div>
 
-        <!-- Edit Address -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="p-6">
-                <h2 class="text-lg font-semibold text-blue-600">Edit Address</h2>
-                <p class="text-gray-600">Change your current address details.</p>
-                <a href="{% url 'add_or_edit_address' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Edit Address</a>
-            </div>
-        </div>
+                    <!-- Edit User Profile -->
+                    <div class="bg-white rounded-xl shadow-md border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">User Profile</h2>
+                            <p class="text-gray-600 mb-6">Customize your profile settings and personal information.</p>
+                            <a href="{% url 'add_edit_user_profile' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                                Edit Profile
+                            </a>
+                        </div>
+                    </div>
 
-        <!-- Edit Bio -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="p-6">
-                <h2 class="text-lg font-semibold text-blue-600">Edit Bio</h2>
-                <p class="text-gray-600">Update your biography for your profile.</p>
-                <a href="{% url 'add_or_edit_bio' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Edit Bio</a>
-            </div>
-        </div>
+                    <!-- Edit Address -->
+                    <div class="bg-white rounded-xl shadow-md border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Address Details</h2>
+                            <p class="text-gray-600 mb-6">Manage your shipping and billing address information.</p>
+                            <a href="{% url 'add_or_edit_address' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                                Update Address
+                            </a>
+                        </div>
+                    </div>
 
-        <!-- Add Gallery -->
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div class="p-6">
-                <h2 class="text-lg font-semibold text-blue-600">Add Gallery</h2>
-                <p class="text-gray-600">Upload images to your profile gallery.</p>
-                <a href="{% url 'add_gallery' %}" class="mt-4 block bg-blue-500 text-center text-white py-2 rounded hover:bg-blue-700 transition duration-300">Add Gallery</a>
+                    <!-- Edit Bio -->
+                    <div class="bg-white rounded-xl shadow-md border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Biography</h2>
+                            <p class="text-gray-600 mb-6">Share your story and professional background with others.</p>
+                            <a href="{% url 'add_or_edit_bio' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                                Edit Biography
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Add Gallery -->
+                    <div class="bg-white rounded-xl shadow-md border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Photo Gallery</h2>
+                            <p class="text-gray-600 mb-6">Create and manage your personal photo collection.</p>
+                            <a href="{% url 'add_gallery' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                                Manage Gallery
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
