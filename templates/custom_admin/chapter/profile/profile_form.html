@@ -63,13 +63,16 @@
                             </div>
 
                             <div>
-                                <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-                                <input type="text" id="first_name" name="first_name" class="mt-2 px-4 py-3 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-2 border-gray-200 rounded-lg" value="{% if profile %}{{ profile.first_name }}{% endif %}">
+                                <label for="first_name" class="block text-sm font-medium text-gray-700">First Name *</label>
+                                <input required type="text" id="first_name" name="first_name" class="mt-2 px-4 py-3 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-2 border-gray-200 rounded-lg" value="{% if profile %}{{ profile.first_name }}{% endif %}">
+
                             </div>
 
+
                             <div>
-                                <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
-                                <input type="text" id="last_name" name="last_name" class="mt-2 px-4 py-3 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-2 border-gray-200 rounded-lg" value="{% if profile %}{{ profile.last_name }}{% endif %}">
+                                <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name *</label>
+                                <input required type="text" id="last_name" name="last_name" class="mt-2 px-4 py-3 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-2 border-gray-200 rounded-lg" value="{% if profile %}{{ profile.last_name }}{% endif %}">
+
                             </div>
 
                             <div>
@@ -128,8 +131,8 @@
                             </div>
 
                             <div>
-                                <label for="membership_status" class="block text-sm font-medium text-gray-700">Membership Status</label>
-                                <select id="membership_status" name="membership_status" class="mt-2 block w-full px-4 py-3 text-base border-2 border-gray-200 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg">
+                                <label for="membership_status" class="block text-sm font-medium text-gray-700">Membership Status *</label>
+                                <select required id="membership_status" name="membership_status" class="mt-2 block w-full px-4 py-3 text-base border-2 border-gray-200 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg">
                                     <option value="Active" {% if profile and profile.membership_status == 'Active' %}selected{% endif %}>Active</option>
                                     <option value="Not Active" {% if profile and profile.membership_status == 'Not Active' %}selected{% endif %}>Not Active</option>
                                 </select>

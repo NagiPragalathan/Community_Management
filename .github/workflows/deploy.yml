@@ -32,9 +32,13 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no root@147.93.102.113 << 'EOF'
           cd /var/www/Community_Management  # Navigate to your Django project directory
+
+          echo "Starting deployment..."
           
           # Kill any process using port 80 (development server port)
           fuser -k 80/tcp || true  # Ignore error if port isn't in use
+
+          echo "Killed any processes using port 80"
 
           # Set up virtual environment
           python3 -m venv venv
@@ -43,13 +47,20 @@ jobs:
           # Pull the latest code from GitHub
           git pull origin main
 
+          echo "Pulled latest code from GitHub"
+
+
           # Install the dependencies from the updated code
           pip install -r requirements.txt
 
           # Run database migrations
           python manage.py migrate
 
+          echo "Ran database migrations"
+
           # Run the Django development server in the background (not recommended for production)
           nohup python manage.py runserver 0.0.0.0:80 > server.log 2>&1 &
+
+          echo "Started Django development server"
 
         EOF
