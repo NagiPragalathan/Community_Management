@@ -322,6 +322,14 @@ training_sessions_report_url = [
     path('training-sessions-report/', training_sessions_report, name='training_sessions_report'),
 ]
 
+iframe_url = [
+    path('iframe/', iframe, name='iframe'),
+    path('email/', email, name='email'),
+    path('portal/', portal, name='portal'),
+]
+
+
+
 urlpatterns.extend(auth)
 urlpatterns.extend(chat)
 urlpatterns.extend(group)
@@ -363,6 +371,7 @@ urlpatterns+=chapter_performance_report_url
 urlpatterns+=region_performance_report_url
 urlpatterns+=chapter_roster_report_url
 urlpatterns+=training_sessions_report_url
+urlpatterns+=iframe_url
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

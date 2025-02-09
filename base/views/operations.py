@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 
 
 def visitor_registration_portal(request):
-    return render(request, 'visitor_registration_portal.html')
+    return render(request, 'operations/Visitor_register.html')
 
 def view_palms_summary(request):
     return render(request, 'view_palms_summary.html')

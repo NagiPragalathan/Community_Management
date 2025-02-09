@@ -2,60 +2,105 @@
 {% load static %}
 
 {% block content %}
-<div class="container mx-auto p-10 md:p-20 antialiased">
-    <!-- Search and Filter Section -->
-    <p class="font-bold text-gray-700 text-[22px] leading-7 mb-8">Groups</p>
-
-    <div class="flex flex-wrap mb-6">
-        <div class="w-full md:w-1/2 mb-4 md:mb-0">
-            <input type="text" id="searchInput" placeholder="Search Title, Description, type or Creator..." class="w-[100%] px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-300">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header Section with Decorative Border -->
+        <div class="relative mb-12">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                <div class="w-full border-t border-blue-300"></div>
+            </div>
+            <div class="relative flex justify-center">
+                <h1 class="px-4 bg-gradient-to-br from-blue-50 to-blue-100 text-3xl font-extrabold text-gray-900">
+                    Discover Amazing Groups
+                </h1>
+            </div>
         </div>
-        <div class="w-full md:w-1/2 flex justify-end gap-3">
-            <select id="filterSelect" class="w-full md:w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-300">
-                <option value="all">All Types</option>
-                <option value="Open">Open</option>
-                <option value="Invite Only">Invite Only</option>
-            </select>
-            <a href="{% url 'my_list_groups' %}" class="block px-4 py-3 font-medium text-center text-white transition-colors duration-300 transform bg-yellow-400 rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80" style="background:#00d7a8 !important">My Group</a>
-            <a href="{% url 'group_crud_new' %}" class="block px-4 py-3 font-medium text-center text-white transition-colors duration-300 transform bg-yellow-400 rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80" style="background:#16a687 !important">Create Group</a>
-        </div>
-    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="groupContainer">
-        {% for group in groups %}
-        <div class="flex flex-col justify-center group-card" data-name="{{ group.name }}" data-type="{{ group.group_type }}" data-creator="{{ group.creator.username }}" data-description="{{ group.description }}">
-            <div class="w-full max-w-md mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
-                <div class="max-w-md mx-auto">
-                    <div class="h-[236px]" style="background-image:url({{ group.logo.url }}); background-size:cover; background-position:center"></div>
-                    <div class="p-4 sm:p-6">
-                        <p class="font-bold text-gray-700 text-[22px] leading-7 mb-1">{{ group.name }}</p>
-                        <table class="w-full mb-4">
-                            <tr>
-                                <td class="font-bold text-gray-600">Creator:</td>
-                                <td class="text-gray-700">{{ group.creator.username }}</td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold text-gray-600">Since:</td>
-                                <td class="text-gray-700">{{ group.lastupdateddate|date:"Y-m-d" }}</td>
-                            </tr>
-                            <tr>
-                                <td class="font-bold text-gray-600">Total members:</td>
-                                <td class="text-gray-700">{{ group.group_counts }}</td>
-                            </tr>
-                        </table>
-                        <div class="flex flex-row items-center gap-2 mb-4">
-                            <span class="text-white text-xs font-bold py-1 px-2 rounded-full" style="background-color: #7dbd6f;">{{ group.group_type }}</span>
-                            <span class="text-white text-xs font-bold py-1 px-2 rounded-full" style="background-color: #00bfff;">{{ group.access_type }}</span>
+        <!-- Search and Filter Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-blue-100">
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex-1">
+                    <div class="relative">
+                        <input type="text" id="searchInput" 
+                            placeholder="Search groups..." 
+                            class="w-full pl-12 pr-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200"
+                        >
+                        <div class="absolute left-4 top-3.5 text-gray-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
                         </div>
-                        <p class="text-gray-600 font-light mb-6">{{ group.description }}</p>
-                        <a href="{% url 'room' group.name %}" class="block w-full px-4 py-3 font-medium text-center text-white transition-colors duration-300 transform bg-yellow-400 rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80" style="background:#16a687 !important">
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <select id="filterSelect" class="px-4 py-3 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent">
+                        <option value="all">All Types</option>
+                        <option value="Open">Open Groups</option>
+                        <option value="Invite Only">Invite Only</option>
+                    </select>
+                    
+                    <a href="{% url 'my_list_groups' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
+                        My Groups
+                    </a>
+                    
+                    <a href="{% url 'group_crud_new' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
+                        Create Group
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Groups Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="groupContainer">
+            {% for group in groups %}
+            <div class="group-card transform hover:scale-105 transition duration-300" data-name="{{ group.name }}" data-type="{{ group.group_type }}" data-creator="{{ group.creator.username }}" data-description="{{ group.description }}">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 hover:border-blue-200">
+                    <div class="relative">
+                        <div class="h-48 bg-cover bg-center" style="background-image:url({{ group.logo.url }})"></div>
+                        <div class="absolute top-4 right-4 flex gap-2">
+                            <span class="px-3 py-1 text-xs font-semibold text-white bg-blue-500 rounded-full">{{ group.group_type }}</span>
+                            <span class="px-3 py-1 text-xs font-semibold text-white bg-indigo-500 rounded-full">{{ group.access_type }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">{{ group.name }}</h3>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-gray-600">
+                                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <span>{{ group.creator.username }}</span>
+                            </div>
+                            
+                            <div class="flex items-center text-gray-600">
+                                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span>Since {{ group.lastupdateddate|date:"M d, Y" }}</span>
+                            </div>
+                            
+                            <div class="flex items-center text-gray-600">
+                                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span>{{ group.group_counts }} members</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-6 line-clamp-2">{{ group.description }}</p>
+                        
+                        <a href="{% url 'room' group.name %}" 
+                           class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-indigo-600 transition duration-200">
                             View Details
                         </a>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
 

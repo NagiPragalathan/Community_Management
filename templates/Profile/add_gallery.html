@@ -1,63 +1,94 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="bg-gray-100 p-6" style="background:#e5e7eb;">
-    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">My Image Gallery</h1>
-        <form method="post" enctype="multipart/form-data" class="mb-6">
-            {% csrf_token %}
-            <div class="mb-4">
-                <label for="images" class="block text-lg font-medium text-gray-700 mb-2">Upload Images:</label>
-                <input type="file" name="images" id="images" multiple required class="block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-indigo-50 file:text-indigo-700
-                    hover:file:bg-indigo-100">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-white p-4">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl shadow-md border border-blue-200 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 rounded-t-xl">
+                <h1 class="text-2xl font-bold text-white tracking-tight text-center">
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
+                        Your Photo Gallery
+                    </span>
+                </h1>
             </div>
-            <button type="submit" class="bg-violet-500 text-white py-2 px-4 rounded hover:bg-violet-600">Upload</button>
-        </form>
 
-        {% if galleries %}
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Your Images</h2>
-            <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {% for gallery in galleries %}
-                    <li class="relative group">
-                        <img src="{{ gallery.image.url }}" alt="Image" class="w-full h-full object-cover rounded-lg">
-                        <button class="delete-btn absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" data-image-id="{{ gallery.id }}">
-                            <i class="fas fa-trash-alt text-red-600"></i>
-                        </button>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="text-gray-600 text-center">No images uploaded yet. Start by uploading some images!</p>
-        {% endif %}
+            <div class="p-6">
+                <form method="post" enctype="multipart/form-data" class="mb-8">
+                    {% csrf_token %}
+                    <div class="group">
+                        <label for="images" class="block text-lg font-semibold text-blue-800 mb-2 group-hover:text-blue-600 transition-colors">
+                            Share Your Photos
+                        </label>
+                        <div class="relative">
+                            <input type="file" name="images" id="images" multiple required 
+                                class="block w-full text-sm text-gray-600
+                                file:mr-4 file:py-2 file:px-4
+                                file:rounded-lg file:border-0
+                                file:text-sm file:font-medium
+                                file:bg-gradient-to-r file:from-blue-500 file:to-indigo-500
+                                file:text-white
+                                hover:file:from-blue-600 hover:file:to-indigo-600
+                                cursor-pointer
+                                border border-blue-100 rounded-lg
+                                focus:outline-none focus:border-blue-300
+                                transition-all duration-300">
+                        </div>
+                    </div>
+                    <button type="submit" 
+                        class="mt-4 w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-2 px-4 rounded-lg
+                        text-sm font-medium hover:from-blue-600 hover:to-indigo-600 transition-all duration-300">
+                        Upload Photos
+                    </button>
+                </form>
+
+                {% if galleries %}
+                    <h2 class="text-xl font-semibold text-blue-900 mb-4 text-center">Your Collection</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {% for gallery in galleries %}
+                            <div class="group relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                                <img src="{{ gallery.image.url }}" alt="Gallery Image" 
+                                    class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
+                                <div class="absolute inset-0 bg-gradient-to-t from-blue-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                    <button class="delete-btn absolute bottom-2 right-2 bg-red-500/80 text-white p-2 rounded-lg hover:bg-red-600 transition-all duration-300" 
+                                        data-image-id="{{ gallery.id }}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center p-6 bg-blue-50 rounded-lg border border-blue-100">
+                        <p class="text-base text-blue-800">Your gallery is empty. Start sharing your photos!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.delete-btn').click(function() {
-                var imageId = $(this).data('image-id');
-                $.ajax({
-                    url: '/delete_image',
-                    type: 'POST',
-                    data: {
-                        'image_id': imageId,
-                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.success) {
-                            alert('Image deleted successfully');
-                            location.reload();
-                        } else {
-                            alert(data.error);
-                        }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.delete-btn').click(function() {
+            var imageId = $(this).data('image-id');
+            $.ajax({
+                url: '/delete_image',
+                type: 'POST',
+                data: {
+                    'image_id': imageId,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.success) {
+                        alert('Image deleted successfully');
+                        location.reload();
+                    } else {
+                        alert(data.error);
                     }
-                });
+                }
             });
         });
-    </script>
-</div>
+    });
+</script>
 {% endblock content %}

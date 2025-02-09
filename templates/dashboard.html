@@ -44,11 +44,12 @@
                         <li>
                             <a href="{% url 'contact_form' %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Renew Now</a>
                         </li>
-                        <li>
-                            <a href="#" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Profile</a>
+                        <li>    
+                            <a href="{% url 'profile_management' %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Profile</a>
                         </li>
                     </ul>
                 </div> 
+
             </div>
             <a href="{% url 'chart_dashboard' %}" class="text-[#f84525] font-medium text-sm hover:text-red-800">Activities</a>
         </div>
@@ -216,9 +217,10 @@
                             <a href="{% url 'profile_management' %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Profile</a>
                         </li>
                         <li>
-                            <a href="#" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Settings</a>
+                            <a href="{% url 'edit_or_add_account_settings' %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Settings</a>
                         </li>
                         <li>
+
                             <a href="#" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Logout</a>
                         </li>
                     </ul>
@@ -258,12 +260,13 @@
                         <tr>
                             <td class="py-2 px-4 border-b border-b-gray-50">
                                 <div class="flex items-center">
-                                    <a href="#" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">Update Profile/My BNI Page</a>
+                                    <a href="{% url 'profile_management' %}" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">Update Profile/My BNI Page</a>
                                 </div>
                             </td>
+
                             <td class="py-2 px-4 border-b border-b-gray-50">
                                 <span class="text-[13px] font-medium text-gray-400">
-                                    <a href="">
+                                    <a href="{% url 'profile_management' %}">
                                         <button class="bg-gray border border-gray px-4 py-2 rounded-[4px] hover:text-black">Action</button>
                                     </a>
                                 </span>
@@ -272,12 +275,13 @@
                         <tr>
                             <td class="py-2 px-4 border-b border-b-gray-50">
                                 <div class="flex items-center">
-                                    <a href="#" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">Update Privacy Settings</a>
+                                    <a href="{% url 'edit_or_add_account_settings' %}" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">Update Privacy Settings</a>
                                 </div>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
+
                                 <span class="text-[13px] font-medium text-gray-400">
-                                    <a href="">
+                                    <a href="{% url 'edit_or_add_account_settings' %}">
                                         <button class="bg-gray border border-gray px-4 py-2 rounded-[4px] hover:text-black">Action</button>
                                     </a>
                                 </span>
@@ -286,12 +290,13 @@
                         <tr>
                             <td class="py-2 px-4 border-b border-b-gray-50">
                                 <div class="flex items-center">
-                                    <a href="#" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">Renew Now</a>
+                                    <a href="{% url 'contact_form' %}" class="text-gray-600 text-sm font-medium hover:text-blue-500 ml-2 truncate">Renew Now</a>
                                 </div>
                             </td>
                             <td class="py-2 px-4 border-b border-b-gray-50">
+
                                 <span class="text-[13px] font-medium text-gray-400">
-                                    <a href="">
+                                    <a href="{% url 'contact_form' %}">
                                         <button class="bg-gray border border-gray px-4 py-2 rounded-[4px] hover:text-black">Action</button>
                                     </a>
                                 </span>

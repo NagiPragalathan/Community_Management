@@ -1,28 +1,30 @@
 {% extends 'admin_base.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-    <div class="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div class="relative px-4 py-8 bg-white shadow rounded-3xl sm:p-10 lg:p-12">
-            <div class="max-w-3xl mx-auto">
-                <div class="flex items-center space-x-5 mb-6">
-                    <div class="block font-semibold text-xl sm:text-2xl text-gray-700">
-                        <h2 class="leading-relaxed">{% if city %}Edit{% else %}Create{% endif %} City</h2>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 py-4 flex flex-col justify-center sm:py-6">
+    <div class="relative px-3 sm:px-4 lg:px-6 max-w-3xl mx-auto w-full">
+        <div class="relative px-4 py-6 bg-white shadow-md rounded-2xl border border-blue-100 hover:border-blue-200 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg sm:p-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="block font-bold text-xl sm:text-2xl text-gray-800">
+                        <h2 class="leading-relaxed bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+                            {% if city %}Edit{% else %}Create{% endif %} City
+                        </h2>
                     </div>
                 </div>
 
                 <form method="POST" class="space-y-6">
                     {% csrf_token %}
                     <div class="flex flex-col">
-                        <label for="city_name" class="text-sm font-medium text-gray-700">City Name</label>
+                        <label for="city_name" class="text-sm font-medium text-gray-700 mb-1">City Name</label>
                         <input type="text" id="city_name" name="city_name" value="{% if city %}{{ city.city_name }}{% endif %}" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            class="mt-1 block w-full rounded-md border-2 border-blue-100 px-3 py-2 shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-200 focus:ring-opacity-50 hover:border-blue-200 transition duration-200">
                     </div>
 
                     <div class="flex flex-col">
-                        <label for="country" class="text-sm font-medium text-gray-700">Country</label>
+                        <label for="country" class="text-sm font-medium text-gray-700 mb-1">Country</label>
                         <select id="country" name="country" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            class="mt-1 block w-full rounded-md border-2 border-blue-100 px-3 py-2 shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-200 focus:ring-opacity-50 hover:border-blue-200 transition duration-200">
                             <option value="">Select Country</option>
                             {% for country in countries %}
                             <option value="{{ country.id }}" {% if city and city.country.id == country.id %}selected{% endif %}>{{ country }}</option>
@@ -31,9 +33,9 @@
                     </div>
 
                     <div class="flex flex-col">
-                        <label for="state" class="text-sm font-medium text-gray-700">State</label>
+                        <label for="state" class="text-sm font-medium text-gray-700 mb-1">State</label>
                         <select id="state" name="state" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            class="mt-1 block w-full rounded-md border-2 border-blue-100 px-3 py-2 shadow-sm focus:border-blue-400 focus:ring focus:ring-blue-200 focus:ring-opacity-50 hover:border-blue-200 transition duration-200">
                             <option value="">Select State</option>
                             {% for state in states %}
                             <option value="{{ state.id }}" {% if city and city.state.id == state.id %}selected{% endif %}>{{ state }}</option>
@@ -41,13 +43,13 @@
                         </select>
                     </div>
 
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-4 pt-3">
                         <button type="submit" 
-                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            class="inline-flex justify-center py-2 px-4 border-2 border-blue-500 shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform transition duration-200 hover:scale-105">
                             {% if city %}Update{% else %}Create{% endif %}
                         </button>
                         <a href="{% url 'city_list' %}" 
-                            class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            class="inline-flex justify-center py-2 px-4 border-2 border-gray-200 shadow-sm text-sm font-medium rounded-md text-gray-600 bg-white hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform transition duration-200 hover:scale-105">
                             Back to List
                         </a>
                     </div>

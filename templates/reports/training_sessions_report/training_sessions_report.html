@@ -1,75 +1,107 @@
 {% extends 'admin_base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2 class="text-center mb-4">Training Sessions Report</h2>
-
-    <!-- Form to select filters -->
-    <form method="POST" class="mb-4">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-md-4">
-                <label for="from_date" class="form-label">From Date:</label>
-                <input type="date" id="from_date" name="from_date" class="form-control" value="{{ selected_from_date }}">
-            </div>
-            <div class="col-md-4">
-                <label for="to_date" class="form-label">To Date:</label>
-                <input type="date" id="to_date" name="to_date" class="form-control" value="{{ selected_to_date }}">
-            </div>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 py-6 px-3 sm:px-4">
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border border-blue-100 transform hover:scale-[1.002] transition-all duration-300">
+        <div class="px-6 py-6 bg-gradient-to-r from-blue-600 to-cyan-500 relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('/static/img/pattern.svg')] opacity-10"></div>
+            <h2 class="text-2xl font-bold text-white text-center tracking-wide relative z-10 drop-shadow-lg">
+                ✨ Training Sessions ✨
+            </h2>
         </div>
 
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <label for="training_types" class="form-label">Select Training Types:</label>
-                <select id="training_types" name="training_types" class="form-select" multiple>
+        <form method="POST" class="p-6 space-y-6">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label for="from_date" class="block text-xs font-semibold text-gray-700 flex items-center gap-1">
+                        <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        From
+                    </label>
+                    <input type="date" id="from_date" name="from_date" 
+                        class="block w-full px-3 py-2 text-sm rounded-xl border border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        value="{{ selected_from_date }}">
+                </div>
+                <div class="space-y-2">
+                    <label for="to_date" class="block text-xs font-semibold text-gray-700 flex items-center gap-1">
+                        <svg class="w-3 h-3 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        To
+                    </label>
+                    <input type="date" id="to_date" name="to_date" 
+                        class="block w-full px-3 py-2 text-sm rounded-xl border border-gray-300 shadow-sm focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 transition-all duration-200"
+                        value="{{ selected_to_date }}">
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label for="training_types" class="block text-xs font-semibold text-gray-700 flex items-center gap-1">
+                    <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    Training Types
+                </label>
+                <select id="training_types" name="training_types" multiple
+                    class="block w-full px-3 py-2 text-sm rounded-xl border border-gray-300 shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-blue-500 min-h-[100px] transition-all duration-200">
                     {% for session in training_sessions %}
-                        <option value="{{ session.training_name }}" {% if session.training_name in selected_training_types %}selected{% endif %}>
+                        <option value="{{ session.training_name }}" {% if session.training_name in selected_training_types %}selected{% endif %}
+                            class="py-1.5 px-3 hover:bg-blue-50 transition-colors duration-200">
                             {{ session.training_name }}
                         </option>
                     {% endfor %}
                 </select>
             </div>
-        </div>
 
-        <div class="row mt-4">
-            <div class="col-md-12 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100">Show Members</button>
+            <div>
+                <button type="submit" 
+                    class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-2 px-4 text-sm rounded-xl font-medium hover:from-blue-700 hover:to-cyan-600 transition-all duration-200 flex items-center justify-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    Show Members
+                </button>
+            </div>
+        </form>
+
+        {% if members_data %}
+        <div class="px-6 pb-6">
+            <div class="overflow-x-auto rounded-xl border border-gray-200 shadow-md">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gradient-to-r from-blue-600 to-cyan-500">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Name</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Date</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Type</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Role</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Joined</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Phone</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for member in members_data %}
+                        <tr class="hover:bg-blue-50/50 transition-colors duration-200">
+                            <td class="px-4 py-3 whitespace-nowrap text-xs font-medium text-gray-900">{{ member.member_name }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700">{{ member.event_date }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700">{{ member.event_type }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700">{{ member.role }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700">{{ member.join_date }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700">{{ member.phone }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700">{{ member.email }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-    </form>
-
-    {% if members_data %}
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Member Name</th>
-                    <th>Event Date</th>
-                    <th>Event Type</th>
-                    <th>Role</th>
-                    <th>Join Date</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for member in members_data %}
-                <tr>
-                    <td>{{ member.member_name }}</td>
-                    <td>{{ member.event_date }}</td>
-                    <td>{{ member.event_type }}</td>
-                    <td>{{ member.role }}</td>
-                    <td>{{ member.join_date }}</td>
-                    <td>{{ member.phone }}</td>
-                    <td>{{ member.email }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% else %}
+        <div class="px-6 pb-6">
+            <p class="text-center text-xs text-gray-500 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl py-6 font-medium">✨ No data available ✨</p>
+        </div>
+        {% endif %}
     </div>
-    {% else %}
-    <p class="text-center mt-4">No data available for the selected filters.</p>
-    {% endif %}
 </div>
-
 {% endblock %}

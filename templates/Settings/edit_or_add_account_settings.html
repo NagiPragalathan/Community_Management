@@ -10,16 +10,16 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@1.6.5/dist/flowbite.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 flex items-center justify-center" style="display: flex ; align-items: center; justify-content: center;">
+<body class="bg-blue-50 flex items-center justify-center" style="display: flex ; align-items: center; justify-content: center;">
     <div class="container mx-auto py-4 sm:py-8 px-2 sm:px-4 flex flex-col items-center">
-        <h1 class="text-2xl sm:text-4xl font-extrabold text-center mb-6 sm:mb-10 text-gray-800">Account Settings</h1>
+        <h1 class="text-2xl sm:text-4xl font-extrabold text-center mb-6 sm:mb-10 text-blue-800 hover:text-blue-900 transition duration-300">Account Settings</h1>
 
         <!-- Tab Navigation -->
-        <div class="mb-4 sm:mb-6 border-b border-gray-200 dark:border-gray-700 w-full max-w-3xl">
+        <div class="mb-4 sm:mb-6 border-b border-blue-200 dark:border-blue-700 w-full max-w-3xl">
             <ul class="flex flex-wrap -mb-px text-xs sm:text-sm font-medium text-center" id="settingsTabs" role="tablist">
                 <li class="mr-1 sm:mr-2">
                     <button
-                        class="inline-block p-2 sm:p-4 rounded-t-lg border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 dark:hover:text-blue-500"
+                        class="inline-block p-2 sm:p-4 rounded-t-lg border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 hover:bg-blue-100 transition duration-300"
                         id="visibility-tab" data-tabs-target="#visibility-settings" type="button" role="tab"
                         aria-controls="visibility-settings" aria-selected="true">
                         Visibility
@@ -27,7 +27,7 @@
                 </li>
                 <li class="mr-1 sm:mr-2">
                     <button
-                        class="inline-block p-2 sm:p-4 rounded-t-lg border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 dark:hover:text-blue-500"
+                        class="inline-block p-2 sm:p-4 rounded-t-lg border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 hover:bg-blue-100 transition duration-300"
                         id="notification-tab" data-tabs-target="#notification-settings" type="button" role="tab"
                         aria-controls="notification-settings" aria-selected="false">
                         Notifications
@@ -35,7 +35,7 @@
                 </li>
                 <li class="mr-1 sm:mr-2">
                     <button
-                        class="inline-block p-2 sm:p-4 rounded-t-lg border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 dark:hover:text-blue-500"
+                        class="inline-block p-2 sm:p-4 rounded-t-lg border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600 hover:bg-blue-100 transition duration-300"
                         id="email-tab" data-tabs-target="#email-settings" type="button" role="tab"
                         aria-controls="email-settings" aria-selected="false">
                         Email
@@ -45,14 +45,14 @@
         </div>
 
         <!-- Tab Content -->
-        <form method="POST" class="w-full max-w-3xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+        <form method="POST" class="w-full max-w-3xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
             {% csrf_token %}
             <div id="tabsContent">
                 <!-- Visibility Settings -->
                 <div id="visibility-settings" role="tabpanel" aria-labelledby="visibility-tab" class="tab-content block">
                     <div class="mb-4">
-                        <label for="bio_visibility" class="block text-gray-700 text-sm sm:text-base font-semibold mb-2">Bio Visibility:</label>
-                        <select name="bio_visibility" class="w-full p-2 sm:p-3 border rounded-md text-sm sm:text-base">
+                        <label for="bio_visibility" class="block text-blue-700 text-sm sm:text-base font-semibold mb-2">Bio Visibility:</label>
+                        <select name="bio_visibility" class="w-full p-2 sm:p-3 border rounded-md text-sm sm:text-base hover:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300">
                             <option value="all" {% if account_settings.bio_visibility == 'all' %}selected{% endif %}>All</option>
                             <option value="connections" {% if account_settings.bio_visibility == 'connections' %}selected{% endif %}>Connections</option>
                             <option value="none" {% if account_settings.bio_visibility == 'none' %}selected{% endif %}>None</option>
@@ -60,8 +60,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="connections_visibility" class="block text-gray-700 font-semibold mb-2">Connections Visibility:</label>
-                        <select name="connections_visibility" class="w-full p-3 border rounded-md">
+                        <label for="connections_visibility" class="block text-blue-700 font-semibold mb-2">Connections Visibility:</label>
+                        <select name="connections_visibility" class="w-full p-3 border rounded-md hover:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300">
                             <option value="all" {% if account_settings.connections_visibility == 'all' %}selected{% endif %}>All</option>
                             <option value="connections" {% if account_settings.connections_visibility == 'connections' %}selected{% endif %}>Connections</option>
                             <option value="none" {% if account_settings.connections_visibility == 'none' %}selected{% endif %}>None</option>
@@ -69,8 +69,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="testimonials_visibility" class="block text-gray-700 font-semibold mb-2">Testimonials Visibility:</label>
-                        <select name="testimonials_visibility" class="w-full p-3 border rounded-md">
+                        <label for="testimonials_visibility" class="block text-blue-700 font-semibold mb-2">Testimonials Visibility:</label>
+                        <select name="testimonials_visibility" class="w-full p-3 border rounded-md hover:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300">
                             <option value="all" {% if account_settings.testimonials_visibility == 'all' %}selected{% endif %}>All</option>
                             <option value="connections" {% if account_settings.testimonials_visibility == 'connections' %}selected{% endif %}>Connections</option>
                             <option value="none" {% if account_settings.testimonials_visibility == 'none' %}selected{% endif %}>None</option>
@@ -78,8 +78,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="gallery_visibility" class="block text-gray-700 font-semibold mb-2">Gallery Visibility:</label>
-                        <select name="gallery_visibility" class="w-full p-3 border rounded-md">
+                        <label for="gallery_visibility" class="block text-blue-700 font-semibold mb-2">Gallery Visibility:</label>
+                        <select name="gallery_visibility" class="w-full p-3 border rounded-md hover:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300">
                             <option value="all" {% if account_settings.gallery_visibility == 'all' %}selected{% endif %}>All</option>
                             <option value="connections" {% if account_settings.gallery_visibility == 'connections' %}selected{% endif %}>Connections</option>
                             <option value="none" {% if account_settings.gallery_visibility == 'none' %}selected{% endif %}>None</option>
@@ -87,8 +87,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="email_visibility" class="block text-gray-700 font-semibold mb-2">Email Visibility:</label>
-                        <select name="email_visibility" class="w-full p-3 border rounded-md">
+                        <label for="email_visibility" class="block text-blue-700 font-semibold mb-2">Email Visibility:</label>
+                        <select name="email_visibility" class="w-full p-3 border rounded-md hover:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300">
                             <option value="all" {% if account_settings.email_visibility == 'all' %}selected{% endif %}>All</option>
                             <option value="connections" {% if account_settings.email_visibility == 'connections' %}selected{% endif %}>Connections</option>
                             <option value="none" {% if account_settings.email_visibility == 'none' %}selected{% endif %}>None</option>
@@ -96,8 +96,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="contact_details_visibility" class="block text-gray-700 font-semibold mb-2">Contact Details Visibility:</label>
-                        <select name="contact_details_visibility" class="w-full p-3 border rounded-md">
+                        <label for="contact_details_visibility" class="block text-blue-700 font-semibold mb-2">Contact Details Visibility:</label>
+                        <select name="contact_details_visibility" class="w-full p-3 border rounded-md hover:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300">
                             <option value="all" {% if account_settings.contact_details_visibility == 'all' %}selected{% endif %}>All</option>
                             <option value="connections" {% if account_settings.contact_details_visibility == 'connections' %}selected{% endif %}>Connections</option>
                             <option value="none" {% if account_settings.contact_details_visibility == 'none' %}selected{% endif %}>None</option>
@@ -108,8 +108,8 @@
                 <!-- Notification Settings -->
                 <div id="notification-settings" role="tabpanel" aria-labelledby="notification-tab" class="tab-content hidden">
                     <div class="mb-4">
-                        <label for="post_notifications" class="block text-gray-700 font-semibold mb-2">Post Notifications:</label>
-                        <select name="post_notifications" class="w-full p-3 border rounded-md">
+                        <label for="post_notifications" class="block text-blue-700 font-semibold mb-2">Post Notifications:</label>
+                        <select name="post_notifications" class="w-full p-3 border rounded-md hover:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300">
                             <option value="every_time" {% if account_settings.post_notifications == 'every_time' %}selected{% endif %}>Every Time</option>
                             <option value="daily" {% if account_settings.post_notifications == 'daily' %}selected{% endif %}>Daily Summary</option>
                             <option value="weekly" {% if account_settings.post_notifications == 'weekly' %}selected{% endif %}>Weekly Summary</option>
@@ -121,34 +121,34 @@
                 <!-- Email Forwarding Settings -->
                 <div id="email-settings" role="tabpanel" aria-labelledby="email-tab" class="tab-content hidden">
                     <div class="mb-4">
-                        <label for="alternate_email" class="block text-gray-700 font-semibold mb-2">Alternate Email:</label>
-                        <input type="email" name="alternate_email" value="{{ account_settings.alternate_email }}" class="w-full p-3 border rounded-md">
+                        <label for="alternate_email" class="block text-blue-700 font-semibold mb-2">Alternate Email:</label>
+                        <input type="email" name="alternate_email" value="{{ account_settings.alternate_email }}" class="w-full p-3 border rounded-md hover:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300">
                     </div>
 
                     <div class="mb-4 flex items-center">
-                        <label for="forward_messages" class="block text-gray-700 font-semibold mb-2">Forward Messages:</label>
-                        <input type="checkbox" name="forward_messages" class="mx-2 h-5 w-5" {% if account_settings.forward_messages %}checked{% endif %}>
+                        <label for="forward_messages" class="block text-blue-700 font-semibold mb-2">Forward Messages:</label>
+                        <input type="checkbox" name="forward_messages" class="mx-2 h-5 w-5 text-blue-600 hover:ring-2 hover:ring-blue-500 transition duration-300" {% if account_settings.forward_messages %}checked{% endif %}>
                     </div>
 
                     <div class="mb-4 flex items-center">
-                        <label for="forward_sent_mail" class="block text-gray-700 font-semibold mb-2">Forward Sent Mail:</label>
-                        <input type="checkbox" name="forward_sent_mail" class="mx-2 h-5 w-5" {% if account_settings.forward_sent_mail %}checked{% endif %}>
+                        <label for="forward_sent_mail" class="block text-blue-700 font-semibold mb-2">Forward Sent Mail:</label>
+                        <input type="checkbox" name="forward_sent_mail" class="mx-2 h-5 w-5 text-blue-600 hover:ring-2 hover:ring-blue-500 transition duration-300" {% if account_settings.forward_sent_mail %}checked{% endif %}>
                     </div>
 
                     <div class="mb-4 flex items-center">
-                        <label for="forward_connection_requests" class="block text-gray-700 font-semibold mb-2">Forward Connection Requests:</label>
-                        <input type="checkbox" name="forward_connection_requests" class="mx-2 h-5 w-5" {% if account_settings.forward_connection_requests %}checked{% endif %}>
+                        <label for="forward_connection_requests" class="block text-blue-700 font-semibold mb-2">Forward Connection Requests:</label>
+                        <input type="checkbox" name="forward_connection_requests" class="mx-2 h-5 w-5 text-blue-600 hover:ring-2 hover:ring-blue-500 transition duration-300" {% if account_settings.forward_connection_requests %}checked{% endif %}>
                     </div>
 
                     <div class="mb-4 flex items-center">
-                        <label for="forward_recommendation_requests" class="block text-gray-700 font-semibold mb-2">Forward Recommendation Requests:</label>
-                        <input type="checkbox" name="forward_recommendation_requests" class="mx-2 h-5 w-5" {% if account_settings.forward_recommendation_requests %}checked{% endif %}>
+                        <label for="forward_recommendation_requests" class="block text-blue-700 font-semibold mb-2">Forward Recommendation Requests:</label>
+                        <input type="checkbox" name="forward_recommendation_requests" class="mx-2 h-5 w-5 text-blue-600 hover:ring-2 hover:ring-blue-500 transition duration-300" {% if account_settings.forward_recommendation_requests %}checked{% endif %}>
                     </div>
                 </div>
             </div>
 
             <div class="flex justify-center mt-6">
-                <button type="submit" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300">Save Settings</button>
+                <button type="submit" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 hover:shadow-lg transform hover:-translate-y-0.5 transition duration-300">Save Settings</button>
             </div>
         </form>
     </div>

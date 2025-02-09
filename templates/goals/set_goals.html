@@ -1,66 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Set Goals</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-10 rounded-lg shadow-lg max-w-4xl w-full">
-        <h2 class="text-3xl font-bold mb-10 text-center text-gray-800">Set Chapter Goals</h2>
-        <form method="POST" class="space-y-6">
-            {% csrf_token %}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="mb-4">
-                    <label for="chapter_id" class="block text-sm font-medium text-gray-700">Chapter:</label>
-                    <select id="chapter_id" name="chapter_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                        {% for chapter in chapters %}
-                            <option value="{{ chapter.id }}">{{ chapter.name }}</option>
-                        {% endfor %}
-                    </select>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 py-6 px-4">
+            <h2 class="text-3xl font-bold text-center text-white">Set Chapter Goals</h2>
+            <p class="mt-2 text-center text-indigo-100">Define your chapter's targets and objectives</p>
+        </div>
+        
+        <div class="p-8">
+            <form method="POST" class="space-y-8">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-200 hover:border-indigo-400 transition-all duration-300">
+                        <label for="chapter_id" class="block text-sm font-medium text-indigo-700 mb-2">Select Chapter</label>
+                        <select id="chapter_id" name="chapter_id" class="w-full rounded-lg border border-indigo-200 focus:border-indigo-500 focus:ring focus:ring-indigo-200 py-2 px-3" required>
+                            {% for chapter in chapters %}
+                                <option value="{{ chapter.id }}">{{ chapter.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="bg-purple-50 p-6 rounded-xl border border-purple-200 hover:border-purple-400 transition-all duration-300">
+                        <label for="attendance_percentage" class="block text-sm font-medium text-purple-700 mb-2">Attendance Target (%)</label>
+                        <input type="number" step="0.01" id="attendance_percentage" name="attendance_percentage" class="w-full rounded-lg border border-purple-200 focus:border-purple-500 focus:ring focus:ring-purple-200 py-2 px-3" required>
+                    </div>
+
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 hover:border-blue-400 transition-all duration-300">
+                        <label for="total_number_of_1_to_1s" class="block text-sm font-medium text-blue-700 mb-2">One-to-One Meetings Target</label>
+                        <input type="number" id="total_number_of_1_to_1s" name="total_number_of_1_to_1s" class="w-full rounded-lg border border-blue-200 focus:border-blue-500 focus:ring focus:ring-blue-200 py-2 px-3" required>
+                    </div>
+
+                    <div class="bg-pink-50 p-6 rounded-xl border border-pink-200 hover:border-pink-400 transition-all duration-300">
+                        <label for="ceus" class="block text-sm font-medium text-pink-700 mb-2">CEUs Goal</label>
+                        <input type="number" step="0.01" id="ceus" name="ceus" class="w-full rounded-lg border border-pink-200 focus:border-pink-500 focus:ring focus:ring-pink-200 py-2 px-3" required>
+                    </div>
+
+                    <div class="bg-green-50 p-6 rounded-xl border border-green-200 hover:border-green-400 transition-all duration-300">
+                        <label for="visitors" class="block text-sm font-medium text-green-700 mb-2">Visitors Target</label>
+                        <input type="number" id="visitors" name="visitors" class="w-full rounded-lg border border-green-200 focus:border-green-500 focus:ring focus:ring-green-200 py-2 px-3" required>
+                    </div>
+
+                    <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200 hover:border-yellow-400 transition-all duration-300">
+                        <label for="new_memberships" class="block text-sm font-medium text-yellow-700 mb-2">New Members Goal</label>
+                        <input type="number" id="new_memberships" name="new_memberships" class="w-full rounded-lg border border-yellow-200 focus:border-yellow-500 focus:ring focus:ring-yellow-200 py-2 px-3" required>
+                    </div>
+
+                    <div class="bg-red-50 p-6 rounded-xl border border-red-200 hover:border-red-400 transition-all duration-300">
+                        <label for="number_of_members_in_chapter" class="block text-sm font-medium text-red-700 mb-2">Total Members Target</label>
+                        <input type="number" id="number_of_members_in_chapter" name="number_of_members_in_chapter" class="w-full rounded-lg border border-red-200 focus:border-red-500 focus:ring focus:ring-red-200 py-2 px-3" required>
+                    </div>
+
+                    <div class="bg-teal-50 p-6 rounded-xl border border-teal-200 hover:border-teal-400 transition-all duration-300">
+                        <label for="number_of_referrals" class="block text-sm font-medium text-teal-700 mb-2">Referrals Target</label>
+                        <input type="number" id="number_of_referrals" name="number_of_referrals" class="w-full rounded-lg border border-teal-200 focus:border-teal-500 focus:ring focus:ring-teal-200 py-2 px-3" required>
+                    </div>
+
+                    <div class="bg-orange-50 p-6 rounded-xl border border-orange-200 hover:border-orange-400 transition-all duration-300">
+                        <label for="thank_you_for_closed_business" class="block text-sm font-medium text-orange-700 mb-2">TYFCB Target</label>
+                        <input type="number" step="0.01" id="thank_you_for_closed_business" name="thank_you_for_closed_business" class="w-full rounded-lg border border-orange-200 focus:border-orange-500 focus:ring focus:ring-orange-200 py-2 px-3" required>
+                    </div>
+
+                    <div class="bg-violet-50 p-6 rounded-xl border border-violet-200 hover:border-violet-400 transition-all duration-300">
+                        <label for="date_of_month" class="block text-sm font-medium text-violet-700 mb-2">Target Date</label>
+                        <input type="date" id="date_of_month" name="date_of_month" class="w-full rounded-lg border border-violet-200 focus:border-violet-500 focus:ring focus:ring-violet-200 py-2 px-3" required>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label for="attendance_percentage" class="block text-sm font-medium text-gray-700">Attendance Percentage:</label>
-                    <input type="number" step="0.01" id="attendance_percentage" name="attendance_percentage" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
+
+                <div class="mt-8">
+                    <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold text-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-md">
+                        Set Chapter Goals
+                    </button>
                 </div>
-                <div class="mb-4">
-                    <label for="total_number_of_1_to_1s" class="block text-sm font-medium text-gray-700">Total Number of 1 to 1s:</label>
-                    <input type="number" id="total_number_of_1_to_1s" name="total_number_of_1_to_1s" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="mb-4">
-                    <label for="ceus" class="block text-sm font-medium text-gray-700">CEUs (Chapter Education Units):</label>
-                    <input type="number" step="0.01" id="ceus" name="ceus" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="mb-4">
-                    <label for="visitors" class="block text-sm font-medium text-gray-700">Visitors:</label>
-                    <input type="number" id="visitors" name="visitors" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="mb-4">
-                    <label for="new_memberships" class="block text-sm font-medium text-gray-700">New Memberships:</label>
-                    <input type="number" id="new_memberships" name="new_memberships" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="mb-4">
-                    <label for="number_of_members_in_chapter" class="block text-sm font-medium text-gray-700">Number of Members in Chapter:</label>
-                    <input type="number" id="number_of_members_in_chapter" name="number_of_members_in_chapter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="mb-4">
-                    <label for="number_of_referrals" class="block text-sm font-medium text-gray-700">Number of Referrals:</label>
-                    <input type="number" id="number_of_referrals" name="number_of_referrals" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="mb-4">
-                    <label for="thank_you_for_closed_business" class="block text-sm font-medium text-gray-700">Thank You for Closed Business:</label>
-                    <input type="number" step="0.01" id="thank_you_for_closed_business" name="thank_you_for_closed_business" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                </div>
-                <div class="mb-4">
-                    <label for="date_of_month" class="block text-sm font-medium text-gray-700">Date of Month:</label>
-                    <input type="date" id="date_of_month" name="date_of_month" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" required>
-                </div>
-            </div>
-            <div>
-                <input type="submit" value="Set Goals" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

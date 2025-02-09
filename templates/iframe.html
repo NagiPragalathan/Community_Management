@@ -1,0 +1,93 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-4 sm:p-8">
+    <div class="max-w-6xl mx-auto bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden transform hover:scale-[1.01] transition-all duration-300">
+        <div class="px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-200/50 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10">
+            <h2 class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                {% if profile %}Edit{% else %}Create{% endif %} Profile
+            </h2>
+        </div>
+
+        <div class="px-4 sm:px-8 py-4 sm:py-6">
+            <div class="border-b border-gray-200/50">
+                <nav class="-mb-px flex flex-wrap gap-2 sm:gap-4 md:gap-8" aria-label="Tabs">
+                    <button class="group relative border-indigo-500 text-indigo-600 whitespace-nowrap py-2 sm:py-4 px-3 sm:px-6 border-b-2 font-medium text-xs sm:text-sm rounded-t-xl hover:bg-indigo-50/50 transition-all duration-300" id="basic-info-tab" onclick="showTab('basic-info')">
+                        <span class="relative z-10">Basic Information</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-50/0 via-indigo-50/30 to-indigo-50/0 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                    <button class="group relative border-transparent text-gray-500 whitespace-nowrap py-2 sm:py-4 px-3 sm:px-6 border-b-2 font-medium text-xs sm:text-sm rounded-t-xl hover:bg-purple-50/50 transition-all duration-300" id="company-info-tab" onclick="showTab('company-info')">
+                        <span class="relative z-10">Company Details</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-50/0 via-purple-50/30 to-purple-50/0 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                    <button class="group relative border-transparent text-gray-500 whitespace-nowrap py-2 sm:py-4 px-3 sm:px-6 border-b-2 font-medium text-xs sm:text-sm rounded-t-xl hover:bg-pink-50/50 transition-all duration-300" id="membership-info-tab" onclick="showTab('membership-info')">
+                        <span class="relative z-10">Membership Info</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-pink-50/0 via-pink-50/30 to-pink-50/0 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                    <button class="group relative border-transparent text-gray-500 whitespace-nowrap py-2 sm:py-4 px-3 sm:px-6 border-b-2 font-medium text-xs sm:text-sm rounded-t-xl hover:bg-violet-50/50 transition-all duration-300" id="additional-info-tab" onclick="showTab('additional-info')">
+                        <span class="relative z-10">Additional Details</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-violet-50/0 via-violet-50/30 to-violet-50/0 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="tab-content mt-4 sm:mt-8">
+                <!-- Basic Info Tab -->
+                <div class="tab-pane transform transition-all duration-500 ease-in-out" id="basic-info" role="tabpanel">
+                    <iframe src="{% url 'login' %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                </div>
+
+                <!-- Company Info Tab -->
+                <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="company-info" role="tabpanel">
+                    <iframe src="{% url 'login' %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                </div>
+
+                <!-- Membership Info Tab -->
+                <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="membership-info" role="tabpanel">
+                    <iframe src="{% url 'signup' %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                </div>
+
+                <!-- Additional Info Tab -->
+                <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="additional-info" role="tabpanel">
+                    <iframe src="http://147.93.102.113:8000/dashboard/" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showTab(tabId) {
+    // Hide all tab panes with fade effect
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.add('hidden');
+        pane.classList.add('opacity-0');
+        pane.classList.add('scale-95');
+    });
+    
+    // Show selected tab pane with animation
+    const selectedPane = document.getElementById(tabId);
+    selectedPane.classList.remove('hidden');
+    setTimeout(() => {
+        selectedPane.classList.remove('opacity-0', 'scale-95');
+        selectedPane.classList.add('opacity-100', 'scale-100');
+    }, 50);
+    
+    // Update tab button styles with smooth transitions
+    document.querySelectorAll('nav button').forEach(button => {
+        button.classList.remove('border-indigo-500', 'text-indigo-600');
+        button.classList.add('border-transparent', 'text-gray-500');
+    });
+    
+    document.getElementById(tabId + '-tab').classList.remove('border-transparent', 'text-gray-500');
+    document.getElementById(tabId + '-tab').classList.add('border-indigo-500', 'text-indigo-600');
+}
+
+// Show basic info tab by default with initial animation
+document.addEventListener('DOMContentLoaded', function() {
+    showTab('basic-info');
+});
+</script>
+
+{% endblock %}

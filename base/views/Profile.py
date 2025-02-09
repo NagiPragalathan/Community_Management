@@ -333,3 +333,14 @@ def delete_image(request):
         except Gallery.DoesNotExist:
             return JsonResponse({'error': 'Image not found'})
     return JsonResponse({'error': 'Invalid request'})
+
+
+def iframe(request):
+    return render(request, 'iframe.html')
+
+def email(request):
+    return render(request, 'email.html')
+
+def portal(request):
+    return render(request, 'portal.html')
+

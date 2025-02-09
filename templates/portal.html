@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-extrabold text-center mb-12 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Welcome to the Portal
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Update Login Card -->
+            <a href="{% url 'login' %}" class="group">
+                <div class="h-64 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 hover:scale-105 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 transform group-hover:scale-110 transition-transform duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl mb-4 shadow-lg transform group-hover:rotate-12 transition-transform duration-300">
+                            <i class="fas fa-key text-white text-2xl flex items-center justify-center h-full"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Update Login Credentials</h3>
+                        <p class="text-gray-600">Securely update your login information and password settings</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Update Profile Card -->
+            <a href="{% url 'add_edit_user_profile' %}" class="group">
+                <div class="h-64 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 hover:scale-105 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 transform group-hover:scale-110 transition-transform duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-4 shadow-lg transform group-hover:rotate-12 transition-transform duration-300">
+                            <i class="fas fa-user-edit text-white text-2xl flex items-center justify-center h-full"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Update Profile</h3>
+                        <p class="text-gray-600">Manage your personal information and preferences</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Download Data Card -->
+            <a href="#" class="group">
+                <div class="h-64 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 hover:scale-105 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-rose-500/10 transform group-hover:scale-110 transition-transform duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl mb-4 shadow-lg transform group-hover:rotate-12 transition-transform duration-300">
+                            <i class="fas fa-download text-white text-2xl flex items-center justify-center h-full"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Download My Data</h3>
+                        <p class="text-gray-600">Export and download all your personal data</p>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Delete Account Card -->
+            <a href="#" class="group">
+                <div class="h-64 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20 p-8 hover:scale-105 transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-red-500/10 transform group-hover:scale-110 transition-transform duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 bg-gradient-to-br from-rose-500 to-red-500 rounded-2xl mb-4 shadow-lg transform group-hover:rotate-12 transition-transform duration-300">
+                            <i class="fas fa-user-times text-white text-2xl flex items-center justify-center h-full"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Delete Account</h3>
+                        <p class="text-gray-600">Permanently delete your account and all associated data</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

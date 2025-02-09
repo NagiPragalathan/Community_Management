@@ -1,47 +1,75 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto p-6">
-    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-6 text-center">Operations View</h1>
-
-        <!-- Chapter Operations -->
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold mb-4">Chapter</h2>            
-            <div class="bg-gray-100 p-4 rounded">
-                <h3 class="text-lg font-medium">Manage Visitors</h3>
-                <p><a href="{% url 'visitor_registration_portal' %}" class="text-blue-500 hover:text-blue-700">Visitor Registration Portal</a></p>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Decorative Header -->
+        <div class="relative mb-12">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t-2 border-blue-300"></div>
+            </div>
+            <div class="relative flex justify-center">
+                <h1 class="px-6 py-3 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg text-3xl font-extrabold text-blue-900 tracking-wider shadow-lg">
+                    Operations Dashboard
+                </h1>
             </div>
         </div>
 
-        <!-- Meeting Management -->
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold mb-4">Meeting Management</h2>
-            <div class="bg-gray-100 p-4 rounded">
-                <h3 class="text-lg font-medium">PALMS Summary</h3>
-                <p><a href="{% url 'view_palms_summary' %}" class="text-blue-500 hover:text-blue-700">View PALMS Summary</a></p>
+        <!-- Main Content -->
+        <div class="bg-white rounded-2xl shadow-xl border-2 border-blue-200 overflow-hidden transform transition-all hover:shadow-2xl hover:border-blue-300 hover:scale-[1.01] duration-300">
+            <div class="p-8 space-y-8">
+                <!-- Chapter Operations -->
+                <div class="group">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4 group-hover:text-blue-700 transition-colors">Chapter Operations</h2>
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200 hover:border-blue-300 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-3">Visitor Management</h3>
+                        <a href="{% url 'visitor_registration_portal' %}" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transform hover:scale-105 transition-all duration-300">
+                            Visitor Registration Portal
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Meeting Management -->
+                <div class="group">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4 group-hover:text-blue-700 transition-colors">Meeting Management</h2>
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200 hover:border-blue-300 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-3">PALMS Summary</h3>
+                        <a href="{% url 'chapter_performance_report' %}" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transform hover:scale-105 transition-all duration-300">
+                            View PALMS Summary
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Goals Management -->
+                <div class="group">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4 group-hover:text-blue-700 transition-colors">Goals Management</h2>
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200 hover:border-blue-300 transition-all duration-300">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-3">Chapter Goals</h3>
+                        <a href="{% url 'set_goals' %}" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transform hover:scale-105 transition-all duration-300">
+                            View Chapter Goals
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Email Communications -->
+                <div class="group">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4 group-hover:text-blue-700 transition-colors">Email Communications</h2>
+                    <div class="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-xl border-2 border-blue-200 hover:border-blue-300 transition-all duration-300">
+                        <div class="space-y-3">
+                            <a href="{% url 'email_my_chapter' %}" class="block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transform hover:scale-105 transition-all duration-300 text-center">
+                                Email My Chapter
+                            </a>
+                            <a href="" class="block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transform hover:scale-105 transition-all duration-300 text-center">
+                                Email Visitor Invitation
+                            </a>
+                            <a href="" class="block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transform hover:scale-105 transition-all duration-300 text-center">
+                                Email Chapter Visitors
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Manage Goals -->
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold mb-4">Manage Goals</h2>
-            <div class="bg-gray-100 p-4 rounded">
-                <h3 class="text-lg font-medium">Chapter Goals</h3>
-                <p><a href="{% url 'view_chapter_goals' %}" class="text-blue-500 hover:text-blue-700">View Chapter Goals</a></p>
-            </div>
-        </div>
-
-        <!-- Email Communication -->
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold mb-4">Create Email</h2>
-            <div class="bg-gray-100 p-4 rounded">
-                <p><a href="{% url 'email_my_chapter' %}" class="text-blue-500 hover:text-blue-700">Email My Chapter</a></p>
-                <p><a href="" class="text-blue-500 hover:text-blue-700">Email Visitor Invitation</a></p>
-                <p><a href="" class="text-blue-500 hover:text-blue-700">Email Chapter Visitors</a></p>
-            </div>
-        </div>
-
     </div>
 </div>
 {% endblock %}

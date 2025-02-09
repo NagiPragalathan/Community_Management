@@ -2,83 +2,129 @@
 {% load static %}
 
 {% block content %}
-<div class="container mx-auto p-10 md:p-20 antialiased">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Global Peoples</h1>
-    <div class="flex justify-between mb-4">
-        <input type="text" id="searchInput" placeholder="Search connections..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-300">
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="profileContainer">
-        {% for profile in profiles %}
-        <div class="flex flex-col justify-center profile-card bg-white rounded-3xl shadow-xl overflow-hidden p-6 cursor-pointer" 
-             data-id="{{ profile.user.id }}" 
-             data-name="{{ profile.display_name }}" 
-             data-company="{{ profile.company_name }}" 
-             data-industry="{{ profile.industry }}" 
-             data-keywords="{{ profile.keywords }}" 
-             data-title="{{ profile.title }}" 
-             data-first-name="{{ profile.first_name }}" 
-             data-last-name="{{ profile.last_name }}" 
-             data-gender="{{ profile.gender }}" 
-             data-membership-status="{{ profile.membership_status }}"
-             data-address="{{ profile.address }}"
-             data-contact="{{ profile.contact }}"
-             data-profile-url="asdfg">
-            <div class="flex items-center justify-between flex-col">
-                {% if profile.user.profile_image %}
-                <img src="{{ profile.user.profile_image.url }}" alt="{{ profile.display_name }}" class="w-16 h-16 rounded-full object-cover">
-                {% else %}
-                <img src="https://static.vecteezy.com/system/resources/previews/002/265/650/original/unknown-person-user-icon-for-web-vector.jpg" alt="{{ profile.display_name }}" class="w-16 h-16 rounded-full object-cover">
-                {% endif %}
-                <div class="ml-4 flex flex-col">
-                    <p class="text-lg font-medium text-gray-900 truncate">{{ profile.title }} {{ profile.first_name }} {{ profile.last_name }}</p>
-                    <p class="text-sm text-gray-500">{{ profile.membership_status }}</p>
-                </div>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 py-12 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto">
+        <!-- Elegant Header -->
+        <div class="relative mb-12">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t-2 border-blue-300/50"></div>
             </div>
-            <div class="mt-4">
-                <p class="text-sm text-gray-500"><strong>Company:</strong> {{ profile.company_name }}</p>
-                <p class="text-sm text-gray-500"><strong>GST ID/PAN:</strong> {{ profile.gst_identification_number_or_pan }}</p>
-                <p class="text-sm text-gray-500"><strong>Industry:</strong> {{ profile.industry }}</p>
-                <p class="text-sm text-gray-500"><strong>Gender:</strong> {{ profile.gender }}</p>
-            </div>
-            <p class="mt-2 text-gray-600">{{ profile.product_service_description }}</p>
-            <div class="flex flex-wrap gap-2 mt-4">
-                {% if profile.industry %}
-                <span class="text-xs font-semibold py-1 px-3 bg-blue-500 text-white rounded-full">{{ profile.industry }}</span>
-                {% endif %}
-                {% if profile.keywords %}
-                <span class="text-xs font-semibold py-1 px-3 bg-green-500 text-white rounded-full">{{ profile.keywords }}</span>
-                {% endif %}
+            <div class="relative flex justify-center">
+                <span class="px-8 py-3 bg-gradient-to-r from-blue-100 to-blue-200 rounded-xl shadow-lg">
+                    <h1 class="text-4xl font-bold text-blue-800 tracking-tight">Global Network</h1>
+                </span>
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Search Bar -->
+        <div class="max-w-2xl mx-auto mb-12">
+            <div class="relative">
+                <input type="text" id="searchInput" placeholder="Search connections..." 
+                    class="w-full px-6 py-4 text-lg rounded-full border-2 border-blue-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-lg hover:shadow-xl bg-white/80 backdrop-blur-sm"
+                >
+                <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="profileContainer">
+            {% for profile in profiles %}
+            <div class="profile-card group bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] cursor-pointer p-6"
+                 data-id="{{ profile.user.id }}" 
+                 data-name="{{ profile.display_name }}" 
+                 data-company="{{ profile.company_name }}" 
+                 data-industry="{{ profile.industry }}" 
+                 data-keywords="{{ profile.keywords }}" 
+                 data-title="{{ profile.title }}" 
+                 data-first-name="{{ profile.first_name }}" 
+                 data-last-name="{{ profile.last_name }}" 
+                 data-gender="{{ profile.gender }}" 
+                 data-membership-status="{{ profile.membership_status }}"
+                 data-address="{{ profile.address }}"
+                 data-contact="{{ profile.contact }}"
+                 data-profile-url="asdfg">
+                
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="relative">
+                        {% if profile.user.profile_image %}
+                            <img src="{{ profile.user.profile_image.url }}" alt="{{ profile.display_name }}" 
+                                class="w-20 h-20 rounded-full object-cover ring-4 ring-blue-100 group-hover:ring-blue-200 transition-all duration-300">
+                        {% else %}
+                            <img src="https://static.vecteezy.com/system/resources/previews/002/265/650/original/unknown-person-user-icon-for-web-vector.jpg" 
+                                alt="{{ profile.display_name }}" 
+                                class="w-20 h-20 rounded-full object-cover ring-4 ring-blue-100 group-hover:ring-blue-200 transition-all duration-300">
+                        {% endif %}
+                        <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-4 border-white"></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
+                            {{ profile.title }} {{ profile.first_name }} {{ profile.last_name }}
+                        </h3>
+                        <p class="text-sm text-blue-500 font-medium">{{ profile.membership_status }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2 mb-6">
+                    <div class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                        <span>{{ profile.company_name }}</span>
+                    </div>
+                    <div class="flex items-center text-gray-600">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>{{ profile.gst_identification_number_or_pan }}</span>
+                    </div>
+                </div>
+
+                <p class="text-gray-600 mb-6">{{ profile.product_service_description }}</p>
+
+                <div class="flex flex-wrap gap-2">
+                    {% if profile.industry %}
+                    <span class="px-3 py-1 text-sm font-medium text-blue-600 bg-blue-100 rounded-full">{{ profile.industry }}</span>
+                    {% endif %}
+                    {% if profile.keywords %}
+                    <span class="px-3 py-1 text-sm font-medium text-green-600 bg-green-100 rounded-full">{{ profile.keywords }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
-<!-- Modal -->
-<div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen p-4 text-center">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-        <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg sm:w-full">
-            <div>
-                <div class="flex items-center">
-                    <div class="ml-3 w-0 flex-1">
-                        <a href="#" id="sample"><h3 class="text-lg leading-6 font-medium text-gray-900" id="modalName"></h3></a>
-                        <p class="text-sm text-gray-500" id="modalCompany"></p>
-                    </div>
-                </div>
-                <div class="mt-3 text-center sm:mt-5">
-                    <div class="mt-2">
-                        <p class="text-sm text-gray-500" id="modalIndustry"></p>
-                        <p class="text-sm text-gray-500" id="modalAddress"></p>
-                        <p class="text-sm text-gray-500" id="modalContact"></p>
+<!-- Enhanced Modal -->
+<div id="profileModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-gradient-to-r from-blue-50 to-blue-100 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                        <a href="#" id="sample" class="hover:text-blue-600 transition-colors">
+                            <h3 class="text-2xl leading-6 font-bold text-gray-900 mb-2" id="modalName"></h3>
+                        </a>
+                        <p class="text-lg text-blue-600 font-medium mb-4" id="modalCompany"></p>
+                        <div class="space-y-2 text-gray-600">
+                            <p id="modalIndustry"></p>
+                            <p id="modalAddress"></p>
+                            <p id="modalContact"></p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
-                <a href="#" id="sendMessageBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm">Send Message</a>
-                <a href="#" id="giveTestimonialBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm">Give Testimonial</a>
-                <a href="#" id="requestTestimonialBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-1 sm:text-sm">Request Testimonial</a>
-                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-4 sm:text-sm" id="closeModalBtn">Close</button>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+                <a href="#" id="sendMessageBtn" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300">Send Message</a>
+                <a href="#" id="giveTestimonialBtn" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300">Give Testimonial</a>
+                <a href="#" id="requestTestimonialBtn" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-purple-600 text-base font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300">Request Testimonial</a>
+                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm transition-all duration-300" id="closeModalBtn">Close</button>
             </div>
         </div>
     </div>

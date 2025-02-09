@@ -1,30 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goals List</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-10 rounded-lg shadow-lg max-w-4xl w-full">
-        <h2 class="text-3xl font-bold mb-10 text-center text-gray-800">Goals List</h2>
-        <div class="space-y-6">
-            {% for goal in goals %}
-                <div class="border-b border-gray-200 pb-4">
-                    <h3 class="text-xl font-semibold text-gray-800">{{ goal.chapter.name }} - {{ goal.date_of_month }}</h3>
-                    <p><strong>Attendance Percentage:</strong> {{ goal.attendance_percentage }}%</p>
-                    <p><strong>Total Number of 1 to 1s:</strong> {{ goal.total_number_of_1_to_1s }}</p>
-                    <p><strong>CEUs:</strong> {{ goal.ceus }}</p>
-                    <p><strong>Visitors:</strong> {{ goal.visitors }}</p>
-                    <p><strong>New Memberships:</strong> {{ goal.new_memberships }}</p>
-                    <p><strong>Number of Members in Chapter:</strong> {{ goal.number_of_members_in_chapter }}</p>
-                    <p><strong>Number of Referrals:</strong> {{ goal.number_of_referrals }}</p>
-                    <p><strong>Thank You for Closed Business:</strong> {{ goal.thank_you_for_closed_business }}</p>
-                    <p><strong>Updated Date:</strong> {{ goal.updated_date }}</p>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-indigo-200">
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 py-6 px-6">
+                <h2 class="text-3xl font-bold text-center text-white">Chapter Goals Dashboard</h2>
+                <p class="mt-2 text-center text-indigo-100">Tracking Progress & Achievement</p>
+            </div>
+
+            <div class="p-8">
+                <div class="grid gap-8">
+                    {% for goal in goals %}
+                    <div class="bg-white p-6 rounded-xl border-2 border-indigo-100 hover:border-indigo-300 transition-all duration-300 transform hover:scale-[1.01] hover:shadow-lg">
+                        <div class="flex justify-between items-center mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-lg">
+                            <h3 class="text-2xl font-bold text-indigo-800">{{ goal.chapter.name }}</h3>
+                            <span class="text-purple-600 font-semibold">{{ goal.date_of_month }}</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <p class="text-blue-800 font-semibold">Attendance Target</p>
+                                <p class="text-2xl font-bold text-blue-600">{{ goal.attendance_percentage }}%</p>
+                            </div>
+
+                            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                                <p class="text-purple-800 font-semibold">One-to-One Meetings</p>
+                                <p class="text-2xl font-bold text-purple-600">{{ goal.total_number_of_1_to_1s }}</p>
+                            </div>
+
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <p class="text-green-800 font-semibold">CEUs Progress</p>
+                                <p class="text-2xl font-bold text-green-600">{{ goal.ceus }}</p>
+                            </div>
+
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <p class="text-yellow-800 font-semibold">Visitors</p>
+                                <p class="text-2xl font-bold text-yellow-600">{{ goal.visitors }}</p>
+                            </div>
+
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <p class="text-red-800 font-semibold">New Members</p>
+                                <p class="text-2xl font-bold text-red-600">{{ goal.new_memberships }}</p>
+                            </div>
+
+                            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                                <p class="text-indigo-800 font-semibold">Total Members</p>
+                                <p class="text-2xl font-bold text-indigo-600">{{ goal.number_of_members_in_chapter }}</p>
+                            </div>
+
+                            <div class="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                                <p class="text-pink-800 font-semibold">Referrals</p>
+                                <p class="text-2xl font-bold text-pink-600">{{ goal.number_of_referrals }}</p>
+                            </div>
+
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <p class="text-orange-800 font-semibold">TYFCB</p>
+                                <p class="text-2xl font-bold text-orange-600">${{ goal.thank_you_for_closed_business }}</p>
+                            </div>
+
+                            <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                                <p class="text-teal-800 font-semibold">Last Updated</p>
+                                <p class="text-2xl font-bold text-teal-600">{{ goal.updated_date|date:"M d, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
