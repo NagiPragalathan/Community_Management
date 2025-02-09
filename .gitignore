@@ -69,3 +69,6 @@ local_settings.py
 *.swo
 Thumbs.db
 ehthumbs.db
+
+# Python compiled files
+*.pyc
