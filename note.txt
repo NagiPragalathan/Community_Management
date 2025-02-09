@@ -84,3 +84,21 @@ Chapter Performance report = sum of peoples
 before creating profile select the chapter and region
 
 sample
+
+
+reports  user Management
+add chapter redirection
+main profile saving like bni
+user active and inactive - backend
+profile language dynamic
+create new user tab to create new user
+create new page to show the current profile - backend and frontend
+write the code for portal - delete my account, download the profile, change password, update profile.
+
+need to ask reports should show into all of the user
+
+
+backend:
+Email My Chapter
+Email Visitor Invitation
+Email Chapter Visitors

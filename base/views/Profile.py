@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 
 def profile_management(request):
-    return render(request, 'profile/profile_management.html')
+    return render(request, 'Profile/profile_management.html')
 
 def add_profile(request):
     if request.method == 'POST':
@@ -72,10 +72,11 @@ def add_profile(request):
         print(chapter)
         for i in chapter:
             print(i.id, i.chapter_name)
-        return render(request, 'profile/add_profile.html', {'data':profile, 'chapter':chapter})
+        return render(request, 'Profile/add_profile.html', {'data':profile, 'chapter':chapter})
     except:
-        return render(request, 'profile/add_profile.html')
+        return render(request, 'Profile/add_profile.html')
         
+
 
 def add_contact_details(request):
     if request.method == 'POST':
@@ -142,7 +143,8 @@ def add_contact_details(request):
     except ContactDetails.DoesNotExist:
         initial_data = {}
 
-    return render(request, 'profile/add_contact_details.html', {"initial_data":initial_data})
+    return render(request, 'Profile/add_contact_details.html', {"initial_data":initial_data})
+
 
 
 def add_edit_user_profile(request):
