@@ -300,7 +300,7 @@ def common_data(request):
             'is_admin': 1 if is_admin else 0
         })
     else:
-
+        is_admin = request.user.is_superuser or request.user.is_staff
         context.update({
             'usr_name': "No name",
             'unseen_messages_count': 0,
