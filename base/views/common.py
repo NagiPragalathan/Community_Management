@@ -314,5 +314,7 @@ def common_data(request):
             'is_admin': is_admin
 
         })
+    
+    print(context)
 
     return context
