@@ -110,13 +110,14 @@ def add_profile(request, username, dashboard=0):
             chapters = ChapterName.objects.all()
 
         return render(request, 'Profile/add_profile.html', {
-            'data': None,
+            'data': profile,
             'chapter': chapters,
             'is_admin': is_admin,
             'error': True,
             'base_template': base_template,
             'is_admin': is_admin_user(request.user)
         })
+
 
 
 def add_contact_details(request, username, dashboard=0):
