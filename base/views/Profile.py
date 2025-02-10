@@ -105,6 +105,7 @@ def add_profile(request, username, dashboard=0):
         try:
             profile = MainProfile.objects.filter(user=request.user).first()
             chapters = Chapter.objects.filter(name=profile.Chapter.id).first()
+            chapters = [chapters]
         except Exception as e:
             chapters = ChapterName.objects.all()
 
