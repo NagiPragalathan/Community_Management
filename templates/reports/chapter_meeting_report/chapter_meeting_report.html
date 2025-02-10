@@ -1,4 +1,4 @@
-{% extends 'admin_base.html' %}
+{% extends base_template %}
 
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-16 px-4 sm:px-6 lg:px-8">
@@ -22,13 +22,18 @@
                         <select name="chapter" id="chapter" 
                                 class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200"
                                 required>
+                            {% if is_admin %}
                             <option value="" disabled selected>Select a chapter</option>
-                            {% for chapter in chapters %}
-                                <option value="{{ chapter.id }}" {% if chapter == selected_chapter %}selected{% endif %}>{{ chapter.name }}</option>
-                            {% endfor %}
+                                {% for chapter in chapters %}
+                                    <option value="{{ chapter.id }}" {% if chapter == selected_chapter %}selected{% endif %}>{{ chapter.name }}</option>
+                                {% endfor %}
+                            {% else %}
+                            <option value="{{ chapter.id }}" {% if chapter == selected_chapter %}selected{% endif %}>{{ chapter.name }}</option>
+                            {% endif %}
                         </select>
                     </div>
                     <div class="space-y-2">
+
                         <label for="meeting_date" class="block text-sm font-semibold text-gray-700">Meeting Date</label>
                         <input type="date" id="meeting_date" name="meeting_date" value="{{ selected_meeting_date }}" 
                                class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200"

@@ -77,11 +77,11 @@ auth = [
 
 profile =[
     path('profile/profile_management', profile_management, name='profile_management'),
-    path('add_profile', add_profile, name='add_profile'),
-    path('add_contact_details', add_contact_details, name='add_contact_details'),
-    path('add_edit_user_profile', add_edit_user_profile, name='add_edit_user_profile'),
-    path('add_or_edit_address', add_or_edit_address, name='add_or_edit_address'),
-    path('add_or_edit_bio', add_or_edit_bio, name='add_or_edit_bio'),
+    path('add_edit_user_profile', add_edit_user_profile, name='add_edit_user_profile'), # here we can create new user so this is first tab.
+    path('add_profile/<str:username>', add_profile, name='add_profile'),
+    path('add_contact_details/<str:username>', add_contact_details, name='add_contact_details'),
+    path('add_or_edit_address/<str:username>', add_or_edit_address, name='add_or_edit_address'),
+    path('add_or_edit_bio/<str:username>', add_or_edit_bio, name='add_or_edit_bio'),
     path('delete_image', delete_image, name='delete_image'),
     path('add_gallery', add_gallery, name='add_gallery'),
 ]
@@ -323,10 +323,11 @@ training_sessions_report_url = [
 ]
 
 iframe_url = [
-    path('iframe/', iframe, name='iframe'),
+    path('iframe/<str:username>', iframe, name='iframe'),
     path('email/', email, name='email'),
     path('portal/', portal, name='portal'),
 ]
+
 
 
 

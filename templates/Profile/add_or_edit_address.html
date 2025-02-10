@@ -1,5 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<style>
+.address-suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0.75rem;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f9ff;
+}
+</style>
+{% endblock %}
+
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-white p-8">
     <div class="max-w-4xl mx-auto">
         <div class="bg-white rounded-2xl shadow-lg border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl">
@@ -13,57 +40,67 @@
 
             <form method="post" class="p-8 space-y-6">
                 {% csrf_token %}
-                {% if address %}
-                    <input type="hidden" name="address_id" value="{{ address.id }}">
-                {% endif %}
                 <input type="hidden" name="address_type" id="address_type" value="Address">
 
-                <div class="group">
-                    <label for="address_line_1" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Address Line 1</label>
-                    <input type="text" name="address_line_1" id="address_line_1" 
-                        value="{% if address %}{{ address.address_line_1 }}{% endif %}" required
+                <div class="group relative">
+                    <label for="address_line_1" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Address Line 1 *</label>
+                    <input type="text" name="address_line_1" id="address_line_1"  required
+                        value="{{ address.address_line_1|default:'' }}"
+                        required
                         class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
-                        placeholder="Enter your street address">
+                        placeholder="Enter your street address"
+                        autocomplete="off">
+                    <div id="address-suggestions" class="address-suggestions"></div>
                 </div>
 
                 <div class="group">
                     <label for="address_line_2" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Address Line 2</label>
                     <input type="text" name="address_line_2" id="address_line_2" 
-                        value="{% if address %}{{ address.address_line_2 }}{% endif %}"
+                        value="{{ address.address_line_2|default:'' }}"
                         class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
                         placeholder="Apartment, suite, unit, etc. (optional)">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="group">
-                        <label for="city" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">City</label>
+                    <div class="group relative">
+                        <label for="city" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">City *</label>
                         <input type="text" name="city" id="city" 
-                            value="{% if address %}{{ address.city }}{% endif %}" required
+                            value="{{ address.city|default:'' }}"
+                            required
                             class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
-                            placeholder="Enter city">
+                            placeholder="Enter city"
+                            autocomplete="off">
+                        <div id="city-suggestions" class="address-suggestions"></div>
                     </div>
 
-                    <div class="group">
-                        <label for="state" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">State</label>
+                    <div class="group relative">
+                        <label for="state" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">State *</label>
                         <input type="text" name="state" id="state" 
-                            value="{% if address %}{{ address.state }}{% endif %}" required
+                            value="{{ address.state|default:'' }}"
+                            required
                             class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
-                            placeholder="Enter state">
+                            placeholder="Enter state"
+                            autocomplete="off">
+                        <div id="state-suggestions" class="address-suggestions"></div>
                     </div>
 
-                    <div class="group">
-                        <label for="country" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Country</label>
+                    <div class="group relative">
+                        <label for="country" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Country *</label>
                         <input type="text" name="country" id="country" 
-                            value="{% if address %}{{ address.country }}{% endif %}" required
+                            value="{{ address.country|default:'' }}"
+                            required
                             class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
-                            placeholder="Enter country">
+                            placeholder="Enter country"
+                            autocomplete="off">
+                        <div id="country-suggestions" class="address-suggestions"></div>
                     </div>
                 </div>
 
                 <div class="group">
-                    <label for="zip_code" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Zip Code</label>
+                    <label for="zip_code" class="block text-md font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Zip Code *</label>
                     <input type="text" name="zip_code" id="zip_code" 
-                        value="{% if address %}{{ address.zip_code }}{% endif %}" required
+                        value="{{ address.zip_code|default:'' }}"
+                        required
                         class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
                         placeholder="Enter zip code">
                 </div>
@@ -76,4 +113,229 @@
         </div>
     </div>
 </div>
+
+<script>
+let timeoutId;
+
+document.getElementById('address_line_1').addEventListener('input', function(e) {
+    clearTimeout(timeoutId);
+    const query = e.target.value;
+    
+    if (query.length < 3) {
+        document.getElementById('address-suggestions').style.display = 'none';
+        return;
+    }
+
+    // Add delay to prevent too many API calls
+    timeoutId = setTimeout(() => {
+        fetchAddressSuggestions(query);
+    }, 300);
+});
+
+async function fetchAddressSuggestions(query) {
+    try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`, {
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'YourWebsite' // Replace with your website name
+            }
+        });
+        const data = await response.json();
+        displaySuggestions(data);
+    } catch (error) {
+        console.error('Error fetching addresses:', error);
+    }
+}
+
+function displaySuggestions(suggestions) {
+    const suggestionsDiv = document.getElementById('address-suggestions');
+    suggestionsDiv.innerHTML = '';
+    
+    if (suggestions.length > 0) {
+        suggestions.forEach(place => {
+            const div = document.createElement('div');
+            div.className = 'suggestion-item';
+            div.textContent = place.display_name;
+            div.addEventListener('click', () => selectAddress(place));
+            suggestionsDiv.appendChild(div);
+        });
+        suggestionsDiv.style.display = 'block';
+    } else {
+        suggestionsDiv.style.display = 'none';
+    }
+}
+
+function selectAddress(place) {
+    // Parse the address components
+    const addressParts = place.display_name.split(',').map(part => part.trim());
+    
+    // Get the first part as street address (usually contains street number and name)
+    const streetAddress = addressParts[0];
+    document.getElementById('address_line_1').value = streetAddress;
+    
+    // Clear the suggestions
+    document.getElementById('address-suggestions').style.display = 'none';
+
+    // Try to extract and set other address components
+    if (place.address) {
+        // If OpenStreetMap provides structured address data
+        if (place.address.road) {
+            document.getElementById('address_line_1').value = 
+                (place.address.house_number ? place.address.house_number + ' ' : '') + 
+                place.address.road;
+        }
+        if (place.address.city || place.address.town || place.address.village) {
+            document.getElementById('city').value = 
+                place.address.city || place.address.town || place.address.village;
+        }
+        if (place.address.state) {
+            document.getElementById('state').value = place.address.state;
+        }
+        if (place.address.country) {
+            document.getElementById('country').value = place.address.country;
+        }
+        if (place.address.postcode) {
+            document.getElementById('zip_code').value = place.address.postcode;
+        }
+    } else {
+        // Fallback to parsing the display_name string
+        // Try to find city, state, country, and postal code from the address parts
+        for (let i = 1; i < addressParts.length; i++) {
+            const part = addressParts[i].trim();
+            
+            // Try to identify postal code (usually contains numbers)
+            if (part.match(/\d/)) {
+                document.getElementById('zip_code').value = part;
+                continue;
+            }
+            
+            // Assign remaining parts based on position
+            if (i === 1 && !document.getElementById('city').value) {
+                document.getElementById('city').value = part;
+            } else if (i === 2 && !document.getElementById('state').value) {
+                document.getElementById('state').value = part;
+            } else if (i === addressParts.length - 1 && !document.getElementById('country').value) {
+                document.getElementById('country').value = part;
+            }
+        }
+    }
+
+    // Trigger change event on all fields to update any dependent UI
+    ['address_line_1', 'city', 'state', 'country', 'zip_code'].forEach(fieldId => {
+        const event = new Event('change');
+        document.getElementById(fieldId).dispatchEvent(event);
+    });
+}
+
+// Close suggestions when clicking outside
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.group')) {
+        document.getElementById('address-suggestions').style.display = 'none';
+    }
+});
+
+// Add these new functions:
+
+// Generic function to handle input events for city, state, and country
+function setupLocationField(fieldId, type) {
+    let timeoutId;
+    const input = document.getElementById(fieldId);
+    
+    input.addEventListener('input', function(e) {
+        clearTimeout(timeoutId);
+        const query = e.target.value;
+        
+        if (query.length < 2) {
+            document.getElementById(`${fieldId}-suggestions`).style.display = 'none';
+            return;
+        }
+
+        timeoutId = setTimeout(() => {
+            fetchLocationSuggestions(query, fieldId, type);
+        }, 300);
+    });
+}
+
+async function fetchLocationSuggestions(query, fieldId, type) {
+    try {
+        let searchQuery = query;
+        if (type === 'city') {
+            searchQuery += ' city';
+        } else if (type === 'state') {
+            searchQuery += ' state';
+        }
+
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`, {
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'YourWebsite'
+            }
+        });
+        const data = await response.json();
+        displayLocationSuggestions(data, fieldId, type);
+    } catch (error) {
+        console.error('Error fetching locations:', error);
+    }
+}
+
+function displayLocationSuggestions(suggestions, fieldId, type) {
+    const suggestionsDiv = document.getElementById(`${fieldId}-suggestions`);
+    suggestionsDiv.innerHTML = '';
+    
+    if (suggestions.length > 0) {
+        const uniqueLocations = new Set();
+        
+        suggestions.forEach(place => {
+            const addressParts = place.display_name.split(',').map(part => part.trim());
+            let locationName = '';
+            
+            if (type === 'city') {
+                locationName = addressParts[0];
+            } else if (type === 'state') {
+                locationName = addressParts[addressParts.length - 3] || addressParts[0];
+            } else if (type === 'country') {
+                locationName = addressParts[addressParts.length - 1];
+            }
+            
+            if (locationName && !uniqueLocations.has(locationName)) {
+                uniqueLocations.add(locationName);
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.textContent = locationName;
+                div.addEventListener('click', () => {
+                    document.getElementById(fieldId).value = locationName;
+                    suggestionsDiv.style.display = 'none';
+                });
+                suggestionsDiv.appendChild(div);
+            }
+        });
+        
+        if (suggestionsDiv.children.length > 0) {
+            suggestionsDiv.style.display = 'block';
+        } else {
+            suggestionsDiv.style.display = 'none';
+        }
+    } else {
+        suggestionsDiv.style.display = 'none';
+    }
+}
+
+// Initialize the location fields
+document.addEventListener('DOMContentLoaded', function() {
+    setupLocationField('city', 'city');
+    setupLocationField('state', 'state');
+    setupLocationField('country', 'country');
+    
+    // Update click outside handler to include all suggestion boxes
+    document.addEventListener('click', function(e) {
+        const suggestionBoxes = document.querySelectorAll('.address-suggestions');
+        suggestionBoxes.forEach(box => {
+            if (!e.target.closest('.group')) {
+                box.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+
 {% endblock content %}

@@ -4,15 +4,26 @@ from base.views.common import calculate_meeting_counts, calculate_ceu_counts
 from django.utils import timezone
 from datetime import datetime, timedelta
 
+def is_admin_user(user):
+    """
+    Check if the user is a superuser or has staff permissions
+    """
+    return user.is_superuser or user.is_staff
+
 
 def chapter_meeting_report(request):
     chapters = Chapter.objects.all()
     selected_chapter = None
     selected_meeting_date = None
     members = []
+    
+    if not is_admin_user(request.user):
+        profile = MainProfile.objects.filter(user=request.user).first()
+        chapter = Chapter.objects.filter(name=profile.Chapter.id).first()
 
     if request.method == 'POST':
         selected_chapter_id = request.POST.get('chapter')
+
         selected_meeting_date = request.POST.get('meeting_date')
 
         if selected_chapter_id and selected_meeting_date:
@@ -73,5 +84,8 @@ def chapter_meeting_report(request):
         'chapters': chapters,
         'selected_chapter': selected_chapter,
         'members': members,
-        'selected_meeting_date': selected_meeting_date
+        'selected_meeting_date': selected_meeting_date,
+        'is_admin': is_admin_user(request.user),
+        'chapter': chapter if not is_admin_user(request.user) else None,
+        'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html',
     })

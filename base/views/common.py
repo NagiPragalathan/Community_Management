@@ -219,7 +219,6 @@ def common_data(request):
     if request.user.is_authenticated:
         current_user = request.user
         usr_name = current_user.username
-        print(usr_name)
         try:
             profile = MainProfile.objects.get(user=current_user)
             usr_img = UserProfile.objects.get(user=current_user).profile_image
@@ -247,14 +246,20 @@ def common_data(request):
             if profile.renewal_due_date:
                 current_date = timezone.now().date()
                 renewal_date = profile.renewal_due_date
+                
+                print(current_date, renewal_date)
 
                 if current_date > renewal_date:
-                    renewal_message = 1
-                    days_left_for_renewal = (current_date - renewal_date).days * -1  # Negative days to indicate expiration
+                    renewal_message = 1  # Indicates expired renewal
+                    days_left_for_renewal = (renewal_date - current_date).days  # Negative value for expired
                 else:
-                    days_left_for_renewal = (renewal_date - current_date).days
-        except:
-            profile={}
+                    days_left_for_renewal = (renewal_date - current_date).days  # Positive value for remaining days
+            else:
+                days_left_for_renewal = None  # If renewal date is missing, return None
+        except AttributeError:  # Catch errors only when profile is None or missing attributes
+            days_left_for_renewal = None
+            
+        print(renewal_message, days_left_for_renewal)
 
         context.update({
             'usr_profile': profile,

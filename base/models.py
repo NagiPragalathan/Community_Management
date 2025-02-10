@@ -79,24 +79,15 @@ class MainProfile(models.Model):
         related_name='mainprofile_sponsor'
     )
     joining_date = models.DateField(blank=True, null=True)
-    
+
     def save(self, *args, **kwargs):
-        if not self.id:  # if the instance is being created
+        if not self.id:  # If instance is being created
             self.joining_date = timezone.now().date()  # Assign current date to joining_date
         super(MainProfile, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.title} {self.first_name} {self.last_name}"
 
-    def check_membership_status(self):
-        if self.renewal_due_date and timezone.now().date() > self.renewal_due_date:
-            self.membership_status = 'Not Active'
-            self.active_until = self.renewal_due_date
-            self.save()
-
-@receiver(post_save, sender=MainProfile)
-def update_membership_status(sender, instance, **kwargs):
-    instance.check_membership_status()
 
 class ContactDetails(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)

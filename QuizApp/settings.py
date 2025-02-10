@@ -251,3 +251,5 @@ EMAIL_USE_TLS = True
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'  # Allows embedding only within the same domain

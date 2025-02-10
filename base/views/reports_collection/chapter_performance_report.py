@@ -4,6 +4,13 @@ from base.models import Chapter, MainProfile, Visitor, ReferralSlip, TYFCB, Regi
 from base.views.common import calculate_meeting_counts, calculate_ceu_counts
 from datetime import datetime
 
+def is_admin_user(user):
+    """
+    Check if the user is a superuser or has staff permissions
+    """
+    return user.is_superuser or user.is_staff
+
+
 
 def chapter_performance_report(request):
     regions = Region.objects.all()  # Fetch all regions
@@ -11,6 +18,11 @@ def chapter_performance_report(request):
     selected_from_date = None
     selected_to_date = None
     chapter_data = []
+
+    if not is_admin_user(request.user):
+        profile = MainProfile.objects.filter(user=request.user).first()
+        chapters = Chapter.objects.filter(name=profile.Chapter.id).first()
+        regions = [chapters.region]
 
     if request.method == 'POST':
         selected_region = request.POST.get('region')  # Get selected region
@@ -24,7 +36,12 @@ def chapter_performance_report(request):
 
             # Filter chapters based on selected region
             if selected_region:
-                chapters = Chapter.objects.filter(region_id=selected_region)  # Filter chapters by region
+                if not is_admin_user(request.user):
+                    profile = MainProfile.objects.filter(user=request.user).first()
+                    chapters = [Chapter.objects.filter(name=profile.Chapter.id).first()]
+                    print("chapters :", chapters)
+                else:
+                    chapters = Chapter.objects.filter(region_id=selected_region)
 
             for chapter in chapters:
                 # Get all members in the chapter
@@ -63,5 +80,7 @@ def chapter_performance_report(request):
         'selected_region': selected_region,
         'chapter_data': chapter_data,
         'selected_from_date': selected_from_date,
-        'selected_to_date': selected_to_date
+        'selected_to_date': selected_to_date,
+        'is_admin': is_admin_user(request.user),
+        'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html',
     })

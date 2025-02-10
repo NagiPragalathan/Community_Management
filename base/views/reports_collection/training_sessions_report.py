@@ -3,6 +3,12 @@ from django.db.models import Q
 from datetime import datetime
 from base.models import TrainingSessionProfile, TrainingSession, MainProfile, ContactDetails
 
+def is_admin_user(user):
+    """
+    Check if the user is a superuser or has staff permissions
+    """
+    return user.is_superuser or user.is_staff
+
 def training_sessions_report(request):
     training_sessions = TrainingSession.objects.all()
     selected_from_date = None
@@ -65,5 +71,7 @@ def training_sessions_report(request):
         'members_data': members_data,
         'selected_from_date': selected_from_date,
         'selected_to_date': selected_to_date,
-        'selected_training_types': selected_training_types
+        'selected_training_types': selected_training_types,
+        'is_admin': is_admin_user(request.user),
+        'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html',
     })

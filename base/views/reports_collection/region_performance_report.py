@@ -4,14 +4,28 @@ from base.models import Chapter, MainProfile, Visitor, ReferralSlip, TYFCB, Regi
 from base.views.common import calculate_meeting_counts, calculate_ceu_counts
 from datetime import datetime
 
+
+def is_admin_user(user):
+    """
+    Check if the user is a superuser or has staff permissions
+    """
+    return user.is_superuser or user.is_staff
+
 def region_performance_report(request):
     regions = Region.objects.all()
     selected_from_date = None
     selected_to_date = None
     region_data = []
+    
+    if not is_admin_user(request.user):
+        profile = MainProfile.objects.filter(user=request.user).first()
+        chapters = Chapter.objects.filter(name=profile.Chapter.id).first()
+        regions = [chapters.region]
+        
 
     if request.method == 'POST':
         selected_from_date = request.POST.get('from_date')
+
         selected_to_date = request.POST.get('to_date')
 
         if selected_from_date and selected_to_date:
@@ -55,11 +69,16 @@ def region_performance_report(request):
                     'tyfcb_given_count': tyfcb_given_count,
                     'referral_received_count': referral_received_count,
                     'referral_given_count': referral_given_count,
+                    'is_admin': is_admin_user(request.user),
+                    'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html',
                 })
+
 
     return render(request, 'reports/region_performance_report/region_performance_report.html', {
         'regions': regions,
         'region_data': region_data,
         'selected_from_date': selected_from_date,
-        'selected_to_date': selected_to_date
+        'selected_to_date': selected_to_date,
+        'is_admin': is_admin_user(request.user),
+        'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html',
     })

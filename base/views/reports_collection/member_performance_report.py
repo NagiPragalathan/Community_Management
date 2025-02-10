@@ -19,10 +19,15 @@ def member_performance_report(request):
     selected_to_date = None
     members = []
 
+    if not is_admin_user(request.user):
+        profile = MainProfile.objects.filter(user=request.user).first()
+        chapters = Chapter.objects.filter(name=profile.Chapter.id).first()
+
     if request.method == 'POST':
         selected_chapter_id = request.POST.get('chapter')
         selected_from_date = request.POST.get('from_date')
         selected_to_date = request.POST.get('to_date')
+
 
         if selected_chapter_id and selected_from_date and selected_to_date:
             selected_chapter = Chapter.objects.get(id=selected_chapter_id)
@@ -78,5 +83,6 @@ def member_performance_report(request):
         'members': members,
         'selected_from_date': selected_from_date,
         'selected_to_date': selected_to_date,
-        'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html' 
+        'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html',
+        'is_admin': is_admin_user(request.user),
     })

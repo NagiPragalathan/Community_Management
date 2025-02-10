@@ -1,84 +1,146 @@
-{% extends 'base.html' %}
+{% extends base_template|default:"base.html" %}
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-white p-8">
-    <div class="max-w-2xl mx-auto">
+    <div class="max-w-3xl mx-auto">
         <div class="bg-white rounded-2xl shadow-lg border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl">
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-t-2xl">
-                <h1 class="text-3xl font-extrabold text-white tracking-tight">
-                    {% if user_profile %}
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
-                            Edit Profile
-                        </span>
-                    {% else %}
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
-                            Create Profile
-                        </span>
-                    {% endif %}
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-t-2xl text-center">
+                <h1 class="text-3xl font-extrabold text-white">
+                    {% if user_profile %} Edit Profile {% else %} Create Profile {% endif %}
                 </h1>
             </div>
+
+            <!-- Display Messages -->
+            {% if messages %}
+                <div class="max-w-3xl mx-auto my-4">
+                    {% for message in messages %}
+                        <div class="p-4 rounded-lg text-white 
+                            {% if message.tags == 'success' %} bg-green-500 
+                            {% elif message.tags == 'error' %} bg-red-500 
+                            {% else %} bg-blue-500 {% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <form method="post" enctype="multipart/form-data" class="p-8 space-y-6">
                 {% csrf_token %}
 
                 <div class="space-y-6">
                     <div class="group">
-                        <label for="username" class="block text-lg font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Username</label>
-                        <input type="text" id="username" name="username" 
-                            {% if user_profile %}value="{{ user_profile.user.username }}"{% endif %}
-                            required
-                            class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
-                        >
+                        <label class="block text-lg font-semibold text-gray-700 mb-2">Username</label>
+                        <input type="text" name="username" {% if is_admin %} disabled {% endif %}
+                            value="{{ user_profile.user.username|default:'' }}" required
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all">
                     </div>
 
                     <div class="group">
-                        <label for="language" class="block text-lg font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Language</label>
-                        <input type="text" id="language" name="language"
-                            {% if user_profile %}value="{{ user_profile.language }}"{% endif %}
-                            required
-                            class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
-                        >
+                        <label class="block text-lg font-semibold text-gray-700 mb-2">Email</label>
+                        <input type="email" name="email"
+                            value="{{ user_profile.user.email|default:'' }}" required
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all">
+                    </div>
+                    {% if not is_admin %}
+                    <div class="group">
+                        <label class="block text-lg font-semibold text-gray-700 mb-2">Password</label>
+                        <input type="password" name="password" placeholder="Enter new password"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all">
+                    </div>
+                    {% endif %}
+
+                    <div class="group">
+                        <label class="block text-lg font-semibold text-gray-700 mb-2">Language</label>
+                        <select name="language" id="language-selector"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all">
+                        </select>
                     </div>
 
                     <div class="group">
-                        <label for="timezone" class="block text-lg font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Timezone</label>
-                        <input type="text" id="timezone" name="timezone"
-                            {% if user_profile %}value="{{ user_profile.timezone }}"{% endif %}
-                            required
-                            class="w-full px-4 py-3 rounded-xl border-2 border-blue-100 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-700 placeholder-blue-300"
-                        >
+                        <label class="block text-lg font-semibold text-gray-700 mb-2">Timezone</label>
+                        <select name="timezone" id="timezone-selector"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all">
+                        </select>
                     </div>
 
                     <div class="group">
-                        <label class="block text-lg font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Profile Image</label>
-                        {% if user_profile.profile_image and user_profile and user_profile.profile_image %}
-                            <div class="mb-4">
-                                <img src="{{ user_profile.profile_image.url }}" class="max-w-xs rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"/>
-                            </div>
+                        <label class="block text-lg font-semibold text-gray-700 mb-2">Profile Image</label>
+                        {% if user_profile.profile_image %}
+                            <img src="{{ user_profile.profile_image.url }}" class="max-w-xs rounded-lg shadow-md mb-4">
                         {% endif %}
-                        <input type="file" id="profile_image" name="profile_image" accept="image/*"
-                            class="w-full px-4 py-3 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                        >
+                        <input type="file" name="profile_image" accept="image/*"
+                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg file:bg-blue-50 file:text-blue-700 file:px-4 file:py-2 file:border-0 file:rounded-full file:font-semibold hover:file:bg-blue-100">
                     </div>
 
                     <div class="group">
-                        <label class="block text-lg font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">Company Logo</label>
-                        {% if user_profile.profile_image and user_profile and user_profile.company_logo %}
-                            <div class="mb-4">
-                                <img src="{{ user_profile.company_logo.url }}" class="max-w-xs rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"/>
-                            </div>
+                        <label class="block text-lg font-semibold text-gray-700 mb-2">Company Logo</label>
+                        {% if user_profile.company_logo %}
+                            <img src="{{ user_profile.company_logo.url }}" class="max-w-xs rounded-lg shadow-md mb-4">
                         {% endif %}
-                        <input type="file" id="company_logo" name="company_logo" accept="image/*"
-                            class="w-full px-4 py-3 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                        >
+                        <input type="file" name="company_logo" accept="image/*"
+                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg file:bg-blue-50 file:text-blue-700 file:px-4 file:py-2 file:border-0 file:rounded-full file:font-semibold hover:file:bg-blue-100">
                     </div>
+
+                    <button type="submit" 
+                        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold py-4 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-300">
+                        {% if user_profile %} Update Profile {% else %} Create Profile {% endif %}
+                    </button>
                 </div>
-
-                <button type="submit" 
-                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold py-4 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 transition-all duration-300 shadow-md hover:shadow-lg">
-                    {% if user_profile %}Update Profile{% else %}Create Profile{% endif %}
-                </button>
             </form>
         </div>
     </div>
 </div>
+
+<!-- Include Moment.js and Moment Timezone -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const timezoneSelect = document.getElementById("timezone-selector");
+    const languageSelect = document.getElementById("language-selector");
+
+    const currentTimezone = "{{ user_profile.timezone|default:'' }}";
+    const currentLanguage = "{{ user_profile.language|default:'' }}";
+
+    // Populate timezone dropdown
+    moment.tz.names().forEach(zone => {
+        let option = new Option(`${zone} (${moment.tz(zone).format('Z')})`, zone);
+        if (zone === currentTimezone) option.selected = true;
+        timezoneSelect.appendChild(option);
+    });
+
+    // Try to auto-select user's timezone if none is set
+    if (!currentTimezone) {
+        const localTimezone = moment.tz.guess();
+        timezoneSelect.value = localTimezone;
+    }
+
+    // Populate language dropdown
+    const languageCodes = [
+        "en", "es", "fr", "de", "zh", "ja", "ko", "ru", "ar", "pt", "it", "nl", "sv",
+        "tr", "da", "pl", "fi", "cs", "hu", "el", "he", "hi", "id", "no", "th", "vi"
+    ];
+
+    try {
+        const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
+
+        languageCodes.forEach(code => {
+            let option = new Option(languageNames.of(code) + ` (${code})`, code);
+            if (code === currentLanguage) option.selected = true;
+            languageSelect.appendChild(option);
+        });
+
+        // Try to select user's browser language
+        if (!currentLanguage) {
+            const browserLang = navigator.language.split('-')[0];
+            if (languageCodes.includes(browserLang)) {
+                languageSelect.value = browserLang;
+            }
+        }
+    } catch (error) {
+        console.error("Error loading languages:", error);
+    }
+});
+</script>
+
 {% endblock content %}

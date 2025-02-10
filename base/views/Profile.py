@@ -4,43 +4,55 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib.auth.hashers import make_password
+
+
+def is_admin_user(user):
+    """
+    Check if the user is a superuser or has staff permissions
+    """
+    return user.is_superuser or user.is_staff
 
 
 def profile_management(request):
     return render(request, 'Profile/profile_management.html')
 
-def add_profile(request):
+def add_profile(request, username):
     if request.method == 'POST':
-        user = request.user
-        title = request.POST.get('title', 'title')
-        first_name = request.POST.get('first_name', 'first_name')
-        last_name = request.POST.get('last_name', 'last_name')
-        suffix = request.POST.get('suffix', 'suffix')
-        display_name = request.POST.get('display_name', 'display_name')
-        gender = request.POST.get('gender', 'gender')
-        company_name = request.POST.get('company_name', 'company_name')
-        product_service_description = request.POST.get('product_service_description', 'product_service_description')
-        gst_registered_state = request.POST.get('gst_registered_state'), 'gst_registered_state'
-        gst_identification_number_or_pan = request.POST.get('gst_identification_number_or_pan', 'gst_identification_number_or_pan')
-        industry = request.POST.get('industry', 'industry')
-        classification = request.POST.get('classification', 'classification')
-        requested_speciality = request.POST.get('requested_speciality', 'requested_speciality')
-        membership_status = request.POST.get('membership_status', 'membership_status')
-        renewal_due_date = request.POST.get('renewal_due_date', 'renewal_due_date')
-        # chapter = get_object_or_404(Chapter, id=request.POST.get('chapter', 'chapter'))
-        my_business = request.POST.get('my_business', 'my_business')
-        keywords = request.POST.get('keywords', 'keywords')
+        user = User.objects.get(username=username)
+        title = request.POST.get('title', '')
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        suffix = request.POST.get('suffix', '')
+
+        display_name = request.POST.get('display_name', '')
+        gender = request.POST.get('gender', '')
+        company_name = request.POST.get('company_name', '')
+        product_service_description = request.POST.get('product_service_description', '')
+        gst_registered_state = request.POST.get('gst_registered_state', '')
+        gst_identification_number_or_pan = request.POST.get('gst_identification_number_or_pan', '')
+        industry = request.POST.get('industry', '')
+        classification = request.POST.get('classification', '')
+        requested_speciality = request.POST.get('requested_speciality', '')
+        membership_status = request.POST.get('membership_status', 'Active')
+        my_business = request.POST.get('my_business', '')
+        keywords = request.POST.get('keywords', '')
+
+        # Handling renewal_due_date conversion (fixing the format issue)
+        renewal_due_date = request.POST.get('renewal_due_date', None)
         
-        chapter_name_value = request.POST.get('chapter', 'chapter')
-        chapter_name_instance = get_object_or_404(ChapterName, id=chapter_name_value)
-        chapter_instance = get_object_or_404(Chapter, name=chapter_name_instance)
-        
-        userName = User.objects.get(id=request.user.id)
-        userName.first_name = first_name
-        userName.last_name = last_name
+        chapter_name_value = request.POST.get('chapter_display', None)
+        chapter_instance = None
+        if chapter_name_value:
+            chapter_instance = get_object_or_404(ChapterName, id=chapter_name_value)
+
+        # Update user details
+        user.first_name = first_name
+        user.last_name = last_name
         user.save()
 
-        MainProfile.objects.update_or_create(
+        # Update or create MainProfile
+        profile, created = MainProfile.objects.update_or_create(
             user=user,
             defaults={
                 'title': title,
@@ -57,31 +69,56 @@ def add_profile(request):
                 'classification': classification,
                 'requested_speciality': requested_speciality,
                 'membership_status': membership_status,
-                'RenewalDueDate': renewal_due_date,
-                'Chapter': chapter_name_instance,
+                'renewal_due_date': renewal_due_date,
+                'Chapter': chapter_instance,
                 'my_business': my_business,
                 'keywords': keywords
             }
         )
 
-
         messages.success(request, 'Profile added successfully.')
+        return redirect('add_profile', username=username)
+
+    # Ensure `base_template` is always set correctly
+    is_admin = is_admin_user(request.user)
+    base_template = 'dummy_base_dont_remove_this_file.html' if is_admin else 'base.html'
+
     try:
-        profile = MainProfile.objects.get(user=request.user)
-        chapter = ChapterName.objects.all()
-        print(chapter)
-        for i in chapter:
-            print(i.id, i.chapter_name)
-        return render(request, 'Profile/add_profile.html', {'data':profile, 'chapter':chapter})
-    except:
-        return render(request, 'Profile/add_profile.html')
-        
+        if not is_admin:
+            profile = MainProfile.objects.get(user=request.user)
+            chapter = None if not is_admin else ChapterName.objects.all()
+        else:
+            profile =  MainProfile.objects.get(user=User.objects.get(username=username))
+            chapter = ChapterName.objects.all()
+        return render(request, 'Profile/add_profile.html', {
+            'data': profile,
+            'chapter': chapter,
+            'is_admin': is_admin,
+            'base_template': base_template,
+        })
+    except MainProfile.DoesNotExist:
+        # Show error message if profile does not exist
+        messages.error(request, "Contact your admin to ask to initialize the main profile. Thanks.")
+        profile = MainProfile.objects.filter(user=request.user).first()
+        chapters = Chapter.objects.filter(name=profile.Chapter.id).first()
+
+        return render(request, 'Profile/add_profile.html', {
+            'data': None,
+            'chapter': chapters,
+            'is_admin': is_admin,
+            'error': True,
+            'base_template': base_template,
+            'is_admin': is_admin_user(request.user)
+        })
 
 
-def add_contact_details(request):
+def add_contact_details(request, username):
     if request.method == 'POST':
-        user = request.user
-        show_on_bni_public_websites = request.POST.get('show_on_bni_public_websites', False)
+        user = User.objects.get(username=username)
+        show_on_bni_public_websites = request.POST.get('show_on_bni_public_websites') == 'on'
+
+        receive_updates_from_bni = request.POST.get('receive_updates_from_bni') == 'on'
+        share_revenue_data_with_bni_director = request.POST.get('share_revenue_data_with_bni_director') == 'on'
         billing_address_quick_copy = request.POST.get('billing_address_quick_copy', '')
         phone = request.POST.get('phone', '')
         direct_number = request.POST.get('direct_number', '')
@@ -92,15 +129,13 @@ def add_contact_details(request):
         toll_free = request.POST.get('toll_free', '')
         fax = request.POST.get('fax', '')
         email = request.POST.get('email', '')
-        receive_updates_from_bni = request.POST.get('receive_updates_from_bni', False)
-        share_revenue_data_with_bni_director = request.POST.get('share_revenue_data_with_bni_director', False)
         website = request.POST.get('website', '')
-        social_networking_links = request.POST.getlist('social_networking_links')
-        
+        social_networking_links = request.POST.get('social_networking_links', '')
+
         contact_details, created = ContactDetails.objects.update_or_create(
             user=user,
             defaults={
-                'show_on_bni_public_websites': True if show_on_bni_public_websites else False,
+                'show_on_bni_public_websites': show_on_bni_public_websites,
                 'billing_address_quick_copy': billing_address_quick_copy,
                 'phone': phone,
                 'direct_number': direct_number,
@@ -114,14 +149,15 @@ def add_contact_details(request):
                 'receive_updates_from_bni': receive_updates_from_bni,
                 'share_revenue_data_with_bni_director': share_revenue_data_with_bni_director,
                 'website': website,
-                'social_networking_links':social_networking_links
+                'social_networking_links': social_networking_links
             }
         )
-        
+
         messages.success(request, 'Contact details added successfully.')
-        return redirect('add_contact_details')
+        return redirect('add_contact_details', username=username)
+
     try:
-        contact_details = ContactDetails.objects.get(user=request.user)
+        contact_details = ContactDetails.objects.get(user=User.objects.get(username=username))
         initial_data = {
             'show_on_bni_public_websites': contact_details.show_on_bni_public_websites,
             'billing_address_quick_copy': contact_details.billing_address_quick_copy,
@@ -139,25 +175,28 @@ def add_contact_details(request):
             'website': contact_details.website,
             'social_networking_links': contact_details.social_networking_links
         }
-        
     except ContactDetails.DoesNotExist:
         initial_data = {}
 
-    return render(request, 'Profile/add_contact_details.html', {"initial_data":initial_data})
-
+    # Ensure base_template is always set
+    base_template = 'dummy_base_dont_remove_this_file.html' if is_admin_user(request.user) else 'base.html'
+    
+    return render(request, 'Profile/add_contact_details.html', {"initial_data": initial_data, "base_template": base_template})
 
 
 def add_edit_user_profile(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
-        user = request.user
-        language = request.POST['language']
-        timezone = request.POST['timezone']
+        username = request.POST.get('username', '').strip()
+        language = request.POST.get('language', '')
+        timezone = request.POST.get('timezone', '')
         profile_image = request.FILES.get('profile_image')
         company_logo = request.FILES.get('company_logo')
-        print(profile_image, company_logo)
-        
-        if user_profile:  # If editing existing profile
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        if user_profile and not is_admin_user(request.user):  # Editing existing profile
             user_profile.language = language
             user_profile.timezone = timezone
             if profile_image:
@@ -165,102 +204,112 @@ def add_edit_user_profile(request):
             if company_logo:
                 user_profile.company_logo = company_logo
             user_profile.save()
-        else:  # If adding new profile
-            user_profile = UserProfile(user=user, language=language, timezone=timezone,
-                                       profile_image=profile_image, company_logo=company_logo)
-            user_profile.save()
-        
-        return redirect('add_edit_user_profile')
-    else:
-        return render(request, 'Profile/add_edit_user_profile.html', {'user_profile': user_profile})
-    
-    
-@login_required
-def add_or_edit_address(request):
-    user = request.user
-    try:
-        address, created = Address.objects.get_or_create(
-            user=user,
-            address_type="Address",
-            defaults={
-                'address_line_1': 'Default Address Line 1',
-                'address_line_2': 'Default Address Line 2',
-                'city': 'Default City',
-                'state': 'Default State',
-                'country': 'Default Country',
-                'zip_code': 'Default Zip Code'
-            }
-        )
-    except:
-        address = None
-    try:
-        billing, created = BillingAddress.objects.get_or_create(
-            user=user,
-            defaults={
-                'address_line_1': 'Default Address Line 1',
-                'address_line_2': 'Default Address Line 2',
-                'city': 'Default City',
-                'state': 'Default State',
-                'country': 'Default Country',
-                'zip_code': 'Default Zip Code'
-            }
-        )
-    except Exception as e:
-        billing = None
-        print(e)
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    
-    if request.method == 'POST':
-        address_type = request.POST.get('address_type')
-        print(address_type)
-        if address_type:
-            address = Address.objects.get(user=user, address_type=address_type)
-        else:
-            address = BillingAddress.objects.get(user=user)
-        
-        address_line_1 = request.POST.get('address_line_1')
-        address_line_2 = request.POST.get('address_line_2', '')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        country = request.POST.get('country')
-        zip_code = request.POST.get('zip_code')
-        
-        if address:
-            # If address already exists, update its fields
-            try:
-                address.address_type = address_type
-            except:
-                pass
-            address.address_line_1 = address_line_1
-            address.address_line_2 = address_line_2
-            address.city = city
-            address.state = state
-            address.country = country
-            address.zip_code = zip_code
-            address.save()
-        else:
-            # If address does not exist, create a new one
-            Address.objects.create(
-                user=user,
-                address_type=address_type,
-                address_line_1=address_line_1,
-                address_line_2=address_line_2,
-                city=city,
-                state=state,
-                country=country,
-                zip_code=zip_code
+            messages.success(request, "Profile updated successfully.")
+        else:  # Creating a new user and profile
+            if User.objects.filter(email=email).exists():
+                messages.error(request, "A user with this email already exists.")
+                return redirect('add_edit_user_profile')
+
+            user = User.objects.create(
+                username=username,
+                email=email,
             )
-        
-        messages.success(request, 'Address added successfully.')
-        return redirect('add_or_edit_address')
+            user.set_password(password)  # Hash the password
+            user.save()
+
+            user_profile = UserProfile.objects.create(
+                user=user,
+                language=language,
+                timezone=timezone,
+                profile_image=profile_image,
+                company_logo=company_logo
+            )
+            user_profile.save()
+            messages.success(request, "New user profile created successfully.")
+
+        return redirect('add_edit_user_profile')
+
+    base_template = 'dummy_base_dont_remove_this_file.html' if is_admin_user(request.user) else 'base.html'
+
+    return render(request, 'Profile/add_edit_user_profile.html', {
+        'user_profile': None if is_admin_user(request.user) else user_profile,
+        'base_template': base_template,
+        'is_admin': not is_admin_user(request.user)
+    })
+
+
+@login_required
+def add_or_edit_address(request, username):
+    user = User.objects.get(username=username)
+    is_admin = is_admin_user(request.user)
+    print("user :", user)
+    try:
+        address = Address.objects.filter(user=user, address_type="Address").first()  # Use `.first()` instead of try-except
+        billing = BillingAddress.objects.filter(user=user).first()
+    except Exception as e:
+        print(e)
+        address = None
+        billing = None
     
-    return render(request, 'Profile/add_or_edit_address.html', {'address': address, "billing":billing})
+    print(address)
+    print(billing)
 
 
-def add_or_edit_bio(request):
-    user = request.user
+    if request.method == 'POST':
+
+        address_type = request.POST.get('address_type', None)
+        address_data = {
+            'address_line_1': request.POST.get('address_line_1', '').strip(),
+            'address_line_2': request.POST.get('address_line_2', '').strip(),
+            'city': request.POST.get('city', '').strip(),
+            'state': request.POST.get('state', '').strip(),
+            'country': request.POST.get('country', '').strip(),
+            'zip_code': request.POST.get('zip_code', '').strip(),
+        }
+
+        try:
+            if address_type:  # Handling regular address
+                address, created = Address.objects.update_or_create(
+                    user=user,
+                    address_type=address_type,
+                    defaults=address_data
+                )
+            else:  # Handling billing address
+                billing, created = BillingAddress.objects.update_or_create(
+                    user=user,
+                    defaults=address_data
+                )
+
+            if created:
+                messages.success(request, 'Address created successfully.')
+            else:
+                messages.success(request, 'Address updated successfully.')
+
+        except Exception as e:
+            messages.error(request, f'Error updating address: {str(e)}')
+
+        return redirect('add_or_edit_address', username=username)
+    else:
+
+        # Ensure base_template is always set
+        base_template = 'dummy_base_dont_remove_this_file.html' if is_admin else 'base.html'
+
+        # Context dictionary
+        context = {
+            'address': address,
+            'billing': billing,
+            'is_admin': is_admin,
+            'base_template': base_template,
+            'user': user,
+        }
+        return render(request, 'Profile/add_or_edit_address.html', context)
+
+
+def add_or_edit_bio(request, username):
+    user = User.objects.get(username=username)
     try:
         bio = Bio.objects.get(user=user)
+
     except Bio.DoesNotExist:
         bio = None
 
@@ -270,12 +319,15 @@ def add_or_edit_bio(request):
         spouse = request.POST.get('spouse', '')
         children = request.POST.get('children', '')
         pets = request.POST.get('pets', '')
-        hobbies_and_interests = request.POST.get('hobbies_and_interests', '')
-        city_of_residence = request.POST.get('city_of_residence', '')
+        hobbies_and_interests = request.POST.get('hobbies_interests', '')
+        city_of_residence = request.POST.get('city_residence', '')
         years_in_city = int(request.POST.get('years_in_city', ''))
         burning_desire = request.POST.get('burning_desire', '')
-        something_no_one_knows = request.POST.get('something_no_one_knows', '')
+        something_no_one_knows = request.POST.get('something_unknown', '')
+
         key_to_success = request.POST.get('key_to_success', '')
+        
+        print(hobbies_and_interests)
 
         if bio:
             bio.years_in_business = years_in_business
@@ -305,8 +357,8 @@ def add_or_edit_bio(request):
                 something_no_one_knows=something_no_one_knows,
                 key_to_success=key_to_success
             )
-        
-        return redirect('add_or_edit_bio')
+
+        return redirect('add_or_edit_bio', username=username)
 
     return render(request, 'Profile/add_or_edit_bio.html', {'bio': bio})
 
@@ -335,8 +387,8 @@ def delete_image(request):
     return JsonResponse({'error': 'Invalid request'})
 
 
-def iframe(request):
-    return render(request, 'iframe.html')
+def iframe(request, username):
+    return render(request, 'iframe.html', {'username': username})
 
 def email(request):
     return render(request, 'email.html')
