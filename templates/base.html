@@ -1832,23 +1832,23 @@ video {
       let check_usr_bio = {{ bio }}
       let check_usr_contact = {{ contact }}
       let is_admin = {{ is_admin }}
+
+      console.log("onload", check_usr_profile, check_usr_bio, check_usr_contact, is_admin)
       document.addEventListener("DOMContentLoaded", function() {
           // Check if the renewal date is set\
           console.log("onload", check_usr)
           console.log("is_admin", is_admin)
-          if (is_admin == 1) {
-            if (check_usr_profile == 1) {
+            if (check_usr_profile == 0) {
               document.getElementById("error-pop").style.display = "flex";
             }
-            if (check_usr_bio == 1) {
+            if (check_usr_bio == 0) {
               document.getElementById("error-pop").style.display = "flex";
             }
-            if (check_usr_contact == 1) {
+            if (check_usr_contact == 0) {
               document.getElementById("error-pop").style.display = "flex";
             }
-          }
 
-          if (check_usr == 1) {
+          if (check_usr == 0) {
               document.getElementById("subscription_expired-pop").style.display = "flex";
             } else {
               console.log("valied user...!");

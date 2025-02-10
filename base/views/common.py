@@ -255,7 +255,7 @@ def common_data(request):
                 
                 print(current_date, renewal_date)
 
-                if (current_date > renewal_date) or is_admin:
+                if (current_date > renewal_date):
                     renewal_message = 1  # Indicates expired renewal
                     days_left_for_renewal = (renewal_date - current_date).days  # Negative value for expired
                 else:
