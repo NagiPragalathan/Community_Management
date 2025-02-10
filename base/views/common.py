@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
-from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile, ChapterEducationUnit, TYFCB, ReferralSlip, Visitor, Bio, Address
+from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile, ChapterEducationUnit, TYFCB, ReferralSlip, Visitor, Bio, Address, ContactDetails
 from base.form.forms import CityDataForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -47,8 +47,12 @@ def calculate_ceu_counts(user):
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        if request.user.is_staff or request.user.is_superuser:
+            return redirect('profile-list')
+        else:
+            return redirect('dashboard')
     return render(request, "index.html")
+
 
 @login_required(login_url='/login/')
 def dashboard(request):
@@ -264,9 +268,16 @@ def common_data(request):
             main_profile = 1
         except MainProfile.DoesNotExist:
             main_profile = 0
+            
+        try:
+            contact = ContactDetails.objects.get(user=current_user)
+            contact = 1
+        except ContactDetails.DoesNotExist:
+            contact = 0
         
         try:
             bio = Bio.objects.get(user=current_user)
+
             bio = 1
         except Bio.DoesNotExist:
             bio = 0
@@ -285,6 +296,7 @@ def common_data(request):
             'usr_img':usr_img,
             'main_profile': main_profile,
             'bio': bio,
+            'contact': contact,
             'is_admin': 1 if is_admin else 0
         })
     else:
@@ -298,7 +310,9 @@ def common_data(request):
             'usr_img': 'none',
             'main_profile': None,
             'bio': None,
+            'contact': None,
             'is_admin': is_admin
+
         })
 
     return context

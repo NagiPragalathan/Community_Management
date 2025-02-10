@@ -1,21 +1,125 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container mx-auto mt-10">
-    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
-        <h1 class="text-2xl font-bold text-blue-600 mb-4">TYFCB List</h1>
-        <ul class="space-y-2">
-            {% for tyfcb in tyfcbs %}
-                <li class="bg-gray-200 p-3 rounded hover:bg-gray-300">
-                    <a href="{% url 'tyfcb_detail' pk=tyfcb.pk %}" class="hover:text-blue-500">
-                        {{ tyfcb }}
-                    </a>
-                </li>
+<div class="container mx-auto p-4">
+    <!-- Filters -->
+    <div class="bg-white p-4 rounded-lg shadow mb-6">
+        <form method="get" class="flex flex-wrap gap-4">
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-sm font-medium text-gray-700">Date Range</label>
+                <div class="flex gap-2">
+                    <input type="date" name="start_date" value="{{ start_date }}" 
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    <input type="date" name="end_date" value="{{ end_date }}"
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+            </div>
+            
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-sm font-medium text-gray-700">Chapter</label>
+                <select name="chapter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    <option value="">All Chapters</option>
+                    {% for chapter in chapters %}
+                        <option value="{{ chapter.id }}" {% if selected_chapter == chapter.id %}selected{% endif %}>
+                            {{ chapter.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="flex-1 min-w-[200px]">
+                <label class="block text-sm font-medium text-gray-700">Search</label>
+                <input type="text" name="search" value="{{ search_query }}" 
+                       placeholder="Search comments or users..."
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            </div>
+
+            <div class="flex items-end">
+                <button type="submit" 
+                        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    Apply Filters
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- TYFCB List -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h1 class="text-2xl font-bold">TYFCB List</h1>
+            <a href="{% url 'tyfcb_create' %}" 
+               class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+                Create New TYFCB
+            </a>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="p-4 {% if message.tags == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                    {{ message }}
+                </div>
             {% endfor %}
-        </ul>
-        <a href="{% url 'tyfcb_create' %}" class="inline-block mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded hover:bg-green-600">
-            Add a new TYFCB
-        </a>
+        {% endif %}
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chapter</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Region</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for tyfcb in tyfcbs %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ tyfcb.start_date|date:"Y-m-d" }}</td>
+                        <td class="px-6 py-4">{{ tyfcb.chapter_name.chapter_name }}</td>
+                        <td class="px-6 py-4">{{ tyfcb.region_name.region_name }}</td>
+                        <td class="px-6 py-4">${{ tyfcb.referral_amount }}</td>
+
+                        <td class="px-6 py-4">{{ tyfcb.get_referral_type_display }}</td>
+                        <td class="px-6 py-4 space-x-2">
+                            <a href="{% url 'tyfcb_detail' pk=tyfcb.pk %}" class="text-blue-600 hover:text-blue-900">View</a>
+                            <a href="{% url 'tyfcb_edit' pk=tyfcb.pk %}" class="text-green-600 hover:text-green-900">Edit</a>
+                            <a href="{% url 'tyfcb_delete' pk=tyfcb.pk %}" class="text-red-600 hover:text-red-900">Delete</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">No TYFCB entries found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if tyfcbs.has_other_pages %}
+        <div class="px-4 py-3 flex items-center justify-between border-t">
+            <div class="flex-1 flex justify-between items-center">
+                {% if tyfcbs.has_previous %}
+                    <a href="?page={{ tyfcbs.previous_page_number }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Previous
+                    </a>
+                {% endif %}
+                
+                <span class="text-sm text-gray-700">
+                    Page {{ tyfcbs.number }} of {{ tyfcbs.paginator.num_pages }}
+                </span>
+
+                {% if tyfcbs.has_next %}
+                    <a href="?page={{ tyfcbs.next_page_number }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Next
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

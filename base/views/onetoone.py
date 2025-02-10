@@ -37,4 +37,42 @@ def one_to_one_list(request):
     meetings = Meeting.objects.filter(Q(met_with=request.user) | Q(invited_by=request.user)).distinct()
     return render(request, 'oneslip/one_to_one_list.html', {'meetings': meetings})
 
+@login_required
+def edit_meeting(request, meeting_id):
+    meeting = Meeting.objects.get(id=meeting_id)
+    
+    # Check if user has permission to edit
+    if meeting.invited_by != request.user:
+        return redirect('meeting_list')
+        
+    if request.method == 'POST':
+        met_with_id = request.POST.get('met_with')
+        location = request.POST.get('location')
+        topics_of_conversation = request.POST.get('topics_of_conversation')
+        date = request.POST.get('date')
+
+        meeting.met_with = User.objects.get(id=met_with_id)
+        meeting.location = location
+        meeting.topics_of_conversation = topics_of_conversation
+        meeting.date = date
+        meeting.save()
+        
+        return redirect('meeting_list')
+
+    users = User.objects.all()
+    return render(request, 'oneslip/edit_meeting.html', {
+        'meeting': meeting,
+        'users': users
+    })
+
+@login_required
+def delete_meeting(request, meeting_id):
+    meeting = Meeting.objects.get(id=meeting_id)
+    
+    # Check if user has permission to delete
+    if meeting.invited_by == request.user:
+        meeting.delete()
+    
+    return redirect('meeting_list')
+
 

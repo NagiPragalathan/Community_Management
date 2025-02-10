@@ -121,14 +121,18 @@ testimonial = [
 
 account_settings = [
     path('edit_or_add_account_settings', edit_or_add_account_settings, name='edit_or_add_account_settings'),
+    path('edit_or_add_account_settings/<str:username>', edit_or_add_account_settings, name='edit_or_add_account_settings'),
+    path('edit_or_add_account_settings/<str:username>/<int:dashboard>', edit_or_add_account_settings, name='edit_or_add_account_settings'),
 ]
 
-tyfcb =[
+
+
+tyfcb = [
     path('tyfcb/', tyfcb_list, name='tyfcb_list'),
-    path('tyfcb_review/', tyfcb_list, name='tyfcb_review'),
     path('tyfcb/new/', tyfcb_create, name='tyfcb_create'),
     path('tyfcb/<uuid:pk>/', tyfcb_detail, name='tyfcb_detail'),
     path('tyfcb/<uuid:pk>/edit/', tyfcb_edit, name='tyfcb_edit'),
+    path('tyfcb/<uuid:pk>/delete/', tyfcb_delete, name='tyfcb_delete'),
 ]
 
 referrals = [
@@ -142,11 +146,15 @@ onetoone =[
     path('meetings/new/', create_meeting, name='create_meeting'),
     path('meetings/', meeting_list, name='meeting_list'),
     path('meetings/one-to-one/', one_to_one_list, name='one_to_one_list'),
+    path('meetings/<int:meeting_id>/edit/', edit_meeting, name='edit_meeting'),
+    path('meetings/<int:meeting_id>/delete/', delete_meeting, name='delete_meeting'),
 ]
 
-ceu =[
+ceu = [
     path('ceus/create/', create_ceu, name='create_ceu'),
     path('ceus/review/', review_ceu, name='review_ceu'),
+    path('ceus/<int:ceu_id>/edit/', edit_ceu, name='edit_ceu'),
+    path('ceus/<int:ceu_id>/delete/', delete_ceu, name='delete_ceu'),
 ]
 
 weeklyslips =[
@@ -170,14 +178,18 @@ group = [
 ]
 
 visitor = [
-    path('register/', register_visitor, name='register_visitor'),
+    # path('register/', register_visitor, name='register_visitor'),
+    path('visitors/', visitor_registration_portal, name='visitor_registration_portal'),
+    path('visitors/register/', register_visitor, name='register_visitor'),
+    path('visitors/<int:visitor_id>/edit/', register_visitor, name='edit_visitor'),
+    path('visitors/<int:visitor_id>/delete/', delete_visitor, name='delete_visitor'),
+    
     path('subscription-expired/', subscription_expired, name='subscription_expired'),
 ]
 
 
 
 Operations = [
-    path('visitor_registration_portal/', visitor_registration_portal, name='visitor_registration_portal'),
     path('view_palms_summary/', view_palms_summary, name='view_palms_summary'),
     path('view_chapter_goals/', view_chapter_goals, name='view_chapter_goals'),
     path('email_my_chapter/', email_my_chapter, name='email_my_chapter'),

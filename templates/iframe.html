@@ -28,6 +28,13 @@
                         <span class="relative z-10">Bio Details</span>
                         <div class="absolute inset-0 bg-gradient-to-r from-violet-50/0 via-violet-50/30 to-violet-50/0 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </button>
+                    
+                    <button class="group relative border-transparent text-gray-500 whitespace-nowrap py-2 sm:py-4 px-3 sm:px-6 border-b-2 font-medium text-xs sm:text-sm rounded-t-xl hover:bg-emerald-50/50 transition-all duration-300" id="settings-tab" onclick="showTab('settings')">
+                        <span class="relative z-10">
+                            <i class='bx bx-cog align-middle mr-1'></i>Settings
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-emerald-50/0 via-emerald-50/30 to-emerald-50/0 rounded-t-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
                 </nav>
             </div>
 
@@ -52,10 +59,30 @@
                     <iframe src="{% url 'add_or_edit_bio' username 1 %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
                 </div>
 
+                {% if not is_admin %}
+                <!-- Settings Tab -->
+                <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="settings" role="tabpanel">
+                    <iframe src="{% url 'edit_or_add_account_settings' username 1 %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                </div>
+                {% else %}
+                <!-- Settings Tab -->
+                <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="settings" role="tabpanel">
+                    <div class="p-4 sm:p-8">
+                        <p class="text-2xl sm:text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                            You are cant able to edit the account settings. it's only for that perticular user
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
+
         </div>
+
     </div>
 </div>
+
+<!-- Add Boxicons if not already included -->
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 <script>
 function showTab(tabId) {

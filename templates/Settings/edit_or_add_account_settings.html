@@ -1,7 +1,8 @@
-{% extends 'base.html'%}
+{% extends base_template|default:"base.html" %}
 {% block content %}
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings</title>
     <!-- Include Tailwind CSS -->
@@ -45,10 +46,11 @@
         </div>
 
         <!-- Tab Content -->
-        <form method="POST" class="w-full max-w-3xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+        <form method="POST" action="{% url 'edit_or_add_account_settings' %}" class="w-full max-w-3xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
             {% csrf_token %}
             <div id="tabsContent">
                 <!-- Visibility Settings -->
+
                 <div id="visibility-settings" role="tabpanel" aria-labelledby="visibility-tab" class="tab-content block">
                     <div class="mb-4">
                         <label for="bio_visibility" class="block text-blue-700 text-sm sm:text-base font-semibold mb-2">Bio Visibility:</label>

@@ -116,4 +116,10 @@ Email Chapter Visitors
 
 Doubts:
 	industry [dropdown], classification [dropdown], Product/Service Description [textarea], Company Name [input box]
+	delete my account
+	download my profile
+	change password
+	update profile
 
+
+my connections http://127.0.0.1:8000/list_users make the data and ui more good

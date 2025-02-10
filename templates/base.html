@@ -1830,6 +1830,7 @@ video {
       let check_usr = {{ renewal_message }};
       let check_usr_profile = {{ main_profile }};
       let check_usr_bio = {{ bio }}
+      let check_usr_contact = {{ contact }}
       let is_admin = {{ is_admin }}
       document.addEventListener("DOMContentLoaded", function() {
           // Check if the renewal date is set\
@@ -1838,11 +1839,12 @@ video {
           if (is_admin == 1) {
             if (check_usr_profile == 1) {
               document.getElementById("error-pop").style.display = "flex";
-              document.getElementById("error-pop").style.backgroundColor = "red";
             }
             if (check_usr_bio == 1) {
               document.getElementById("error-pop").style.display = "flex";
-              document.getElementById("error-pop").style.backgroundColor = "blue";
+            }
+            if (check_usr_contact == 1) {
+              document.getElementById("error-pop").style.display = "flex";
             }
           }
 

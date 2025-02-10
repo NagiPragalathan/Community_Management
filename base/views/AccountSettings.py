@@ -1,9 +1,24 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from base.models import AccountSettings
 from django.http import HttpResponse
+from django.contrib.auth.models import User
 
-def edit_or_add_account_settings(request):
+def is_admin_user(user):
+    return user.is_superuser
+
+
+def edit_or_add_account_settings(request, username=None, dashboard=0):
     context = {}
+    if username != None:
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            user = request.user
+    else:
+        user = request.user
+
+
+    is_admin = is_admin_user(request.user)
     if request.method == 'POST':
         
         # Retrieve all values from the form
@@ -21,7 +36,7 @@ def edit_or_add_account_settings(request):
         forward_recommendation_requests = request.POST.get('forward_recommendation_requests', False) == 'on'
         country_settings_for_group_notifications = request.POST.get('country_settings_for_group_notifications', 'Default')
 
-        account_settings, created = AccountSettings.objects.get_or_create(user=request.user)
+        account_settings, created = AccountSettings.objects.get_or_create(user=user)
 
         # Update or set values
         account_settings.bio_visibility = bio_visibility
@@ -39,11 +54,24 @@ def edit_or_add_account_settings(request):
         account_settings.country_settings_for_group_notifications = country_settings_for_group_notifications
 
         account_settings.save()
-
-        return redirect('edit_or_add_account_settings')  # Redirect to a new URL
+        if dashboard == 0:
+            return redirect('edit_or_add_account_settings', username=username, dashboard=dashboard)  # Redirect to a new URL
+        else:
+            return redirect('edit_or_add_account_settings')  # Redirect to a new URL
     else:
         # If not a POST request, try to retrieve existing settings to pre-fill the form
+
         account_settings = AccountSettings.objects.filter(user=request.user).first()
         if account_settings:
             context['account_settings'] = account_settings
+            is_admin = is_admin_user(request.user)
+            context['is_admin'] = is_admin
+            context['base_template'] = 'dummy_base_dont_remove_this_file.html' if is_admin else 'base.html'
+            if dashboard != 0:
+                context['base_template'] = 'dummy_base_dont_remove_this_file.html'
+        print(context)
+        context['base_template'] = 'dummy_base_dont_remove_this_file.html' if is_admin else 'base.html'
+        if dashboard != 0:
+            context['base_template'] = 'dummy_base_dont_remove_this_file.html'
+
         return render(request, 'Settings/edit_or_add_account_settings.html', context)

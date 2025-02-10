@@ -1,13 +1,15 @@
-from django.shortcuts import render, redirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from base.models import ChapterMemberPosition, MainProfile, Visitor, Chapter, ChapterGoles
+from base.models import ChapterMemberPosition, MainProfile, Visitor, Chapter, ChapterGoles, ContactDetails
 from django.http import HttpResponse
 from django.core.mail import send_mail
 
 
+@login_required
 def visitor_registration_portal(request):
-    return render(request, 'operations/Visitor_register.html')
+    visitors = Visitor.objects.filter(user=request.user).order_by('-date')
+    return render(request, 'operations/list_visitor.html', {'visitors': visitors})
 
 def view_palms_summary(request):
     return render(request, 'view_palms_summary.html')
@@ -43,71 +45,94 @@ def user_chapter_emails(request):
     
     # Check if the user is in a chapter
     if not chapter:
-        emails = []
+        members_data = []
         chapter_name = "No Chapter"
     else:
         # Get all members in the same chapter
         chapter_members = MainProfile.objects.filter(Chapter=chapter)
         
-        # Get all email IDs of the chapter members
-        emails = [member.user.email for member in chapter_members]
+        # Get contact details for each member
+        members_data = []
+        for member in chapter_members:
+            try:
+                contact = ContactDetails.objects.get(user=member.user)
+                members_data.append({
+                    'name': f"{member.user.first_name} {member.user.last_name}",
+                    'email': contact.email,
+                    'phone': contact.phone,
+                    'mobile': contact.mobile_number,
+                    'website': contact.website
+                })
+            except ContactDetails.DoesNotExist:
+                continue
+        
         chapter_name = chapter.chapter_name
     
-    # Render the emails in the HTML template
-    context = {'emails': emails, 'chapter_name': chapter_name}
+    context = {
+        'members_data': members_data,
+        'chapter_name': chapter_name,
+        'member_count': len(members_data)
+    }
     return render(request, 'operations/chapter_emails.html', context)
 
 
 @login_required
-def register_visitor(request):
+def register_visitor(request, visitor_id=None):
+    visitor = None
+    if visitor_id:
+        visitor = get_object_or_404(Visitor, id=visitor_id, user=request.user)
+    
     if request.method == "POST":
-        title = request.POST.get("title")
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
-        suffix = request.POST.get("suffix")
-        email = request.POST.get("email")
-        phone_number = request.POST.get("phone_number")
-        company_name = request.POST.get("company_name")
-        address_line_1 = request.POST.get("address_line_1")
-        address_line_2 = request.POST.get("address_line_2")
-        city = request.POST.get("city")
-        state_country_province = request.POST.get("state_country_province")
-        post_code = request.POST.get("post_code")
-        category = request.POST.get("category")
-        visitor_type = request.POST.get("visitor_type")
-        send_invitations = request.POST.get("send_invitations")
+        # Get form data
+        data = {
+            'user': request.user,
+            'title': request.POST.get("title"),
+            'first_name': request.POST.get("first_name"),
+            'last_name': request.POST.get("last_name"),
+            'suffix': request.POST.get("suffix"),
+            'email': request.POST.get("email"),
+            'phone_number': request.POST.get("phone_number"),
+            'company_name': request.POST.get("company_name"),
+            'address_line_1': request.POST.get("address_line_1"),
+            'address_line_2': request.POST.get("address_line_2"),
+            'city': request.POST.get("city"),
+            'state_country_province': request.POST.get("state_country_province"),
+            'post_code': request.POST.get("post_code"),
+            'category': request.POST.get("category"),
+            'visitor_type': request.POST.get("visitor_type"),
+        }
 
-        visitor = Visitor(
-            user=request.user,
-            title=title,
-            first_name=first_name,
-            last_name=last_name,
-            suffix=suffix,
-            email=email,
-            phone_number=phone_number,
-            company_name=company_name,
-            address_line_1=address_line_1,
-            address_line_2=address_line_2,
-            city=city,
-            state_country_province=state_country_province,
-            post_code=post_code,
-            category=category,
-            visitor_type=visitor_type,
-        )
-        visitor.save()
+        if visitor:
+            # Update existing visitor
+            for key, value in data.items():
+                setattr(visitor, key, value)
+            visitor.save()
+            messages.success(request, "Visitor updated successfully!")
+        else:
+            # Create new visitor
+            visitor = Visitor.objects.create(**data)
+            messages.success(request, "Visitor registered successfully!")
 
-        if send_invitations:
+        # Handle invitation email
+        if request.POST.get("send_invitations"):
             send_mail(
                 'Invitation to Visit',
                 'You have been invited to visit our facility. Please contact us for further details.',
                 'from@example.com',
-                [email],
+                [data['email']],
                 fail_silently=False,
             )
 
-        return HttpResponse("Registration successful")
+        return redirect('visitor_registration_portal')
 
-    return render(request, "operations/Visitor_register.html")
+    return render(request, "operations/Visitor_register.html", {'visitor': visitor})
+
+@login_required
+def delete_visitor(request, visitor_id):
+    visitor = get_object_or_404(Visitor, id=visitor_id, user=request.user)
+    visitor.delete()
+    messages.success(request, "Visitor deleted successfully!")
+    return redirect('visitor_registration_portal')
 
 @login_required
 def set_goals(request):
