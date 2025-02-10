@@ -1370,7 +1370,7 @@ video {
                       <a href="{% url 'profile-list'%}" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Profile List</a>
                   </li>
                   <li class="mb-4">
-                      <a href="{% url 'profile-create'%}" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Create Profile</a>
+                      <a href="{% url 'add_edit_user_profile'%}" class="text-gray-900 text-sm flex items-center hover:text-[#f84525] before:contents-[''] before:w-1 before:h-1 before:rounded-full before:bg-gray-300 before:mr-3">Create Profile</a>
                   </li>
               </ul>
           </li>
@@ -1603,7 +1603,7 @@ video {
                     </button>
                     <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
                         <li>
-                            <a href="{% url 'profile_management' %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Profile</a>
+                            <a href="{% url 'profile_management' usr_name %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Profile</a>
                         </li>
                         <li>
                             <a href="{% url 'edit_or_add_account_settings' %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Settings</a>
@@ -1837,11 +1837,6 @@ video {
       document.addEventListener("DOMContentLoaded", function() {
           // Check if the renewal date is set\
           console.log("onload", check_usr)
-          if (check_usr == 1) {
-              window.location.href = "{% url 'subscription_expired' %}";
-            } else {
-              console.log("valied use...!");
-          }
       });
 
         

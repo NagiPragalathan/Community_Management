@@ -76,20 +76,26 @@ auth = [
 
 
 profile =[
-    path('profile/profile_management', profile_management, name='profile_management'),
+    path('profile/profile_management/<str:username>', profile_management, name='profile_management'),
     path('add_edit_user_profile', add_edit_user_profile, name='add_edit_user_profile'), # here we can create new user so this is first tab.
     path('add_profile/<str:username>', add_profile, name='add_profile'),
+    path('add_profile/<str:username>/<int:dashboard>', add_profile, name='add_profile'),
     path('add_contact_details/<str:username>', add_contact_details, name='add_contact_details'),
+    path('add_contact_details/<str:username>/<int:dashboard>', add_contact_details, name='add_contact_details'),
     path('add_or_edit_address/<str:username>', add_or_edit_address, name='add_or_edit_address'),
+    path('add_or_edit_address/<str:username>/<int:dashboard>', add_or_edit_address, name='add_or_edit_address'),
     path('add_or_edit_bio/<str:username>', add_or_edit_bio, name='add_or_edit_bio'),
+    path('add_or_edit_bio/<str:username>/<int:dashboard>', add_or_edit_bio, name='add_or_edit_bio'),
     path('delete_image', delete_image, name='delete_image'),
     path('add_gallery', add_gallery, name='add_gallery'),
+
 ]
 
 connections = [ 
     path('send_connection_request/<int:user_id>', send_connection_request, name='send_connection_request'),
     path('accept_connection_request/<int:connection_id>', accept_connection_request, name='accept_connection_request'),
     path('connections', connection_list, name='connections'),
+    path('connections/<str:username>', connection_list, name='connections'),
     path('list_users', list_users, name='list_users'),
     path('pending_request', pending_request, name='pending_request'),
     path('incoming_requests', incoming_requests, name='incoming_requests'),
@@ -106,6 +112,7 @@ chat = [
 testimonial = [
     path('menuOfTestimonial', menuOfTestimonial, name='menuOfTestimonial'),
     path('incoming_testimonials', incoming_testimonials, name='incoming_testimonials'),
+    path('incoming_testimonials/<str:username>', incoming_testimonials, name='incoming_testimonials'),
     path('list_requested_testimonials', list_requested_testimonials, name='list_requested_testimonials'),
     path('list_inboxrequested_testimonials', list_inboxrequested_testimonials, name='list_inboxrequested_testimonials'),
     path('give_testimonial/<int:receiver_id>', give_testimonial, name='give_testimonial'),
@@ -281,6 +288,7 @@ admin_profile = [
     path('profile/list/', profile_list_view, name='profile-list'),
     # URL for editing an existing profile
     path('profile/edit/<int:pk>/', profile_view, name='profile-edit'),
+    path('profile/<str:username>/', view_profile, name='view_profile'),
 ]
 
 training_sessions = [
@@ -323,7 +331,8 @@ training_sessions_report_url = [
 ]
 
 iframe_url = [
-    path('iframe/<str:username>', iframe, name='iframe'),
+    path('iframe/<str:username>/', iframe, name='iframe'),
+    path('iframe/<str:username>/<int:dashboard>', iframe, name='iframe'),
     path('email/', email, name='email'),
     path('portal/', portal, name='portal'),
 ]

@@ -40,9 +40,12 @@ def give_testimonial(request, receiver_id):
         return render(request, 'testimonial/give_testimonial.html', {"receiver_id": receiver_id})
     
     
-def incoming_testimonials(request):
-    # Retrieve the current user from the session or request.user if using Django's authentication system
-    current_user = request.user
+def incoming_testimonials(request, username=None):
+    if username:
+        current_user = User.objects.get(username=username)
+    else:
+        current_user = request.user
+
 
     for i in Testimonial.objects.all():
         print(i.from_user.username, i.to_user.username)

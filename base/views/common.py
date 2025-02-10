@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
-from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile, ChapterEducationUnit, TYFCB, ReferralSlip, Visitor
+from base.models import CityData, Group, Connection, MainProfile, oneToOneMessage, Meeting, UserProfile, ChapterEducationUnit, TYFCB, ReferralSlip, Visitor, Bio, Address
 from base.form.forms import CityDataForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -258,8 +258,22 @@ def common_data(request):
                 days_left_for_renewal = None  # If renewal date is missing, return None
         except AttributeError:  # Catch errors only when profile is None or missing attributes
             days_left_for_renewal = None
-            
+        
+        try:
+            main_profile = MainProfile.objects.get(user=current_user)
+            main_profile = 1
+        except MainProfile.DoesNotExist:
+            main_profile = 0
+        
+        try:
+            bio = Bio.objects.get(user=current_user)
+            bio = 1
+        except Bio.DoesNotExist:
+            bio = 0
+
         print(renewal_message, days_left_for_renewal)
+
+        is_admin = request.user.is_superuser or request.user.is_staff
 
         context.update({
             'usr_profile': profile,
@@ -268,16 +282,23 @@ def common_data(request):
             'unseen_messages': unseen_messages_list,
             'renewal_message': renewal_message,  # Add renewal message to context
             'days_left_for_renewal': days_left_for_renewal,  # Add days left to context
-            'usr_img':usr_img
+            'usr_img':usr_img,
+            'main_profile': main_profile,
+            'bio': bio,
+            'is_admin': 1 if is_admin else 0
         })
     else:
+
         context.update({
             'usr_name': "No name",
             'unseen_messages_count': 0,
-            'unseen_messages': [],
+            'unseen_messages': [], 
             'renewal_message': 0,  # No renewal message for unauthenticated users
             'days_left_for_renewal': 0,  # No days left calculation for unauthenticated users
-            'usr_img': 'none'
+            'usr_img': 'none',
+            'main_profile': None,
+            'bio': None,
+            'is_admin': is_admin
         })
 
     return context

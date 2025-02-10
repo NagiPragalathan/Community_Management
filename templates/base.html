@@ -1351,6 +1351,32 @@ video {
     </style>
 </head>
 <body class="text-gray-800 font-inter">
+    <div class="flex items-center justify-center min-h-screen bg-cover bg-center backdrop-blur-md text-gray-900" id="error-pop" style="display: none; position: fixed; z-index: 99; width: 100%; height: 100%;">
+      <div class="max-w-xs sm:max-w-md w-full p-8 rounded-2xl border border-white/25 bg-white/30 shadow-lg backdrop-blur-md text-gray-900">
+        <div class="flex flex-col items-center space-y-4">
+            <svg class="h-16 w-16 text-yellow-500 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <div class="text-center">
+                <p class="text-lg font-semibold">The user <strong>is not Initialized properly</strong> please contact the administrator.</p>
+                <p class="text-sm text-gray-700 mt-4">please contact the administrator to initialize the user properly. <span class="font-bold"><a href="{% url 'contact_form' %}" class="text-blue-500 hover:text-blue-600">contact</a>.</span></p>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center justify-center min-h-screen bg-cover bg-center backdrop-blur-md text-gray-900" id="subscription_expired-pop" style="display: none; position: fixed; z-index: 99; width: 100%; height: 100%;">
+      <div class="max-w-xs sm:max-w-md w-full p-8 rounded-2xl border border-white/25 bg-white/30 shadow-lg backdrop-blur-md text-gray-900">
+        <div class="flex flex-col items-center space-y-4">
+            <svg class="h-16 w-16 text-yellow-500 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <div class="text-center">
+                <p class="text-lg font-semibold">Your subscription <strong>has expired.</strong> please contact the administrator.</p>
+                <p class="text-sm text-gray-700 mt-4">Please renew your subscription to continue using our services. <span class="font-bold"><a href="{% url 'contact_form' %}" class="text-blue-500 hover:text-blue-600">contact</a>.</span></p>
+            </div>
+        </div>
+      </div>
+    </div>
     <!--sidenav -->
     <div class="fixed left-0 top-0 w-64 h-full bg-white p-4 z-50 sidebar-menu transition-transform">
         <a href="#" class="flex items-center pb-4 border-b border-b-gray-800">
@@ -1571,7 +1597,7 @@ video {
                     </button>
                     <ul class="dropdown-menu shadow-md shadow-black/5 z-30 hidden py-1.5 rounded-md bg-white border border-gray-100 w-full max-w-[140px]">
                         <li>
-                            <a href="{% url 'profile_management' %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Profile</a>
+                            <a href="{% url 'view_profile' usr_name %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Profile</a>
                         </li>
                         <li>
                             <a href="{% url 'edit_or_add_account_settings' %}" class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-[#f84525] hover:bg-gray-50">Settings</a>
@@ -1802,15 +1828,33 @@ video {
         // end: Chart
 
       let check_usr = {{ renewal_message }};
+      let check_usr_profile = {{ main_profile }};
+      let check_usr_bio = {{ bio }}
+      let is_admin = {{ is_admin }}
       document.addEventListener("DOMContentLoaded", function() {
           // Check if the renewal date is set\
           console.log("onload", check_usr)
+          console.log("is_admin", is_admin)
+          if (is_admin == 1) {
+            if (check_usr_profile == 1) {
+              document.getElementById("error-pop").style.display = "flex";
+              document.getElementById("error-pop").style.backgroundColor = "red";
+            }
+            if (check_usr_bio == 1) {
+              document.getElementById("error-pop").style.display = "flex";
+              document.getElementById("error-pop").style.backgroundColor = "blue";
+            }
+          }
+
           if (check_usr == 1) {
-              window.location.href = "{% url 'subscription_expired' %}";
+              document.getElementById("subscription_expired-pop").style.display = "flex";
             } else {
-              console.log("valied use...!");
+              console.log("valied user...!");
           }
       });
+
+
+
 
         
     </script>

@@ -14,10 +14,11 @@ def is_admin_user(user):
     return user.is_superuser or user.is_staff
 
 
-def profile_management(request):
-    return render(request, 'Profile/profile_management.html')
+def profile_management(request, username):
+    return render(request, 'Profile/profile_management.html', {'username': username})
 
-def add_profile(request, username):
+
+def add_profile(request, username, dashboard=0):
     if request.method == 'POST':
         user = User.objects.get(username=username)
         title = request.POST.get('title', '')
@@ -82,6 +83,8 @@ def add_profile(request, username):
     # Ensure `base_template` is always set correctly
     is_admin = is_admin_user(request.user)
     base_template = 'dummy_base_dont_remove_this_file.html' if is_admin else 'base.html'
+    if dashboard != 0:
+        base_template = 'dummy_base_dont_remove_this_file.html'
 
     try:
         if not is_admin:
@@ -99,8 +102,11 @@ def add_profile(request, username):
     except MainProfile.DoesNotExist:
         # Show error message if profile does not exist
         messages.error(request, "Contact your admin to ask to initialize the main profile. Thanks.")
-        profile = MainProfile.objects.filter(user=request.user).first()
-        chapters = Chapter.objects.filter(name=profile.Chapter.id).first()
+        try:
+            profile = MainProfile.objects.filter(user=request.user).first()
+            chapters = Chapter.objects.filter(name=profile.Chapter.id).first()
+        except Exception as e:
+            chapters = ChapterName.objects.all()
 
         return render(request, 'Profile/add_profile.html', {
             'data': None,
@@ -112,7 +118,7 @@ def add_profile(request, username):
         })
 
 
-def add_contact_details(request, username):
+def add_contact_details(request, username, dashboard=0):
     if request.method == 'POST':
         user = User.objects.get(username=username)
         show_on_bni_public_websites = request.POST.get('show_on_bni_public_websites') == 'on'
@@ -180,7 +186,9 @@ def add_contact_details(request, username):
 
     # Ensure base_template is always set
     base_template = 'dummy_base_dont_remove_this_file.html' if is_admin_user(request.user) else 'base.html'
-    
+    if dashboard != 0:
+        base_template = 'dummy_base_dont_remove_this_file.html'
+
     return render(request, 'Profile/add_contact_details.html', {"initial_data": initial_data, "base_template": base_template})
 
 
@@ -227,9 +235,9 @@ def add_edit_user_profile(request):
             user_profile.save()
             messages.success(request, "New user profile created successfully.")
 
-        return redirect('add_edit_user_profile')
+        return redirect('iframe', username=username)
 
-    base_template = 'dummy_base_dont_remove_this_file.html' if is_admin_user(request.user) else 'base.html'
+    base_template = 'admin_base.html' if is_admin_user(request.user) else 'base.html'
 
     return render(request, 'Profile/add_edit_user_profile.html', {
         'user_profile': None if is_admin_user(request.user) else user_profile,
@@ -239,7 +247,7 @@ def add_edit_user_profile(request):
 
 
 @login_required
-def add_or_edit_address(request, username):
+def add_or_edit_address(request, username, dashboard=0):
     user = User.objects.get(username=username)
     is_admin = is_admin_user(request.user)
     print("user :", user)
@@ -293,6 +301,9 @@ def add_or_edit_address(request, username):
 
         # Ensure base_template is always set
         base_template = 'dummy_base_dont_remove_this_file.html' if is_admin else 'base.html'
+        if dashboard != 0:
+            base_template = 'dummy_base_dont_remove_this_file.html'
+
 
         # Context dictionary
         context = {
@@ -305,7 +316,7 @@ def add_or_edit_address(request, username):
         return render(request, 'Profile/add_or_edit_address.html', context)
 
 
-def add_or_edit_bio(request, username):
+def add_or_edit_bio(request, username, dashboard=0):
     user = User.objects.get(username=username)
     try:
         bio = Bio.objects.get(user=user)
@@ -359,8 +370,15 @@ def add_or_edit_bio(request, username):
             )
 
         return redirect('add_or_edit_bio', username=username)
+    base_template = 'dummy_base_dont_remove_this_file.html' if is_admin_user(request.user) else 'base.html'
+    if dashboard != 0:
+        base_template = 'dummy_base_dont_remove_this_file.html'
 
-    return render(request, 'Profile/add_or_edit_bio.html', {'bio': bio})
+    return render(request, 'Profile/add_or_edit_bio.html', {'bio': bio,
+                                                            'base_template': base_template,
+                                                            })
+
+
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Gallery >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -387,12 +405,55 @@ def delete_image(request):
     return JsonResponse({'error': 'Invalid request'})
 
 
-def iframe(request, username):
-    return render(request, 'iframe.html', {'username': username})
+def iframe(request, username, dashboard=0):
+    if dashboard == 0:
+        return render(request, 'iframe.html', {'username': username,
+                                           'is_admin': is_admin_user(request.user),
+                                           'base_template': 'admin_base.html' if is_admin_user(request.user) else 'base.html'
+                                           })
+    else:
+        return render(request, 'iframe.html', {'username': username,
+                                           'is_admin': is_admin_user(request.user),
+                                           'base_template': 'dummy_base_dont_remove_this_file.html' if is_admin_user(request.user) else 'base.html'
+                                           })
 
 def email(request):
     return render(request, 'email.html')
 
 def portal(request):
     return render(request, 'portal.html')
+
+def view_profile(request, username):
+    user = User.objects.get(username=username)
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        profile = MainProfile.objects.get(user=user)
+        contact_details = ContactDetails.objects.get(user=user)
+        address = Address.objects.get(user=user)
+        bio = Bio.objects.get(user=user)
+        gallery = Gallery.objects.filter(user=user)
+    except Exception as e:
+        print(e)
+        user_profile = None
+        profile = None
+        contact_details = None
+        address = None
+        bio = None
+        gallery = None
+    
+    # Add these counts
+    connection_count = user.connections.count() if hasattr(user, 'connections') else 0
+    testimonial_count = user.received_testimonials.count() if hasattr(user, 'received_testimonials') else 0
+
+    return render(request, 'Profile/view_profile.html', {
+        'username': username,
+        'user_profile': user_profile,
+        'profile': profile,
+        'contact_details': contact_details,
+        'address': address,
+        'bio': bio,
+        'gallery': gallery,
+        'connection_count': connection_count,
+        'testimonial_count': testimonial_count,
+    })
 

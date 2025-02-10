@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from base.models import MainProfile, ChapterName, Region, Chapter
 from django.db.models import Q
 from datetime import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def profile_view(request, pk=None):
     profile = None
@@ -70,6 +71,7 @@ def profile_list_view(request):
     chapter_filter = request.GET.get('chapter', None)
     region_filter = request.GET.get('region', None)
     search_query = request.GET.get('search', '').strip()
+    search_field = request.GET.get('search_field', 'all')  # New parameter for search field
 
     # Apply chapter filter (manual filtering)
     if chapter_filter:
@@ -102,21 +104,41 @@ def profile_list_view(request):
                     print(f"Error while filtering region: {e}", profile)
         profiles = temp
 
-    # Apply search query filter (Django ORM way)
+    # Enhanced search query filter
     if search_query:
-        profiles = profiles.filter(
-            Q(display_name__icontains=search_query) |
-            Q(first_name__icontains=search_query) |
-            Q(last_name__icontains=search_query)
-        )
+        if search_field == 'display_name':
+            profiles = profiles.filter(display_name__icontains=search_query)
+        elif search_field == 'first_name':
+            profiles = profiles.filter(first_name__icontains=search_query)
+        elif search_field == 'last_name':
+            profiles = profiles.filter(last_name__icontains=search_query)
+        elif search_field == 'username':
+            profiles = profiles.filter(user__username__icontains=search_query)
+        else:  # 'all' or default case
+            profiles = profiles.filter(
+                Q(display_name__icontains=search_query) |
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query) |
+                Q(user__username__icontains=search_query)
+            )
 
-    # Render the filtered profiles
+    # Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(profiles, 20)  # Show 10 profiles per page
+    try:
+        profiles = paginator.page(page)
+    except PageNotAnInteger:
+        profiles = paginator.page(1)
+    except EmptyPage:
+        profiles = paginator.page(paginator.num_pages)
+
     return render(request, "custom_admin/chapter/profile/profile_list.html", {
         "profiles": profiles,
         "chapters": chapters,
         "chapter_names": chapter_names,
         "regions": regions,
         "search_query": search_query,
+        "search_field": search_field,
         "chapter_filter": chapter_filter,
         "region_filter": region_filter,
     })

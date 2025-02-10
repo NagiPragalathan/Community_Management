@@ -6,14 +6,19 @@ from django.db.models import Q
 from django.contrib import messages
 
 @login_required
-def connection_list(request):
+def connection_list(request, username=None):
+    if username:
+        user = User.objects.get(username=username)
+    else:
+        user = request.user
+
     connections = Connection.objects.filter(
-        (Q(user=request.user) | Q(connection=request.user)), 
+        (Q(user=user) | Q(connection=user)), 
         status='accepted'
     )
-    
+
     users = User.objects.filter(Q(id__in=connections.values('user')) | Q(id__in=connections.values('connection')))
-    profiles = MainProfile.objects.filter(user__in=users).exclude(user=request.user)
+    profiles = MainProfile.objects.filter(user__in=users).exclude(user=user)
 
     return render(request, 'connections/connections.html', {'profiles': profiles})
 

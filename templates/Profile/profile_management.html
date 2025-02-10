@@ -19,7 +19,7 @@
                         <div class="p-6">
                             <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Add Profile</h2>
                             <p class="text-gray-600 mb-6">Start by creating your user profile with personal details and preferences.</p>
-                            <a href="{% url 'add_profile' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                            <a href="{% url 'add_profile' username %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
                                 Create Profile
                             </a>
                         </div>
@@ -30,8 +30,9 @@
                         <div class="p-6">
                             <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Contact Details</h2>
                             <p class="text-gray-600 mb-6">Add or update your contact information and communication preferences.</p>
-                            <a href="{% url 'add_contact_details' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                            <a href="{% url 'add_contact_details' username %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
                                 Manage Contacts
+
                             </a>
                         </div>
                     </div>
@@ -52,8 +53,9 @@
                         <div class="p-6">
                             <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Address Details</h2>
                             <p class="text-gray-600 mb-6">Manage your shipping and billing address information.</p>
-                            <a href="{% url 'add_or_edit_address' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                            <a href="{% url 'add_or_edit_address' username %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
                                 Update Address
+
                             </a>
                         </div>
                     </div>
@@ -63,8 +65,9 @@
                         <div class="p-6">
                             <h2 class="text-xl font-bold text-blue-600 group-hover:text-blue-700 transition-colors mb-3">Biography</h2>
                             <p class="text-gray-600 mb-6">Share your story and professional background with others.</p>
-                            <a href="{% url 'add_or_edit_bio' %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                            <a href="{% url 'add_or_edit_bio' username %}" class="block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
                                 Edit Biography
+
                             </a>
                         </div>
                     </div>
