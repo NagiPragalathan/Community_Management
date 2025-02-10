@@ -220,6 +220,8 @@ def add_city(request):
 
 def common_data(request):
     context = {}
+    is_admin = request.user.is_superuser or request.user.is_staff
+    
     if request.user.is_authenticated:
         current_user = request.user
         usr_name = current_user.username
@@ -253,7 +255,7 @@ def common_data(request):
                 
                 print(current_date, renewal_date)
 
-                if current_date > renewal_date:
+                if (current_date > renewal_date) or is_admin:
                     renewal_message = 1  # Indicates expired renewal
                     days_left_for_renewal = (renewal_date - current_date).days  # Negative value for expired
                 else:
@@ -284,7 +286,6 @@ def common_data(request):
 
         print(renewal_message, days_left_for_renewal)
 
-        is_admin = request.user.is_superuser or request.user.is_staff
 
         context.update({
             'usr_profile': profile,
