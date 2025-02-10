@@ -305,14 +305,13 @@ def common_data(request):
             'usr_name': "No name",
             'unseen_messages_count': 0,
             'unseen_messages': [], 
-            'renewal_message': 0,  # No renewal message for unauthenticated users
+            'renewal_message': 1 if is_admin else 0,  # No renewal message for unauthenticated users
             'days_left_for_renewal': 0,  # No days left calculation for unauthenticated users
             'usr_img': 'none',
             'main_profile': None,
             'bio': None,
             'contact': None,
             'is_admin': is_admin
-
         })
     
     print(context)
