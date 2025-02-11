@@ -41,28 +41,28 @@
             <div class="tab-content mt-4 sm:mt-8">
                 <!-- Basic Info Tab -->
                 <div class="tab-pane transform transition-all duration-500 ease-in-out" id="basic-info" role="tabpanel">
-                    <iframe src="{% url 'add_profile' username 1 %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                    <iframe src="{% url 'add_profile' username 1 %}" class="w-full min-h-[500px] h-full" style="height: calc(100vh - 20rem);" frameborder="0"></iframe>
                 </div>
 
                 <!-- Company Info Tab -->
                 <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="company-info" role="tabpanel">
-                    <iframe src="{% url 'add_contact_details' username 1 %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                    <iframe src="{% url 'add_contact_details' username 1 %}" class="w-full min-h-[500px] h-full" style="height: calc(100vh - 20rem);" frameborder="0"></iframe>
                 </div>
 
                 <!-- Membership Info Tab -->
                 <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="membership-info" role="tabpanel">
-                    <iframe src="{% url 'add_or_edit_address' username 1 %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                    <iframe src="{% url 'add_or_edit_address' username 1 %}" class="w-full min-h-[500px] h-full" style="height: calc(100vh - 20rem);" frameborder="0"></iframe>
                 </div>
 
                 <!-- Additional Info Tab -->
                 <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="additional-info" role="tabpanel">
-                    <iframe src="{% url 'add_or_edit_bio' username 1 %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                    <iframe src="{% url 'add_or_edit_bio' username 1 %}" class="w-full min-h-[500px] h-full" style="height: calc(100vh - 20rem);" frameborder="0"></iframe>
                 </div>
 
                 {% if not is_admin %}
                 <!-- Settings Tab -->
                 <div class="tab-pane hidden transform transition-all duration-500 ease-in-out" id="settings" role="tabpanel">
-                    <iframe src="{% url 'edit_or_add_account_settings' username 1 %}" class="w-full h-[calc(100vh-300px)] sm:h-[calc(100vh-400px)] rounded-xl shadow-lg" frameborder="0"></iframe>
+                    <iframe src="{% url 'edit_or_add_account_settings' username 1 %}" class="w-full min-h-[500px] h-full" style="height: calc(100vh - 20rem);" frameborder="0"></iframe>
                 </div>
                 {% else %}
                 <!-- Settings Tab -->
@@ -114,6 +114,20 @@ function showTab(tabId) {
 // Show basic info tab by default with initial animation
 document.addEventListener('DOMContentLoaded', function() {
     showTab('basic-info');
+    
+    // Add resize event listener to handle iframe height
+    function adjustIframeHeight() {
+        const iframes = document.querySelectorAll('iframe');
+        const viewportHeight = window.innerHeight;
+        const newHeight = Math.max(500, viewportHeight - 320); // Minimum 500px height
+        
+        iframes.forEach(iframe => {
+            iframe.style.height = `${newHeight}px`;
+        });
+    }
+    
+    window.addEventListener('resize', adjustIframeHeight);
+    adjustIframeHeight(); // Initial adjustment
 });
 </script>
 
