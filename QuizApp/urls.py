@@ -298,6 +298,7 @@ admin_profile = [
     # URL for creating a new profile
     path('profile/create/', profile_view, name='profile-create'),
     path('profile/list/', profile_list_view, name='profile-list'),
+    path('profile-view/username-list/', username_list_view, name='username-list'),
     # URL for editing an existing profile
     path('profile/edit/<int:pk>/', profile_view, name='profile-edit'),
     path('profile/<str:username>/', view_profile, name='view_profile'),

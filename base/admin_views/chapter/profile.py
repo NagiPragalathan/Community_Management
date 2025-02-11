@@ -142,3 +142,34 @@ def profile_list_view(request):
         "chapter_filter": chapter_filter,
         "region_filter": region_filter,
     })
+
+
+def username_list_view(request):
+    # Handle search
+    search_query = request.GET.get('search', '')
+    users = User.objects.all()
+    
+    if search_query:
+        users = users.filter(
+            Q(username__icontains=search_query) |
+            Q(email__icontains=search_query) |
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query)
+        )
+    
+    # Pagination
+    paginator = Paginator(users, 20)
+    page = request.GET.get('page', 1)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+    
+    return render(request, "custom_admin/chapter/profile/username_list.html", {
+        "users": users,
+        "search_query": search_query,
+    })
+
+
