@@ -173,3 +173,72 @@ def set_goals(request):
 def goals_list(request):
     goals = ChapterGoles.objects.filter(user=request.user)
     return render(request, 'goals/goals_list.html', {'goals': goals})
+
+@login_required
+def email_visitor_invitation(request):
+    visitors = Visitor.objects.filter(user=request.user).order_by('-date')
+    
+    if request.method == 'POST':
+        visitor_ids = request.POST.getlist('selected_visitors')
+        custom_message = request.POST.get('custom_message', '')
+        
+        for visitor_id in visitor_ids:
+            visitor = Visitor.objects.get(id=visitor_id)
+            # Compose email message
+            message = f"""
+            Dear {visitor.title or ''} {visitor.first_name} {visitor.last_name},
+            
+            {custom_message}
+            
+            Best regards,
+            {request.user.get_full_name()}
+            """
+            
+            try:
+                send_mail(
+                    'Invitation to Visit',
+                    message,
+                    request.user.email,
+                    [visitor.email],
+                    fail_silently=False,
+                )
+                messages.success(request, f"Invitation sent to {visitor.email}")
+            except Exception as e:
+                messages.error(request, f"Failed to send email to {visitor.email}")
+    
+    return render(request, 'operations/email_visitor_invitation.html', {
+        'visitors': visitors
+    })
+
+@login_required
+def email_chapter_visitors(request):
+    # Get all visitors from the user's chapter
+    main_profile = get_object_or_404(MainProfile, user=request.user)
+    chapter = main_profile.Chapter
+    chapter_visitors = Visitor.objects.filter(
+        user__mainprofile__Chapter=chapter
+    ).order_by('-date')
+    
+    if request.method == 'POST':
+        visitor_ids = request.POST.getlist('selected_visitors')
+        subject = request.POST.get('subject', '')
+        message_body = request.POST.get('message_body', '')
+        
+        for visitor_id in visitor_ids:
+            visitor = Visitor.objects.get(id=visitor_id)
+            try:
+                send_mail(
+                    subject,
+                    message_body,
+                    request.user.email,
+                    [visitor.email],
+                    fail_silently=False,
+                )
+                messages.success(request, f"Email sent to {visitor.email}")
+            except Exception as e:
+                messages.error(request, f"Failed to send email to {visitor.email}")
+    
+    return render(request, 'operations/email_chapter_visitors.html', {
+        'chapter_visitors': chapter_visitors,
+        'chapter_name': chapter.chapter_name if chapter else "No Chapter"
+    })

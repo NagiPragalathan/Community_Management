@@ -276,13 +276,6 @@ def common_data(request):
             contact = 1
         except ContactDetails.DoesNotExist:
             contact = 0
-        
-        try:
-            bio = Bio.objects.get(user=current_user)
-
-            bio = 1
-        except Bio.DoesNotExist:
-            bio = 0
 
         print(renewal_message, days_left_for_renewal)
 
@@ -296,7 +289,6 @@ def common_data(request):
             'days_left_for_renewal': days_left_for_renewal,  # Add days left to context
             'usr_img':usr_img,
             'main_profile': main_profile,
-            'bio': bio,
             'contact': contact,
             'is_admin': 1 if is_admin else 0
         })
@@ -310,7 +302,6 @@ def common_data(request):
             'days_left_for_renewal': 0,  # No days left calculation for unauthenticated users
             'usr_img': 'none',
             'main_profile': None,
-            'bio': None,
             'contact': None,
             'is_admin': is_admin
         })

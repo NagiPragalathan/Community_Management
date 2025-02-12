@@ -74,6 +74,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    
+    # custom middleware
+    'base.middleware.LoginRequiredMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [

@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from base.models import ContactFormSubmission  # Assuming you have a model to store form submissions
 
-@login_required
 def contact_form(request):
     if request.method == "POST":
         first_name = request.POST.get('first_name')

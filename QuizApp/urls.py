@@ -7,6 +7,8 @@ from django.conf.urls.i18n import i18n_patterns
 from django.urls import re_path
 
 # Django views
+from base.views.industry_clasification import *
+from base.views.json_rep import download_user_data
 from base.views.auth import *
 from base.views.common import *
 from base.views.Profile import *
@@ -187,13 +189,11 @@ visitor = [
     path('subscription-expired/', subscription_expired, name='subscription_expired'),
 ]
 
-
-
 Operations = [
     path('view_palms_summary/', view_palms_summary, name='view_palms_summary'),
     path('view_chapter_goals/', view_chapter_goals, name='view_chapter_goals'),
     path('email_my_chapter/', email_my_chapter, name='email_my_chapter'),
-    path('email_visitor_invitation/', send_invitation_view, name='send_invitation'),
+    path('email_visitor_invitation/', email_visitor_invitation, name='email_visitor_invitation'),
     path('email_chapter_visitors/', email_chapter_visitors, name='email_chapter_visitors'),
     path('manage_news/', manage_news, name='manage_news'),
     path('operations/operations', operations, name='operations'),
@@ -350,7 +350,25 @@ iframe_url = [
     path('portal/', portal, name='portal'),
 ]
 
+download_data = [
+    path('download-data/<str:username>/', download_user_data, name='download_user_data'),
+]
 
+industry_classification = [
+    # Industry URLs
+    path('industries/', industry_list, name='industry_list'),
+    path('industry/<uuid:pk>/', industry_detail, name='industry_detail'),
+    path('industry/new/', industry_create, name='industry_create'),
+    path('industry/<uuid:pk>/edit/', industry_update, name='industry_update'),
+    path('industry/<uuid:pk>/delete/', industry_delete, name='industry_delete'),
+
+    # Classification URLs
+    path('classifications/', classification_list, name='classification_list'),
+    path('classification/<uuid:pk>/', classification_detail, name='classification_detail'),
+    path('classification/new/', classification_create, name='classification_create'),
+    path('classification/<uuid:pk>/edit/', classification_update, name='classification_update'),
+    path('classification/<uuid:pk>/delete/', classification_delete, name='classification_delete'),
+]
 
 
 urlpatterns.extend(auth)
@@ -386,6 +404,7 @@ urlpatterns+=admin_chapter_member_position
 urlpatterns+=admin_chapter
 urlpatterns+=admin_profile
 urlpatterns+=training_sessions
+urlpatterns+=industry_classification
 
 # reports
 urlpatterns+=member_performance_report_url
@@ -395,6 +414,9 @@ urlpatterns+=region_performance_report_url
 urlpatterns+=chapter_roster_report_url
 urlpatterns+=training_sessions_report_url
 urlpatterns+=iframe_url
+
+# download data
+urlpatterns+=download_data
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

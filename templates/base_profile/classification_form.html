@@ -1,0 +1,109 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-white p-6">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg border border-blue-200 hover:border-blue-300 transition-all duration-300">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-t-xl">
+                <h2 class="text-2xl font-bold text-white tracking-tight flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        {% if classification %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        {% else %}
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        {% endif %}
+                    </svg>
+                    {% if classification %}Edit Classification{% else %}Add New Classification{% endif %}
+                </h2>
+            </div>
+
+            <!-- Form Content -->
+            <div class="p-6">
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+
+                    <!-- Name Field -->
+                    <div class="group">
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
+                            Classification Name <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" 
+                                   id="name" 
+                                   name="name" 
+                                   value="{{ classification.name|default:'' }}" 
+                                   required
+                                   class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-gray-700 bg-white"
+                                   placeholder="Enter classification name">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description Field -->
+                    <div class="group">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+                            Description
+                        </label>
+                        <div class="relative">
+                            <textarea id="description" 
+                                      name="description" 
+                                      rows="4"
+                                      class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-gray-700 bg-white resize-none"
+                                      placeholder="Enter classification description">{{ classification.description|default:'' }}</textarea>
+                            <div class="absolute top-2 right-2 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex items-center justify-end space-x-4 pt-4 border-t border-gray-200">
+                        <a href="{% url 'classification_list' %}" 
+                           class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                            </svg>
+                            Cancel
+                        </a>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            {% if classification %}Update{% else %}Save{% endif %} Classification
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Help Card -->
+        <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-gray-900">Tips for creating a classification</h3>
+                    <div class="mt-2 text-sm text-gray-600">
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Use clear, concise names that are easy to understand</li>
+                            <li>Provide a detailed description to help users understand the classification</li>
+                            <li>Avoid duplicate classifications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -30,6 +30,27 @@ class ChapterName(models.Model):
     def __str__(self):
         return self.chapter_name
 
+class Industry(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True, null=True)
+    last_updated_date = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Industries"
+
+class Classification(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True, null=True)
+    last_updated_date = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
 class MainProfile(models.Model):
     TITLE_CHOICES = [
         ('Mr.', 'Mr.'),
@@ -61,8 +82,8 @@ class MainProfile(models.Model):
     product_service_description = models.CharField(max_length=255, blank=True, null=True)
     gst_registered_state = models.CharField(max_length=100, blank=True, null=True)
     gst_identification_number_or_pan = models.CharField(max_length=255, blank=True, null=True)
-    industry = models.CharField(max_length=255, blank=True, null=True)
-    classification = models.CharField(max_length=255, blank=True, null=True)
+    industry = models.ForeignKey(Industry, on_delete=models.SET_NULL, blank=True, null=True)
+    classification = models.ForeignKey(Classification, on_delete=models.SET_NULL, blank=True, null=True)
     requested_speciality = models.CharField(max_length=255, blank=True, null=True)
     membership_status = models.CharField(max_length=11, choices=MEMBERSHIP_STATUS_CHOICES)
     renewal_due_date = models.DateField(blank=True, null=True)

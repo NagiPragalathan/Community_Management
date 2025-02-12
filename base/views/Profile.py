@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from base.models import MainProfile, ContactDetails, UserProfile, Address, BillingAddress, Bio, Gallery, ChapterName, Chapter
+from base.models import MainProfile, ContactDetails, UserProfile, Address, BillingAddress, Bio, Gallery, ChapterName, Chapter, Industry, Classification
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -32,8 +32,8 @@ def add_profile(request, username, dashboard=0):
         product_service_description = request.POST.get('product_service_description', '')
         gst_registered_state = request.POST.get('gst_registered_state', '')
         gst_identification_number_or_pan = request.POST.get('gst_identification_number_or_pan', '')
-        industry = request.POST.get('industry', '')
-        classification = request.POST.get('classification', '')
+        industry_id = request.POST.get('industry', '')
+        classification_id = request.POST.get('classification', '')
         requested_speciality = request.POST.get('requested_speciality', '')
         membership_status = request.POST.get('membership_status', 'Active')
         my_business = request.POST.get('my_business', '')
@@ -46,6 +46,14 @@ def add_profile(request, username, dashboard=0):
         chapter_instance = None
         if chapter_name_value:
             chapter_instance = get_object_or_404(ChapterName, id=chapter_name_value)
+
+        # Get Industry and Classification instances
+        industry_instance = None
+        classification_instance = None
+        if industry_id:
+            industry_instance = get_object_or_404(Industry, id=industry_id)
+        if classification_id:
+            classification_instance = get_object_or_404(Classification, id=classification_id)
 
         # Update user details
         user.first_name = first_name
@@ -66,8 +74,8 @@ def add_profile(request, username, dashboard=0):
                 'product_service_description': product_service_description,
                 'gst_registered_state': gst_registered_state,
                 'gst_identification_number_or_pan': gst_identification_number_or_pan,
-                'industry': industry,
-                'classification': classification,
+                'industry': industry_instance,
+                'classification': classification_instance,
                 'requested_speciality': requested_speciality,
                 'membership_status': membership_status,
                 'renewal_due_date': renewal_due_date,
@@ -93,9 +101,16 @@ def add_profile(request, username, dashboard=0):
         else:
             profile =  MainProfile.objects.get(user=User.objects.get(username=username))
             chapter = ChapterName.objects.all()
+
+        # Add these querysets
+        industries = Industry.objects.all().order_by('name')
+        classifications = Classification.objects.all().order_by('name')
+
         return render(request, 'Profile/add_profile.html', {
             'data': profile,
             'chapter': chapter,
+            'industries': industries,
+            'classifications': classifications,
             'is_admin': is_admin,
             'base_template': base_template,
         })
@@ -109,9 +124,15 @@ def add_profile(request, username, dashboard=0):
         except Exception as e:
             chapters = ChapterName.objects.all()
 
+        # Add these querysets
+        industries = Industry.objects.all().order_by('name')
+        classifications = Classification.objects.all().order_by('name')
+
         return render(request, 'Profile/add_profile.html', {
             'data': profile,
             'chapter': chapters,
+            'industries': industries,
+            'classifications': classifications,
             'is_admin': is_admin,
             'error': True,
             'base_template': base_template,
@@ -446,6 +467,7 @@ def view_profile(request, username):
     # Add these counts
     connection_count = user.connections.count() if hasattr(user, 'connections') else 0
     testimonial_count = user.received_testimonials.count() if hasattr(user, 'received_testimonials') else 0
+    base_template = 'admin_base.html' if is_admin_user(request.user) else 'base.html'
 
     return render(request, 'Profile/view_profile.html', {
         'username': username,
@@ -457,5 +479,6 @@ def view_profile(request, username):
         'gallery': gallery,
         'connection_count': connection_count,
         'testimonial_count': testimonial_count,
+        'base_template': base_template,
     })
 

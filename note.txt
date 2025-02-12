@@ -93,37 +93,38 @@ sample
 [o] profile language dynamic
 [o] create new user tab to create new user
 [o] create new page to show the current profile - backend and frontend
-
-write the code for portal - delete my account, download the profile, change password, update profile.
-
-need to ask reports should show into all of the user
-
-
-backend:
-Email My Chapter
-Email Visitor Invitation
-Email Chapter Visitors
-
 [o] user main profile:
 [o] user new create (or) select and update
 [o] if new user create new data and redirect into add_profile page
 [o] if user already exist then show the warning message and redirect into add_profile page
-
-
 [o] if user created but not connected to cchapter create middleware to show the warning message
 
 [o] admin side edit profiles
 
 Doubts:
-	industry [dropdown], classification [dropdown], Product/Service Description [textarea], Company Name [input box]
-	delete my account
-	download my profile
-	change password
-	update profile
+	[o] industry [dropdown], classification [dropdown], Product/Service Description [textarea], Company Name [input box]
+	[x] delete my account
+	[o] download my profile
+	[o] change password
+	[o] update profile
 
 
 my connections http://127.0.0.1:8000/list_users make the data and ui more good
 
+write the code for portal - 
+[x] delete my account, 
+[o] download the profile, 
+[o] change password, 
+[o] update profile.
 
-state, chapter, these all are depending on the name so it can be issue
+need to ask reports should show into all of the user
+
+[o] is user unauthenticated then show the login page
+
+backend:
+[o] Email My Chapter
+[x] Email Visitor Invitation
+[x] Email Chapter Visitors
+
+[o] state, chapter, these all are depending on the name so it can be issue
  
