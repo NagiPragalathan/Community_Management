@@ -12,4 +12,4 @@ group = [
 
 if i share the group link who ever cleck it and they are logged in users they will be join the group
 
-project name 
+project name   
