@@ -1,5 +1,5 @@
 
-# Community Management Platform
+# Community Management Platform   :
 
 Welcome to the Community Management Platform, an innovative solution built to manage and enhance your professional networking experience. This platform is developed using Python, Django, HTML, CSS, JavaScript, and SQLite3. It is designed to facilitate seamless interactions and collaborations within a professional community.
 
