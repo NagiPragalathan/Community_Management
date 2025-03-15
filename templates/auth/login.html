@@ -1,45 +1,402 @@
 {% load static %}
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Login | Victory Connect</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          sans: ['Poppins', 'sans-serif'],
+        },
+        extend: {
+          colors: {
+            victory: {
+              50: '#F0F9FF',
+              100: '#E0F2FE',
+              200: '#BAE6FD',
+              300: '#7DD3FC',
+              400: '#38BDF8',
+              500: '#0EA5E9',
+              600: '#0284C7',
+              700: '#0369A1',
+              800: '#075985',
+              900: '#0C4A6E',
+            },
+            success: {
+              50: '#ECFDF5',
+              500: '#10B981',
+              600: '#059669',
+            }
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.7s ease-out forwards',
+            'fade-in': 'fadeIn 0.8s ease-out forwards',
+            'pulse-slow': 'pulse 6s infinite',
+            'float': 'float 8s ease-in-out infinite',
+            'shimmer': 'shimmer 2.5s infinite',
+            'bounce-slow': 'bounce 3s infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(40px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+              '50%': { transform: 'translateY(-25px) rotate(2deg)' }
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-500px 0' },
+              '100%': { backgroundPosition: '500px 0' }
+            },
+            glow: {
+              '0%': { boxShadow: '0 0 5px rgba(14, 165, 233, 0.2), 0 0 20px rgba(14, 165, 233, 0.2)' },
+              '100%': { boxShadow: '0 0 10px rgba(14, 165, 233, 0.5), 0 0 40px rgba(14, 165, 233, 0.3)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .glass-effect {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 1rem;
+      color: #94A3B8;
+    }
+    .password-toggle {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .password-toggle:hover {
+      color: #0EA5E9;
+    }
+    .custom-checkbox {
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+    }
+    .custom-checkbox:checked {
+      background-color: #0EA5E9;
+      border-color: #0EA5E9;
+    }
+    .animated-gradient {
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    .shimmer {
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2.5s infinite;
+    }
+    .text-shadow {
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: rotate(30deg);
+      animation: shine 3s infinite;
+    }
+    @keyframes shine {
+      0% {
+        left: -100%;
+        top: -100%;
+      }
+      100% {
+        left: 100%;
+        top: 100%;
+      }
+    }
+    .neon-border {
+      box-shadow: 0 0 5px rgba(14, 165, 233, 0.3), 0 0 20px rgba(14, 165, 233, 0.2);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+    }
+  </style>
 </head>
-<body class=" ">
-  <form method="post" action="{% url 'login'%}" class=" bg-[#0F172A] min-h-[100vh] flex flex-col justify-around items-center md:flex-row md:justify-center  " novalidate>
-    {% csrf_token %}
-    <div class="flex items-center justify-center md:w-[60vw] max-[w-80%] ">
-      <img src="{% static 'assets/design.png' %}" class=" md:px-0 px-10 mt-10" alt="">
-    </div>
-    <div class="data sm:w-[40vw] flex flex-col items-center my-5 sm:items-start  sm:my-0 ">
-      <h1 class="text-white text-4xl font-bold">Welcome back 👋</h1>
-      <p class=" text-md w-[80%] text-gray-400 py-2 "> We are experiencing an issue with Cross Chapter Search. At this time, you Cannot give a Referral or TYFCB Slip to a Member Outside of Your Chapter. We are working diligently to remedy this situation. Referrals and TYFCB within Your Chapter Are Working as Usual.</p>
-      <div class="bg-gray-800 rounded-full py-4 px-24 mt-5 inline-flex hover:bg-gray-600">
-        <img src="{% static 'assets/google 2.png' %}" class="pr-3" alt="">
-        <h2 class="font-semibold text-white ">Sign in with Google</h2>
+<body class="bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#334155] animated-gradient min-h-screen flex items-center justify-center p-4 md:p-6">
+  <!-- Background elements -->
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-60">
+    <div class="absolute top-[-5%] right-[-5%] w-[50%] h-[50%] rounded-full bg-victory-600/20 filter blur-[120px] animate-pulse-slow"></div>
+    <div class="absolute bottom-[-10%] left-[-5%] w-[60%] h-[60%] rounded-full bg-indigo-600/20 filter blur-[150px] animate-pulse-slow"></div>
+    <div class="absolute top-[25%] left-[15%] w-[40%] h-[40%] rounded-full bg-sky-600/15 filter blur-[100px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-[15%] right-[10%] w-[30%] h-[30%] rounded-full bg-teal-600/10 filter blur-[90px] animate-pulse-slow" style="animation-delay: 3s;"></div>
+    
+    <!-- Floating particles -->
+    <div class="absolute top-[10%] left-[20%] w-2 h-2 bg-victory-400 rounded-full animate-bounce-slow opacity-70" style="animation-delay: 0.5s;"></div>
+    <div class="absolute top-[30%] right-[25%] w-3 h-3 bg-indigo-400 rounded-full animate-bounce-slow opacity-60" style="animation-delay: 1.2s;"></div>
+    <div class="absolute bottom-[25%] left-[40%] w-2 h-2 bg-sky-400 rounded-full animate-bounce-slow opacity-70" style="animation-delay: 0.8s;"></div>
+    <div class="absolute top-[60%] right-[15%] w-2 h-2 bg-teal-400 rounded-full animate-bounce-slow opacity-60" style="animation-delay: 1.7s;"></div>
+  </div>
+  
+  <!-- Main content -->
+  <div class="w-full max-w-6xl flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 z-10 animate-fade-in">
+    <!-- Left side - Illustration and branding -->
+    <div class="flex flex-col items-center justify-center w-full lg:w-1/2 max-w-[600px]">
+      <div class="mb-8 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold text-white mb-3 text-shadow">Victory <span class="bg-clip-text text-transparent bg-gradient-to-r from-victory-400 to-indigo-400">Connect</span></h1>
+        <p class="text-gray-300 text-xl opacity-90">Empowering professionals worldwide</p>
       </div>
-      <div class="input-box flex flex-col">
-        <label for="email" class="text-[#E4E4E7] mt-5"> Username</label>
-        <input type="email" placeholder="example@gmail.com" id="email" name="username" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white  inline-block w-80 mt-2" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address.">
-        <label for="password" class="text-[#E4E4E7] mt-3">Password</label>
-        <input type="password" id="password" name="password" placeholder="********" class="border border-1 border-[#94A3B8] bg-transparent rounded-full p-2 px-3 text-white inline-block w-80 mt-2" required minlength="8" title="Password must be at least 8 characters long.">
-        <div class="flex justify-around mt-5 px-2">
-          <div class="flex ">
-            <input type="checkbox" class="bg-[#0F172A] text-[#0F172A] border border-[#94A3B8]">
-            <p class=" text-sm text-[#94A3B8] px-2">Remember me</p>
+      
+      <div class="relative animate-float">
+        <div class="absolute inset-0 bg-gradient-to-r from-victory-500/30 to-indigo-500/30 rounded-full blur-2xl"></div>
+        <img src="{% static 'assets/design.png' %}" class="w-full max-w-[520px] p-4 drop-shadow-2xl transition-all duration-700 ease-in-out relative z-10" alt="Login illustration">
+      </div>
+      
+      <div class="mt-10 bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 max-w-md card-hover neon-border">
+        <div class="flex items-center space-x-4">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-victory-500 to-indigo-600 flex items-center justify-center">
+              <i class="fas fa-shield-alt text-white text-xl"></i>
+            </div>
           </div>
-          <a href="{% url 'forgot_password' %}" class="text-sm text-blue-700 hover:text-blue-500">Forgot password?</a>
-        </div>
-        <button class="bg-blue-600 rounded-full text-xl py-2 text-white w-40 mt-5 hover:bg-blue-800">Login</button>
-
-        <div class="flex mt-5">
-          <p class="text-[#A1A1AA]">Don't have an account?</p>
-          <a href="{% url 'signup' %}" class="text-blue-800 font-semibold pl-1 hover:text-blue-400"> Create new account </a>
+          <div>
+            <h3 class="text-white font-semibold text-lg">Trusted by professionals worldwide</h3>
+            <p class="text-gray-300 text-sm">Join the fastest growing networking platform</p>
+          </div>
         </div>
       </div>
     </div>
-  </form>
+    
+    <!-- Right side - Login form -->
+    <div class="w-full lg:w-1/2 max-w-[500px] flex flex-col p-8 md:p-10 rounded-3xl shadow-2xl border border-white/20 glass-effect bg-white/10 animate-fade-in-up transition-all duration-500 hover:shadow-victory-500/20 hover:border-victory-400/30 neon-border">
+      <!-- Header -->
+      <div class="mb-8">
+        <h2 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-victory-400 to-indigo-400 mb-3">Welcome back</h2>
+        <p class="text-gray-300 opacity-90">Sign in to your account to continue your journey</p>
+      </div>
+      
+      <!-- System notification -->
+      <div class="bg-victory-500/15 border border-victory-400/30 text-victory-100 px-5 py-4 rounded-2xl mb-7 w-full animate-fade-in shadow-lg shadow-victory-900/5">
+        <div class="flex items-start">
+          <i class="fas fa-star text-victory-300 mt-1 mr-3"></i>
+          <p class="text-sm">Welcome to Victory Connect! We're excited to have you back. Discover new connections and opportunities waiting for you.</p>
+        </div>
+      </div>
+      
+      <!-- Error message -->
+      <div id="error-message" class="bg-red-500/15 border border-red-400/30 text-red-100 px-5 py-4 rounded-2xl mb-6 w-full animate-fade-in shadow-lg shadow-red-900/5 hidden">
+        <div class="flex items-center">
+          <i class="fas fa-times-circle text-red-300 mr-3"></i>
+          <p class="font-medium">Login failed. Please check your credentials and try again.</p>
+        </div>
+      </div>
+      
+      <!-- Login form -->
+      <form id="login-form" class="space-y-6 w-full" novalidate>
+        {% csrf_token %}
+        
+        <!-- Email field -->
+        <div class="space-y-2">
+          <label for="email" class="text-[#E4E4E7] font-medium block">Email Address</label>
+          <div class="relative group">
+            <input 
+              type="email" 
+              placeholder="your.email@example.com" 
+              id="email" 
+              name="username" 
+              class="border-2 border-white/20 bg-white/5 rounded-xl p-4 pl-5 pr-10 text-white w-full focus:outline-none focus:ring-2 focus:ring-victory-500/50 focus:border-victory-500/50 transition-all duration-300 group-hover:border-victory-400/30" 
+              required 
+              title="Please enter a valid email address."
+            >
+            <i class="fas fa-envelope input-icon text-gray-400 group-hover:text-victory-400 transition-colors duration-300"></i>
+          </div>
+        </div>
+        
+        <!-- Password field -->
+        <div class="space-y-2">
+          <label for="password" class="text-[#E4E4E7] font-medium block">Password</label>
+          <div class="relative group">
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="••••••••" 
+              class="border-2 border-white/20 bg-white/5 rounded-xl p-4 pl-5 pr-10 text-white w-full focus:outline-none focus:ring-2 focus:ring-victory-500/50 focus:border-victory-500/50 transition-all duration-300 group-hover:border-victory-400/30" 
+              required 
+              minlength="1" 
+              title="Password must be at least 8 characters long."
+            >
+            <i class="fas fa-eye-slash password-toggle input-icon text-gray-400 group-hover:text-victory-400 transition-colors duration-300" id="togglePassword"></i>
+          </div>
+        </div>
+        
+        <!-- Remember me & Forgot password -->
+        <div class="flex flex-wrap justify-between items-center mt-5 gap-3">
+          <div class="flex items-center">
+            <input type="checkbox" id="remember" name="remember" class="w-4 h-4 rounded-md bg-white/5 border-2 border-gray-500 text-victory-600 focus:ring-victory-500 custom-checkbox">
+            <label for="remember" class="text-sm text-[#94A3B8] px-2 cursor-pointer hover:text-victory-300 transition-colors">Remember me</label>
+          </div>
+          <a href="{% url 'forgot_password' %}" class="text-sm text-victory-400 hover:text-victory-300 transition-colors hover:underline">Forgot password?</a>
+        </div>
+        
+        <!-- Login button -->
+        <button type="submit" class="btn-shine bg-gradient-to-r from-victory-600 to-indigo-600 hover:from-victory-700 hover:to-indigo-700 rounded-xl text-lg py-4 text-white w-full mt-7 transition-all duration-300 hover:shadow-xl hover:shadow-victory-500/20 transform hover:-translate-y-1 font-medium flex justify-center items-center">
+          <span>Sign In</span>
+          <i class="fas fa-arrow-right ml-2 transition-transform duration-300 group-hover:translate-x-1"></i>
+        </button>
+
+        <!-- Sign up link -->
+        <!-- <div class="flex justify-center items-center mt-7 pt-2">
+          <p class="text-[#A1A1AA]">Don't have an account?</p>
+          <a href="{% url 'signup' %}" class="text-victory-400 font-semibold pl-1.5 hover:text-victory-300 transition-colors hover:underline">Create new account</a>
+        </div> -->
+        
+        <!-- Social proof -->
+        <div class="mt-8 pt-6 border-t border-white/10">
+          <p class="text-center text-gray-400 text-sm mb-4">Trusted by industry leaders</p>
+          <div class="flex justify-center space-x-6 opacity-70">
+            <div class="w-8 h-8 bg-gradient-to-br from-victory-500/40 to-indigo-500/40 rounded-full"></div>
+            <div class="w-8 h-8 bg-gradient-to-br from-sky-500/40 to-victory-500/40 rounded-full"></div>
+            <div class="w-8 h-8 bg-gradient-to-br from-indigo-500/40 to-sky-500/40 rounded-full"></div>
+            <div class="w-8 h-8 bg-gradient-to-br from-teal-500/40 to-indigo-500/40 rounded-full"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // Password visibility toggle
+    document.getElementById('togglePassword').addEventListener('click', function() {
+      const password = document.getElementById('password');
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      
+      // Toggle icon
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+    
+    // Enhanced validation feedback with animations
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email');
+      const password = document.getElementById('password');
+      let valid = true;
+      
+      if (!email.checkValidity()) {
+        email.classList.add('border-red-500');
+        email.classList.remove('border-white/20');
+        valid = false;
+        
+        // Add error message with animation
+        const emailParent = email.parentElement.parentElement;
+        let errorMsg = emailParent.querySelector('.error-message');
+        
+        if (!errorMsg) {
+          errorMsg = document.createElement('p');
+          errorMsg.className = 'error-message text-red-400 text-sm mt-2 animate-fade-in flex items-center';
+          const icon = document.createElement('i');
+          icon.className = 'fas fa-exclamation-circle mr-1';
+          errorMsg.appendChild(icon);
+          errorMsg.appendChild(document.createTextNode(email.title));
+          emailParent.appendChild(errorMsg);
+        }
+      } else {
+        email.classList.remove('border-red-500');
+        email.classList.add('border-white/20');
+        
+        // Remove error message if exists
+        const errorMsg = email.parentElement.parentElement.querySelector('.error-message');
+        if (errorMsg) errorMsg.remove();
+      }
+      
+      if (!password.checkValidity()) {
+        password.classList.add('border-red-500');
+        password.classList.remove('border-white/20');
+        valid = false;
+        
+        // Add error message with animation
+        const passwordParent = password.parentElement.parentElement;
+        let errorMsg = passwordParent.querySelector('.error-message');
+        
+        if (!errorMsg) {
+          errorMsg = document.createElement('p');
+          errorMsg.className = 'error-message text-red-400 text-sm mt-2 animate-fade-in flex items-center';
+          const icon = document.createElement('i');
+          icon.className = 'fas fa-exclamation-circle mr-1';
+          errorMsg.appendChild(icon);
+          errorMsg.appendChild(document.createTextNode(password.title));
+          passwordParent.appendChild(errorMsg);
+        }
+      } else {
+        password.classList.remove('border-red-500');
+        password.classList.add('border-white/20');
+        
+        // Remove error message if exists
+        const errorMsg = password.parentElement.parentElement.querySelector('.error-message');
+        if (errorMsg) errorMsg.remove();
+      }
+      
+      if (valid) {
+        // Show loading state
+        const submitButton = document.querySelector('button[type="submit"]');
+        submitButton.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Connecting...';
+        submitButton.disabled = true;
+        
+        // Simulate authentication check (replace with actual authentication logic)
+        setTimeout(() => {
+          // Show error message (simulating wrong credentials)
+          document.getElementById('error-message').classList.remove('hidden');
+          
+          // Reset button
+          submitButton.innerHTML = '<span>Sign In</span><i class="fas fa-arrow-right ml-2 transition-transform duration-300 group-hover:translate-x-1"></i>';
+          submitButton.disabled = false;
+          
+          // Scroll to error message
+          document.getElementById('error-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 1500);
+      }
+    });
+  </script>
 </body>
 </html>

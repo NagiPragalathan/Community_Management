@@ -68,6 +68,7 @@
                                 class="mt-1 block w-full px-4 py-3 rounded-xl border-2 border-indigo-100 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors duration-200">
                                 <option value="online" {% if chapter and chapter.type == "online" %}selected{% endif %}>Online</option>
                                 <option value="offline" {% if chapter and chapter.type == "offline" %}selected{% endif %}>Offline</option>
+                                <option value="hybrid" {% if chapter and chapter.type == "hybrid" %}selected{% endif %}>Hybrid</option>
                             </select>
                         </div>
 
