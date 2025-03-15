@@ -222,31 +222,36 @@
       </div>
       
       <!-- Error message -->
-      <div id="error-message" class="bg-red-500/15 border border-red-400/30 text-red-100 px-5 py-4 rounded-2xl mb-6 w-full animate-fade-in shadow-lg shadow-red-900/5 hidden">
-        <div class="flex items-center">
-          <i class="fas fa-times-circle text-red-300 mr-3"></i>
-          <p class="font-medium">Login failed. Please check your credentials and try again.</p>
-        </div>
-      </div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="bg-red-500/15 border border-red-400/30 text-red-100 px-5 py-4 rounded-2xl mb-6 w-full animate-fade-in shadow-lg shadow-red-900/5">
+            <div class="flex items-center">
+              <i class="fas fa-times-circle text-red-300 mr-3"></i>
+              <p class="font-medium">{{ message }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
       
       <!-- Login form -->
-      <form id="login-form" class="space-y-6 w-full" novalidate>
+      <form id="loginForm" method="post" action="{% url 'login' %}" class="space-y-6 w-full">
         {% csrf_token %}
         
-        <!-- Email field -->
+        <!-- Username field -->
         <div class="space-y-2">
-          <label for="email" class="text-[#E4E4E7] font-medium block">Email Address</label>
+          <label for="username" class="text-[#E4E4E7] font-medium block">Username</label>
           <div class="relative group">
             <input 
-              type="email" 
-              placeholder="your.email@example.com" 
-              id="email" 
+              type="text" 
+              id="username" 
               name="username" 
+              placeholder="Enter your username" 
               class="border-2 border-white/20 bg-white/5 rounded-xl p-4 pl-5 pr-10 text-white w-full focus:outline-none focus:ring-2 focus:ring-victory-500/50 focus:border-victory-500/50 transition-all duration-300 group-hover:border-victory-400/30" 
               required 
-              title="Please enter a valid email address."
+              minlength="3"
+              title="Username must be at least 3 characters long."
             >
-            <i class="fas fa-envelope input-icon text-gray-400 group-hover:text-victory-400 transition-colors duration-300"></i>
+            <i class="fas fa-user input-icon text-gray-400 group-hover:text-victory-400 transition-colors duration-300"></i>
           </div>
         </div>
         
@@ -261,10 +266,18 @@
               placeholder="••••••••" 
               class="border-2 border-white/20 bg-white/5 rounded-xl p-4 pl-5 pr-10 text-white w-full focus:outline-none focus:ring-2 focus:ring-victory-500/50 focus:border-victory-500/50 transition-all duration-300 group-hover:border-victory-400/30" 
               required 
-              minlength="1" 
+              minlength="8" 
               title="Password must be at least 8 characters long."
             >
             <i class="fas fa-eye-slash password-toggle input-icon text-gray-400 group-hover:text-victory-400 transition-colors duration-300" id="togglePassword"></i>
+          </div>
+        </div>
+        
+        <!-- Error message for invalid credentials -->
+        <div id="loginError" class="bg-red-500/15 border border-red-400/30 text-red-100 px-5 py-4 rounded-2xl w-full animate-fade-in shadow-lg shadow-red-900/5 hidden">
+          <div class="flex items-center">
+            <i class="fas fa-times-circle text-red-300 mr-3"></i>
+            <p class="font-medium">Invalid username or password. Please try again.</p>
           </div>
         </div>
         
@@ -315,86 +328,105 @@
       this.classList.toggle('fa-eye-slash');
     });
     
-    // Enhanced validation feedback with animations
-    document.querySelector('form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const email = document.getElementById('email');
+    // Form validation and AJAX submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      const username = document.getElementById('username');
       const password = document.getElementById('password');
-      let valid = true;
       
-      if (!email.checkValidity()) {
-        email.classList.add('border-red-500');
-        email.classList.remove('border-white/20');
-        valid = false;
+      // Clear previous error styling
+      username.classList.remove('border-red-500');
+      password.classList.remove('border-red-500');
+      
+      // Remove any existing error messages
+      const errorMessages = document.querySelectorAll('.error-message');
+      errorMessages.forEach(msg => msg.remove());
+      
+      let isValid = true;
+      
+      // Validate username
+      if (!username.value.trim() || username.value.length < 3) {
+        e.preventDefault();
+        isValid = false;
+        username.classList.add('border-red-500');
         
-        // Add error message with animation
-        const emailParent = email.parentElement.parentElement;
-        let errorMsg = emailParent.querySelector('.error-message');
-        
-        if (!errorMsg) {
-          errorMsg = document.createElement('p');
-          errorMsg.className = 'error-message text-red-400 text-sm mt-2 animate-fade-in flex items-center';
-          const icon = document.createElement('i');
-          icon.className = 'fas fa-exclamation-circle mr-1';
-          errorMsg.appendChild(icon);
-          errorMsg.appendChild(document.createTextNode(email.title));
-          emailParent.appendChild(errorMsg);
-        }
-      } else {
-        email.classList.remove('border-red-500');
-        email.classList.add('border-white/20');
-        
-        // Remove error message if exists
-        const errorMsg = email.parentElement.parentElement.querySelector('.error-message');
-        if (errorMsg) errorMsg.remove();
+        const usernameParent = username.parentElement.parentElement;
+        const errorMsg = document.createElement('p');
+        errorMsg.className = 'error-message text-red-400 text-sm mt-2 animate-fade-in flex items-center';
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-exclamation-circle mr-1';
+        errorMsg.appendChild(icon);
+        errorMsg.appendChild(document.createTextNode(username.title));
+        usernameParent.appendChild(errorMsg);
       }
       
-      if (!password.checkValidity()) {
+      // Validate password
+      if (!password.value.trim() || password.value.length < 8) {
+        e.preventDefault();
+        isValid = false;
         password.classList.add('border-red-500');
-        password.classList.remove('border-white/20');
-        valid = false;
         
-        // Add error message with animation
         const passwordParent = password.parentElement.parentElement;
-        let errorMsg = passwordParent.querySelector('.error-message');
-        
-        if (!errorMsg) {
-          errorMsg = document.createElement('p');
-          errorMsg.className = 'error-message text-red-400 text-sm mt-2 animate-fade-in flex items-center';
-          const icon = document.createElement('i');
-          icon.className = 'fas fa-exclamation-circle mr-1';
-          errorMsg.appendChild(icon);
-          errorMsg.appendChild(document.createTextNode(password.title));
-          passwordParent.appendChild(errorMsg);
-        }
-      } else {
-        password.classList.remove('border-red-500');
-        password.classList.add('border-white/20');
-        
-        // Remove error message if exists
-        const errorMsg = password.parentElement.parentElement.querySelector('.error-message');
-        if (errorMsg) errorMsg.remove();
+        const errorMsg = document.createElement('p');
+        errorMsg.className = 'error-message text-red-400 text-sm mt-2 animate-fade-in flex items-center';
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-exclamation-circle mr-1';
+        errorMsg.appendChild(icon);
+        errorMsg.appendChild(document.createTextNode(password.title));
+        passwordParent.appendChild(errorMsg);
       }
       
-      if (valid) {
-        // Show loading state
+      // If form is valid, handle submission with AJAX
+      if (isValid) {
+        e.preventDefault(); // Prevent default form submission
+        
         const submitButton = document.querySelector('button[type="submit"]');
         submitButton.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Connecting...';
         submitButton.disabled = true;
         
-        // Simulate authentication check (replace with actual authentication logic)
-        setTimeout(() => {
-          // Show error message (simulating wrong credentials)
-          document.getElementById('error-message').classList.remove('hidden');
-          
+        // Hide any previous error
+        document.getElementById('loginError').classList.add('hidden');
+        
+        // Get form data
+        const formData = new FormData(this);
+        
+        // Send AJAX request
+        fetch(this.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          credentials: 'same-origin'
+        })
+        .then(response => {
+          if (response.redirected) {
+            // Success - follow the redirect
+            window.location.href = response.url;
+          } else {
+            // Failed login - show error message
+            return response.text();
+          }
+        })
+        .then(html => {
+          if (html) {
+            // Show error message
+            document.getElementById('loginError').classList.remove('hidden');
+            
+            // Reset button
+            submitButton.innerHTML = '<span>Sign In</span><i class="fas fa-arrow-right ml-2 transition-transform duration-300 group-hover:translate-x-1"></i>';
+            submitButton.disabled = false;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
           // Reset button
           submitButton.innerHTML = '<span>Sign In</span><i class="fas fa-arrow-right ml-2 transition-transform duration-300 group-hover:translate-x-1"></i>';
           submitButton.disabled = false;
           
-          // Scroll to error message
-          document.getElementById('error-message').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 1500);
+          // Show generic error
+          document.getElementById('loginError').textContent = 'An error occurred. Please try again.';
+          document.getElementById('loginError').classList.remove('hidden');
+        });
       }
     });
   </script>
