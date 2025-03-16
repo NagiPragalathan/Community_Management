@@ -266,7 +266,7 @@
               placeholder="••••••••" 
               class="border-2 border-white/20 bg-white/5 rounded-xl p-4 pl-5 pr-10 text-white w-full focus:outline-none focus:ring-2 focus:ring-victory-500/50 focus:border-victory-500/50 transition-all duration-300 group-hover:border-victory-400/30" 
               required 
-              minlength="8" 
+              minlength="1" 
               title="Password must be at least 8 characters long."
             >
             <i class="fas fa-eye-slash password-toggle input-icon text-gray-400 group-hover:text-victory-400 transition-colors duration-300" id="togglePassword"></i>
@@ -360,7 +360,7 @@
       }
       
       // Validate password
-      if (!password.value.trim() || password.value.length < 8) {
+      if (!password.value.trim() || password.value.length < 1) {
         e.preventDefault();
         isValid = false;
         password.classList.add('border-red-500');
